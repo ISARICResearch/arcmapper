@@ -1,7 +1,7 @@
 [project]
-name = "isaric-automapper"
+name = "arcmapper"
 version = "0.1.0"
-description = "Add your description here"
+description = "Automapper library for ISARIC ARC"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
