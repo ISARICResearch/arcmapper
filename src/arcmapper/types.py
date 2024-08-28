@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 from typing import NamedTuple
 
+
 @dataclass
 class MatchItem:
     variable: str
     description: str
     responses: str
+
 
 class PossibleMatch(NamedTuple):
     raw_variable: str
@@ -13,4 +15,3 @@ class PossibleMatch(NamedTuple):
     arc_variable: str
     arc_response: str
     weight: float
-

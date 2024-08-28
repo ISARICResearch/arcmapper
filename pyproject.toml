@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "Automapper library for ISARIC ARC"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "pandas>=2.2.2",
+    "scikit-learn>=1.5.1",
+]
 
 [build-system]
 requires = ["hatchling"]
