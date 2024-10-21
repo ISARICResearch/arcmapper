@@ -1,12 +1,16 @@
-from dataclasses import dataclass
-from typing import NamedTuple
+"Types used in arcmapper"
 
+from typing import NamedTuple, Literal
 
-@dataclass
-class MatchItem:
-    variable: str
-    description: str
-    responses: str
+# Responses is either a list of valid responses for this variable
+# example: gender = ["male", "female"]
+# or it is a list of string -> string mappings, where the left side
+# string is the value stored in the database, but the right hand side
+# is the value as interpreted by arcmapper.
+# example: gender = [(1, "male"), (2, "female")]
+Responses = list[str] | list[tuple[str | int, str]]
+
+DataType = Literal["categorical", "number", "string", "date"]
 
 
 class PossibleMatch(NamedTuple):
