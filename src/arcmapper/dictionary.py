@@ -2,12 +2,13 @@
 
 import operator
 from typing import Any, NamedTuple
-from collections.abc import Callable
 
 import pandas as pd
 from pandas.api.types import is_object_dtype
-from .types import Responses, DataType
-from .util import read_data
+from .types import DataType
+from .util import read_data, parse_redcap_response
+
+RESPONSE_PARSERS = {"redcap": parse_redcap_response}
 
 
 class DictionaryField(NamedTuple):
@@ -25,7 +26,7 @@ def read_data_dictionary(
     description_field: str | None = None,
     type_field: str | None = None,
     response_field: str | None = None,
-    response_func: Callable[[str], Responses] | None = None,
+    response_func: str | None = None,
 ) -> pd.DataFrame:
     """Reads from data dictionary file or data frame
 
@@ -60,17 +61,24 @@ def read_data_dictionary(
     variable_field = variable_field or dd.columns[0]
     if description_field is None:
         description_field = max(
-            ((c, dd[c].map(len).mean()) for c in dd.columns if is_object_dtype(dd[c])),
+            (
+                (c, dd[c].map(lambda x: len(x) if isinstance(x, str) else 0).mean())
+                for c in dd.columns
+                if is_object_dtype(dd[c])
+            ),
             key=operator.itemgetter(1),
-        )
+        )[0]
     if (response_field is None) ^ (response_func is None):
         raise ValueError("Both response_field and response_func have to be specified")
+    assert (
+        response_func in RESPONSE_PARSERS
+    ), f"Unknown response parser: {response_func}"
     return pd.DataFrame(
         [
             DictionaryField(
                 row[variable_field],
                 row[description_field],
-                response_func(row[response_field])
+                RESPONSE_PARSERS[response_func](row[response_field])
                 if response_field and isinstance(row[response_field], str)
                 else None,
                 row[type_field] if type_field else "string",
@@ -80,11 +88,11 @@ def read_data_dictionary(
     )
 
 
-def infer_dd_from_data(data: str | pd.DataFrame) -> pd.DataFrame:
+def read_from_data(data: str | pd.DataFrame) -> pd.DataFrame:
     "Infers data dictionary from sample data"
     raise NotImplementedError
 
 
-def read_dd_from_jsonschema(data: str | dict[str, Any]) -> pd.DataFrame:
+def read_from_jsonschema(data: str | dict[str, Any]) -> pd.DataFrame:
     "Returns DataDictionary from JSON Schema file or data"
     raise NotImplementedError

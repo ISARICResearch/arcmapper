@@ -3,7 +3,6 @@
 import pandas as pd
 
 from .types import DataType
-from .util import parse_redcap_response
 from .dictionary import read_data_dictionary
 
 
@@ -11,7 +10,9 @@ def arc_schema_url(arc_version: str) -> str:
     return f"https://github.com/ISARICResearch/DataPlatform/raw/refs/heads/main/ARCH/ARCH{arc_version}/ARCH.csv"
 
 
-def read_arc_schema(arc_version: str, preset: str | None = None) -> pd.DataFrame:
+def read_arc_schema(
+    arc_version_or_file: str, preset: str | None = None
+) -> pd.DataFrame:
     types_mapping: dict[str, DataType] = {
         "radio": "categorical",
         "number": "number",
@@ -21,12 +22,21 @@ def read_arc_schema(arc_version: str, preset: str | None = None) -> pd.DataFrame
         "dropdown": "categorical",
         "datetime_dmy": "date",
     }
-    arc = pd.read_csv(arc_schema_url(arc_version))
+    if arc_version_or_file.endswith(".csv"):
+        arc = pd.read_csv(arc_version_or_file)
+    else:
+        arc = pd.read_csv(arc_schema_url(arc_version_or_file))
     arc["Description"] = arc.Question + " " + arc.Definition
     arc["Type"] = arc.Type.map(types_mapping)
     dd = read_data_dictionary(
-        arc, "Variable", "Description", "Type", "Answer Options", parse_redcap_response
+        arc,
+        variable_field="Variable",
+        description_field="Description",
+        type_field="Type",
+        response_field="Answer Options",
+        response_func="redcap",
     )
+    dd = dd[~pd.isna(dd.description)]
     if preset:
         preset_col = "preset_" + preset
         if preset_col not in arc.columns:

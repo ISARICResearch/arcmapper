@@ -1,30 +1,42 @@
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from .types import PossibleMatch
-
-NUM_MATCHES = 3
 
 
 def tf_idf(
     dictionary: pd.DataFrame,
     arc: pd.DataFrame,
-    var_col: str = "variable",
-    desc_col: str = "description",
-) -> list[PossibleMatch]:
+    num_matches: int = 3,
+) -> pd.DataFrame:
     assert "text" not in dictionary.columns
-    dictionary_text = dictionary[var_col].str.replace("_", " ") + dictionary[desc_col]
-    arc_text = arc["Variable"] + " " + arc["Question"]
+    dictionary_text = dictionary.variable.str.replace(
+        "_", " "
+    ) + dictionary.description.map(lambda x: x if isinstance(x, str) else "")
+    arc_text = arc.variable.str.replace("_", " ") + " " + arc.description
     vec = TfidfVectorizer(max_df=0.9, ngram_range=(1, 2))
     X = vec.fit_transform(dictionary_text)
     Y = vec.transform(arc_text)
 
     # Similarity (this is the tf-idf bit.)
-    D = Y.dot(X.T)
+    D = X.dot(Y.T)
 
-    sorted_indices = np.argsort(D.toarray(), axis=1)[:, ::-1]
-    sorted_values = np.take_along_axis(D.toarray(), sorted_indices, axis=1)
-    mask = sorted_values != 0
-    filtered_indices = np.where(mask, sorted_indices, np.nan)
+    S = np.argsort(D.toarray(), axis=1)[:, ::-1][:, :num_matches]
     # nans are given if no other similarities are found
-    S = filtered_indices[:, :NUM_MATCHES]
+    match_df = pd.DataFrame(
+        columns=["raw_variable", "arc_variable", "tf_rank"],
+        data=sum(
+            [
+                [
+                    [
+                        dictionary.iloc[i].variable,
+                        arc.iloc[k].variable,
+                        j,
+                    ]
+                    for j, k in enumerate(S[i])
+                ]
+                for i in range(len(dictionary))
+            ],
+            [],
+        ),
+    )
+    return match_df
