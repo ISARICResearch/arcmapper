@@ -7,6 +7,7 @@ def tf_idf(
     dictionary: pd.DataFrame,
     arc: pd.DataFrame,
     num_matches: int = 3,
+    threshold: float = 0.3,
 ) -> pd.DataFrame:
     assert "text" not in dictionary.columns
     dictionary_text = dictionary.variable.str.replace(
@@ -18,10 +19,10 @@ def tf_idf(
     Y = vec.transform(arc_text)
 
     # Similarity (this is the tf-idf bit.)
-    D = X.dot(Y.T)
+    D = X.dot(Y.T).toarray()
 
-    S = np.argsort(D.toarray(), axis=1)[:, ::-1][:, :num_matches]
-    # nans are given if no other similarities are found
+    S = np.argsort(D, axis=1)[:, ::-1][:, :num_matches]
+
     match_df = pd.DataFrame(
         columns=["raw_variable", "arc_variable", "tf_rank"],
         data=sum(
@@ -33,6 +34,7 @@ def tf_idf(
                         j,
                     ]
                     for j, k in enumerate(S[i])
+                    if D[i, S[i, j]] > threshold
                 ]
                 for i in range(len(dictionary))
             ],
