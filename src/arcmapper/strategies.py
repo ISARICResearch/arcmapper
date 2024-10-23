@@ -40,14 +40,22 @@ def get_match_dataframe_from_similarity_matrix(
     """
     S = np.argsort(similarity_matrix, axis=1)[:, ::-1][:, :num_matches]
 
-    return pd.DataFrame(
-        columns=["raw_variable", "arc_variable", "rank"],
+    match_df = pd.DataFrame(
+        columns=[
+            "raw_variable",
+            "raw_description",
+            "arc_variable",
+            "arc_description",
+            "rank",
+        ],
         data=sum(
             [
                 [
                     [
                         dictionary.iloc[i].variable,
+                        dictionary.iloc[i].description,
                         arc.iloc[k].variable,
+                        arc.iloc[k].description,
                         j,
                     ]
                     for j, k in enumerate(S[i])
@@ -58,6 +66,21 @@ def get_match_dataframe_from_similarity_matrix(
             [],
         ),
     )
+    dictionary_categorical_vars = dictionary[pd.notnull(dictionary.responses)].variable
+    arc_categorical_vars = arc[pd.notnull(arc.responses)].variable
+
+    # drop (raw_variable, arc_variable) match pairs where only one of them
+    # is of categorical type (answer options or responses present)
+    if pd.notnull(dictionary.responses).any():
+        return match_df[
+            ~(
+                match_df.raw_variable.isin(dictionary_categorical_vars)
+                ^ match_df.arc_variable.isin(arc_categorical_vars)
+            )
+        ]
+    else:
+        # empty responses column in dictionary, indicating it was not supplied
+        return match_df
 
 
 def get_categorical_mapping(
@@ -98,7 +121,7 @@ def get_categorical_mapping(
 def tf_idf(
     dictionary: pd.DataFrame,
     arc: pd.DataFrame,
-    num_matches: int = 3,
+    num_matches: int = 5,
     threshold: float = 0.3,
 ) -> pd.DataFrame:
     """Uses TF-IDF (text frequency - inverse document frequency) technique for mapping
@@ -142,7 +165,7 @@ def sbert(
     dictionary: pd.DataFrame,
     arc: pd.DataFrame,
     model: str = "all-MiniLM-L6-v2",
-    num_matches: int = 3,
+    num_matches: int = 5,
     threshold: float = 0.3,
 ) -> pd.DataFrame:
     """Uses sentence transformers (https://sbert.net) technique for mapping

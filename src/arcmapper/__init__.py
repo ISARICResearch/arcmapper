@@ -8,7 +8,7 @@ def map(
     method: str,
     dictionary: pd.DataFrame,
     arc: pd.DataFrame,
-    num_matches: int = 3,
+    num_matches: int = 5,
     **kwargs,
 ) -> pd.DataFrame:
     match method:
