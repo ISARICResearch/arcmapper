@@ -3,6 +3,7 @@
 import pandas as pd
 
 from .types import DataType
+from .util import read_csv_with_encoding_detection
 from .dictionary import read_data_dictionary
 
 
@@ -22,10 +23,12 @@ def read_arc_schema(
         "dropdown": "categorical",
         "datetime_dmy": "date",
     }
-    if arc_version_or_file.endswith(".csv"):
-        arc = pd.read_csv(arc_version_or_file)
-    else:
-        arc = pd.read_csv(arc_schema_url(arc_version_or_file))
+    arc_location = (
+        arc_version_or_file
+        if arc_version_or_file.endswith(".csv")
+        else arc_schema_url(arc_version_or_file)
+    )
+    arc = read_csv_with_encoding_detection(arc_location)
     arc["Description"] = arc.Question + " " + arc.Definition
     arc["Type"] = arc.Type.map(types_mapping)
     dd = read_data_dictionary(
