@@ -6,9 +6,12 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "chardet>=5.2.0",
+    "dash-bootstrap-components>=1.6.0",
+    "dash>=2.18.1",
     "pandas>=2.2.2",
     "scikit-learn>=1.5.1",
     "sentence-transformers>=3.2.1",
+    "waitress>=3.0.0",
 ]
 
 [build-system]
