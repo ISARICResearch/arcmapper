@@ -1,7 +1,7 @@
 """Dash frontend for the arcmapper library"""
 
 import dash
-from dash import html, callback, Input, Output
+from dash import dcc, html, callback, Input, Output
 import dash_bootstrap_components as dbc
 
 
@@ -81,13 +81,18 @@ upload_form = dbc.Container(
                             className="me-3",
                         ),
                         dbc.Col(
-                            dbc.Input(type="file", id="upload-input-file"),
-                            className="me-3",
+                            dcc.Upload(
+                                id="upload-data",
+                                children=html.Div(
+                                    "Drag and drop or select file",
+                                    style={
+                                        "border": "1px dashed silver",
+                                        "padding": "0.3em",
+                                    },
+                                ),
+                            )
                         ),
-                        dbc.Col(
-                            dbc.Button("Upload", id="upload-btn", color="primary"),
-                            width="auto",
-                        ),
+                        dbc.Col(dbc.Button("Upload", id="upload-btn", color="primary")),
                     ],
                     className="g-2",
                 ),
@@ -166,7 +171,7 @@ arc_form = dbc.Container(
 @callback(
     Output("upload-status", "children"),
     Input("upload-btn", "clicked"),
-    Input("upload-input-file", "input_file"),
+    Input("upload-input-file", "contents"),
     Input("upload-is-sample-data", "is_sample_data"),
     Input("upload-col-responses", "col_responses"),
     Input("upload-col-description", "col_description"),
