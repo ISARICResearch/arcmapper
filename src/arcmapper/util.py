@@ -1,9 +1,11 @@
 "Utility functions for arcmapper"
 
 import io
+import base64
 import warnings
 import urllib.request
 from pathlib import Path
+from typing import Any
 
 import chardet
 import pandas as pd
@@ -20,6 +22,26 @@ def read_data(file_or_dataframe: str | pd.DataFrame) -> pd.DataFrame:
             return pd.read_excel(file)
         case ".csv":
             return pd.read_csv(file)
+
+def read_upload_data(contents: str, filename) -> list[dict[str, Any]] | None:
+    _, content_string = contents.split(',')
+
+    decoded = base64.b64decode(content_string)
+    path = Path(filename)
+    try:
+        match path.suffix:
+            case ".csv":
+                # Assume that the user uploaded a CSV file
+                df = pd.read_csv(
+                    io.StringIO(decoded.decode('utf-8')))
+            case ".xlsx":
+                df = pd.read_excel(io.BytesIO(decoded))
+            case _:
+                return None
+        return df.to_json()
+    except Exception as e:
+        print(e)
+        return None
 
 
 def read_csv_with_encoding_detection(file_or_url: str) -> pd.DataFrame:

@@ -1,11 +1,13 @@
 """Dash frontend for the arcmapper library"""
 
+import pandas as pd
 import dash
-from dash import dcc, html, callback, Input, Output
+from dash import dcc, html, ctx, callback, dash_table, Input, Output, State
 import dash_bootstrap_components as dbc
 
 
 from .components import select
+from .util import read_upload_data
 
 app = dash.Dash("arcmapper", external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "ARCMapper"
@@ -82,7 +84,7 @@ upload_form = dbc.Container(
                         ),
                         dbc.Col(
                             dcc.Upload(
-                                id="upload-data",
+                                id="upload-input-file",
                                 children=html.Div(
                                     "Drag and drop or select file",
                                     style={
@@ -90,9 +92,11 @@ upload_form = dbc.Container(
                                         "padding": "0.3em",
                                     },
                                 ),
-                            )
+                            ),
+                            className="me-3"
                         ),
-                        dbc.Col(dbc.Button("Upload", id="upload-btn", color="primary")),
+                        dbc.Col(dbc.Button("Upload", id="upload-btn", color="primary", n_clicks=0)),
+                        dcc.Store(id="upload-data-dictionary")
                     ],
                     className="g-2",
                 ),
@@ -167,26 +171,49 @@ arc_form = dbc.Container(
     style={"margin-top": "1em"},
 )
 
+output_table = dbc.Container(html.Div(dbc.Row(id="output"), style={"padding": "0.5em", "border": "1px solid silver", "borderRadius": "5px"}))
 
 @callback(
+    Output("upload-data-dictionary", "data"),
     Output("upload-status", "children"),
-    Input("upload-btn", "clicked"),
-    Input("upload-input-file", "contents"),
-    Input("upload-is-sample-data", "is_sample_data"),
-    Input("upload-col-responses", "col_responses"),
-    Input("upload-col-description", "col_description"),
+    Input("upload-btn", "n_clicks"),
+    State("upload-input-file", "contents"),
+    State("upload-input-file", "filename"),
+    # State("upload-is-sample-data", "value"),
+    # State("upload-col-responses", "value"),
+    # State("upload-col-description", "value"),
     prevent_initial_call=True,
 )
 def upload_data_dictionary(
-    clicked: int | None,
-    input_file: str,
-    col_responses: str,
-    col_description: str,
-    is_sample_data: bool = False,
+    _,
+    upload_contents,
+    filename,
+    # is_sample_data,
+    # col_responses,
+    # col_description,
 ):
-    if clicked:
-        return dbc.Alert("Upload successful", color="success")
+    success = dbc.Alert("Upload successful", color="success")
+    error = dbc.Alert("Upload failed", color="danger")
+    if ctx.triggered_id == "upload-btn" and upload_contents is not None:
+        try:
+            data = read_upload_data(upload_contents, filename)
+            print(data)
+        except Exception as e:
+            print(e)
+            return {}, error
+        return data, success
+    return {}, error
 
 
-app.layout = html.Div([navbar, upload_form, arc_form])
+@callback(
+        Output("output", "children"),
+        State("upload-data-dictionary", "data")
+        Input("map-btn", "n_clicks"),
+)
+def invoke_map_arc(data, _):
+    if ctx.triggered_id == "map-btn":
+        df = pd.read_json(data)
+        return dash_table.DataTable(df.to_dict('records'))
+    return html.Span("No data to see here")
+app.layout = html.Div([navbar, upload_form, arc_form, output_table])
 server = app.server
