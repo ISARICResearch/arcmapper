@@ -156,7 +156,7 @@ arc_form = dbc.Container(
                                 type="number", min=0.1, max=1, step=0.1, value=0.3
                             ),
                         ),
-                        dbc.Col(dbc.Button("Map to ARC"), width="auto"),
+                        dbc.Col(dbc.Button("Map to ARC", id="map-btn"), width="auto"),
                     ],
                     className="g-2",
                 ),
@@ -207,8 +207,9 @@ def upload_data_dictionary(
 
 @callback(
         Output("output", "children"),
-        State("upload-data-dictionary", "data")
+        State("upload-data-dictionary", "data"),
         Input("map-btn", "n_clicks"),
+        prevent_initial_call=True,
 )
 def invoke_map_arc(data, _):
     if ctx.triggered_id == "map-btn":
