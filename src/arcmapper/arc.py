@@ -11,6 +11,7 @@ def arc_schema_url(arc_version: str) -> str:
     return f"https://github.com/ISARICResearch/DataPlatform/raw/refs/heads/main/ARCH/ARCH{arc_version}/ARCH.csv"
 
 
+
 def read_arc_schema(
     arc_version_or_file: str, preset: str | None = None
 ) -> pd.DataFrame:

@@ -8,6 +8,9 @@ import dash_bootstrap_components as dbc
 
 from .components import select
 from .util import read_upload_data
+from .dictionary import read_data_dictionary
+from .strategies import map as map_data_dictionary_to_arc
+from .arc import read_arc_schema
 
 app = dash.Dash("arcmapper", external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "ARCMapper"
@@ -59,6 +62,7 @@ upload_form = dbc.Container(
                         dbc.Switch(
                             id="upload-is-sample-data",
                             label="Uploaded file is sample data, not a data dictionary. Data will be sent to server, only use on local deployments",
+                            disabled=True,
                         )
                     )
                 ),
@@ -69,7 +73,7 @@ upload_form = dbc.Container(
                             dbc.Input(
                                 id="upload-col-responses",
                                 type="text",
-                                placeholder="Column that has form response choices",
+                                value="Choices, Calculations, OR Slider Labels",
                             ),
                             className="me-3",
                         ),
@@ -79,6 +83,7 @@ upload_form = dbc.Container(
                                 id="upload-col-description",
                                 type="text",
                                 placeholder="Defaults to longest column",
+                                value="Field Label",
                             ),
                             className="me-3",
                         ),
@@ -93,10 +98,14 @@ upload_form = dbc.Container(
                                     },
                                 ),
                             ),
-                            className="me-3"
+                            className="me-3",
                         ),
-                        dbc.Col(dbc.Button("Upload", id="upload-btn", color="primary", n_clicks=0)),
-                        dcc.Store(id="upload-data-dictionary")
+                        dbc.Col(
+                            dbc.Button(
+                                "Upload", id="upload-btn", color="primary", n_clicks=0
+                            )
+                        ),
+                        dcc.Store(id="upload-data-dictionary"),
                     ],
                     className="g-2",
                 ),
@@ -134,7 +143,7 @@ arc_form = dbc.Container(
                         dbc.Label("Mapping method", width="auto"),
                         dbc.Col(
                             dbc.Select(
-                                id="mapping-method",
+                                id="arc-mapping-method",
                                 options=[
                                     {"label": "TF-IDF", "value": "tf-idf"},
                                     {
@@ -142,18 +151,30 @@ arc_form = dbc.Container(
                                         "value": "sbert",
                                     },
                                 ],
-                                value="sbert",
+                                value="tf-idf",
                             ),
                             className="me-3",
                         ),
                         dbc.Label("Number of matches", width="auto"),
                         dbc.Col(
-                            dbc.Input(type="number", min=2, max=10, step=1, value=3),
+                            dbc.Input(
+                                id="arc-num-matches",
+                                type="number",
+                                min=2,
+                                max=10,
+                                step=1,
+                                value=3,
+                            ),
                         ),
                         dbc.Label("Threshold", width="auto"),
                         dbc.Col(
                             dbc.Input(
-                                type="number", min=0.1, max=1, step=0.1, value=0.3
+                                id="arc-threshold",
+                                type="number",
+                                min=0.1,
+                                max=1,
+                                step=0.1,
+                                value=0.3,
                             ),
                         ),
                         dbc.Col(dbc.Button("Map to ARC", id="map-btn"), width="auto"),
@@ -171,7 +192,13 @@ arc_form = dbc.Container(
     style={"margin-top": "1em"},
 )
 
-output_table = dbc.Container(html.Div(dbc.Row(id="output"), style={"padding": "0.5em", "border": "1px solid silver", "borderRadius": "5px"}))
+output_table = dbc.Container(
+    html.Div(
+        dbc.Row(id="output"),
+        style={"padding": "0.5em", "border": "1px solid silver", "borderRadius": "5px"},
+    )
+)
+
 
 @callback(
     Output("upload-data-dictionary", "data"),
@@ -179,42 +206,65 @@ output_table = dbc.Container(html.Div(dbc.Row(id="output"), style={"padding": "0
     Input("upload-btn", "n_clicks"),
     State("upload-input-file", "contents"),
     State("upload-input-file", "filename"),
-    # State("upload-is-sample-data", "value"),
-    # State("upload-col-responses", "value"),
-    # State("upload-col-description", "value"),
+    State("upload-col-responses", "value"),
+    State("upload-col-description", "value"),
     prevent_initial_call=True,
 )
 def upload_data_dictionary(
     _,
     upload_contents,
     filename,
-    # is_sample_data,
-    # col_responses,
-    # col_description,
+    col_responses,
+    col_description,
 ):
-    success = dbc.Alert("Upload successful", color="success")
-    error = dbc.Alert("Upload failed", color="danger")
+    ok = dbc.Alert("Upload successful", color="success")
+    err = lambda msg: dbc.Alert(msg, color="danger")
     if ctx.triggered_id == "upload-btn" and upload_contents is not None:
         try:
-            data = read_upload_data(upload_contents, filename)
-            print(data)
+            df = read_upload_data(upload_contents, filename)
+            # this is the unprocessed data dictionary, we will now convert
+            # it into a standardised format
+            assert df is not None
+            if col_description not in df.columns:
+                return {}, err("Description column not found")
+            if col_responses not in df.columns:
+                return {}, err("Responses column not found")
+            data = read_data_dictionary(df, description_field=col_description, response_field=col_responses, response_func="redcap")
+            return data.to_json(), ok
+
         except Exception as e:
             print(e)
-            return {}, error
-        return data, success
-    return {}, error
+            return {}, err("Upload failed due to unknown reason")
+    return {}, err("Upload failed due to unknown reason")
 
 
 @callback(
-        Output("output", "children"),
-        State("upload-data-dictionary", "data"),
-        Input("map-btn", "n_clicks"),
-        prevent_initial_call=True,
+    Output("output", "children"),
+    State("upload-data-dictionary", "data"),
+    Input("map-btn", "n_clicks"),
+    State("arc-version", "value"),
+    State("arc-mapping-method", "value"),
+    State("arc-num-matches", "value"),
+    prevent_initial_call=True,
 )
-def invoke_map_arc(data, _):
+def invoke_map_arc(data, _, version, method, num_matches):
     if ctx.triggered_id == "map-btn":
-        df = pd.read_json(data)
-        return dash_table.DataTable(df.to_dict('records'))
+        arc = read_arc_schema(version)
+        dictionary = pd.read_json(data)
+        mapped_data = map_data_dictionary_to_arc(method, dictionary, arc, num_matches)
+        return (
+            dash_table.DataTable(
+                mapped_data.to_dict("records"),
+                style_data={
+                    "whiteSpace": "normal",
+                    "height": "auto",
+                },
+                style_table={"overflowX": "auto"},
+                page_size=20,
+            ),
+        )
     return html.Span("No data to see here")
+
+
 app.layout = html.Div([navbar, upload_form, arc_form, output_table])
 server = app.server
