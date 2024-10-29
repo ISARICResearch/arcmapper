@@ -218,7 +218,9 @@ def upload_data_dictionary(
     col_description,
 ):
     ok = dbc.Alert("Upload successful", color="success")
-    err = lambda msg: dbc.Alert(msg, color="danger")
+
+    def err(msg): return dbc.Alert(msg, color="danger")
+
     if ctx.triggered_id == "upload-btn" and upload_contents is not None:
         try:
             df = read_upload_data(upload_contents, filename)
