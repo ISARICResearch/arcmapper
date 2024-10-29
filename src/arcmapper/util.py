@@ -38,7 +38,7 @@ def read_upload_data(contents: str, filename) -> list[dict[str, Any]] | None:
                 df = pd.read_excel(io.BytesIO(decoded))
             case _:
                 return None
-        return df.to_json()
+        return df
     except Exception as e:
         print(e)
         return None

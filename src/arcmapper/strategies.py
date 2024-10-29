@@ -217,3 +217,20 @@ def sbert(
         num_matches,
         threshold,
     )
+
+
+def map(
+    method: str,
+    dictionary: pd.DataFrame,
+    arc: pd.DataFrame,
+    num_matches: int = 5,
+) -> pd.DataFrame:
+    match method:
+        case "tf-idf":
+            return tf_idf(dictionary, arc, num_matches)
+        case "sbert":
+            return sbert(dictionary, arc, num_matches=num_matches)
+        case _:
+            raise ValueError(f"Unknown mapping method: {method}")
+
+

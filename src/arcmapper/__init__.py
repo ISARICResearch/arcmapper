@@ -11,29 +11,13 @@ from waitress import serve
 from .app import app
 from .arc import read_arc_schema
 from .dictionary import read_data_dictionary
-from .strategies import tf_idf, sbert
+from .strategies import map
 
 __version__ = "0.1.0"
 
 ARCMAPPER_HOST = os.getenv("ARCMAPPER_HOST", "127.0.0.1")
 ARCMAPPER_PORT = int(os.getenv("ARCMAPPER_PORT", 8050))
 ARCMAPPER_TIMEOUT = 30
-
-
-def map(
-    method: str,
-    dictionary: pd.DataFrame,
-    arc: pd.DataFrame,
-    num_matches: int = 5,
-    **kwargs,
-) -> pd.DataFrame:
-    match method:
-        case "tf-idf":
-            return tf_idf(dictionary, arc, num_matches)
-        case "sbert":
-            return sbert(dictionary, arc, num_matches=num_matches)
-        case _:
-            raise ValueError(f"Unknown mapping method: {method}")
 
 
 def launch_app():
