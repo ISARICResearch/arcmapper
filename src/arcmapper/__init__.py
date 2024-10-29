@@ -6,7 +6,6 @@ import threading
 import subprocess
 import webbrowser
 
-import pandas as pd
 from waitress import serve
 from .app import app
 from .arc import read_arc_schema
