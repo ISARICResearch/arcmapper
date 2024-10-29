@@ -13,7 +13,7 @@ dependencies = [
     "sentence-transformers>=3.2.1",
     "waitress>=3.0.0",
 ]
-
+scripts.arcmapper = "arcmapper:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
