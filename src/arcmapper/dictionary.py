@@ -1,5 +1,6 @@
 """Types and methods for loading data dictionaries"""
 
+import json
 import operator
 from typing import Any, NamedTuple
 
@@ -93,6 +94,16 @@ def read_from_data(data: str | pd.DataFrame) -> pd.DataFrame:
     raise NotImplementedError
 
 
-def read_from_jsonschema(data: str | dict[str, Any]) -> pd.DataFrame:
+def read_from_jsonschema(data: str | dict[str, Any]) -> pd.DataFrame:  # type: ignore
     "Returns DataDictionary from JSON Schema file or data"
-    raise NotImplementedError
+    if isinstance(data, str):
+        data: dict[str, Any] = json.loads(data)
+    dd = []
+    variables = data["properties"]
+    for v in variables:
+        t = variables[v].get("type","string")
+        if "enum" in variables[v]:
+            dd.append((v, variables[v].get("description", ""), [(x, x) for x in variables[v]["enum"]], 'categorical'))
+        else:
+            dd.append((v, variables[v].get("description", ""), None, t))
+    return pd.DataFrame(dd, columns=["variable", "description", "responses", "type"])
