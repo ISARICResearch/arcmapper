@@ -23,7 +23,7 @@ def read_data(file_or_dataframe: str | pd.DataFrame) -> pd.DataFrame:
         case ".csv":
             return pd.read_csv(file)
 
-def read_upload_data(contents: str, filename) -> list[dict[str, Any]] | None:
+def read_upload_data(contents: str, filename) -> pd.DataFrame | None:
     _, content_string = contents.split(',')
 
     decoded = base64.b64decode(content_string)
