@@ -5,7 +5,6 @@ import base64
 import warnings
 import urllib.request
 from pathlib import Path
-from typing import Any
 
 import chardet
 import pandas as pd

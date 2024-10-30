@@ -1,5 +1,5 @@
 tests: lint install
-	uv run pytest tests
+	uv run pytest
 
 install-uv:
 	curl -LsSf https://astral.sh/uv/0.4.27/install.sh | sh
