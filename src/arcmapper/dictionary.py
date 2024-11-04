@@ -101,9 +101,16 @@ def read_from_jsonschema(data: str | dict[str, Any]) -> pd.DataFrame:  # type: i
     dd = []
     variables = data["properties"]
     for v in variables:
-        t = variables[v].get("type","string")
+        t = variables[v].get("type", "string")
         if "enum" in variables[v]:
-            dd.append((v, variables[v].get("description", ""), [(x, x) for x in variables[v]["enum"]], 'categorical'))
+            dd.append(
+                (
+                    v,
+                    variables[v].get("description", ""),
+                    [(x, x) for x in variables[v]["enum"]],
+                    "categorical",
+                )
+            )
         else:
             dd.append((v, variables[v].get("description", ""), None, t))
     return pd.DataFrame(dd, columns=["variable", "description", "responses", "type"])
