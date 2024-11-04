@@ -15,7 +15,6 @@ from .types import Responses
 def ctx_trigger(ctx, event):
     return any(k["prop_id"] == event for k in ctx.triggered)
 
-
 def read_data(file_or_dataframe: str | pd.DataFrame) -> pd.DataFrame:
     if isinstance(file_or_dataframe, pd.DataFrame):
         return file_or_dataframe
