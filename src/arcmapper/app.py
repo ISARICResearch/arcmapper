@@ -217,10 +217,10 @@ def upload_data_dictionary(
     col_responses,
     col_description,
 ):
-    ok = dbc.Alert("Upload successful", color="success")
+    ok = dbc.Alert("Upload successful", color="success", style={"marginTop": "1em"})
 
     def err(msg):
-        return dbc.Alert(msg, color="danger")
+        return dbc.Alert(msg, color="danger", style={"marginTop": "1em"})
 
     if ctx.triggered_id == "upload-btn" and upload_contents is not None:
         try:
@@ -259,6 +259,7 @@ def invoke_map_arc(data, _, version, method, num_matches):
     if ctx.triggered_id == "map-btn":
         arc = read_arc_schema(version)
         dictionary = pd.read_json(data)
+
         mapped_data = map_data_dictionary_to_arc(method, dictionary, arc, num_matches)
         return (
             dash_table.DataTable(
@@ -281,19 +282,30 @@ def invoke_map_arc(data, _, version, method, num_matches):
     else:
         return html.Span("No data to see here")
 
+
 @callback(
     Output("mapping", "data"),
+    Output("mapping", "style_data_conditional"),
     Output("mapping", "active_cell"),
-    State("mapping-store", "data"),
+    Input("mapping", "data"),
     Input("mapping", "active_cell"),
+    prevent_initial_call=True,
 )
 def handle_status(data, active_cell):
     if active_cell and active_cell.get("column_id") == "status":
         i = active_cell.get("row")
         row = data[i]
-        active_cell = False  # Permits the button to be clicked again straight away
-        row["status"] = "✓" if row["status"] == "-" else "-"
-    return data, active_cell
+        row["status"] = "✅" if row["status"] == "-" else "-"
+    else:
+        raise dash.exceptions.PreventUpdate
+    highlight_row_idx = [i for i, row in enumerate(data) if row["status"] == "✅"]
+    return (
+        data,  # mapping data
+        [
+            {"if": {"row_index": highlight_row_idx}, "backgroundColor": "bisque"}
+        ],  # style_data_conditional
+        False,  # unsets active cell, allowing the cell to be clicked immediately again
+    )
 
 
 app.layout = html.Div([navbar, upload_form, arc_form, output_table])

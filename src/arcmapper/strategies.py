@@ -42,6 +42,7 @@ def get_match_dataframe_from_similarity_matrix(
 
     match_df = pd.DataFrame(
         columns=[
+            "status",
             "raw_variable",
             "raw_description",
             "arc_variable",
@@ -52,6 +53,7 @@ def get_match_dataframe_from_similarity_matrix(
             [
                 [
                     [
+                        "-",
                         dictionary.iloc[i].variable,
                         dictionary.iloc[i].description,
                         arc.iloc[k].variable,
