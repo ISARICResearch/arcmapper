@@ -256,17 +256,20 @@ def invoke_map_arc(data, _, version, method, num_matches):
         mapped_data = map_data_dictionary_to_arc(method, dictionary, arc, num_matches)
         return (
             dash_table.DataTable(
-                mapped_data.to_dict("records"),
+                id="mapping",
+                data=mapped_data.to_dict("records"),
+                columns=[{"name": i, "id": i} for i in mapped_data.columns],
+                editable=True,
                 style_data={
                     "whiteSpace": "normal",
                     "height": "auto",
+                    "fontSize": "90%",
                 },
                 style_table={"overflowX": "auto"},
-                page_size=20,
+                page_size=25,
             ),
         )
     return html.Span("No data to see here")
-
 
 app.layout = html.Div([navbar, upload_form, arc_form, output_table])
 server = app.server
