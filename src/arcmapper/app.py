@@ -219,7 +219,8 @@ def upload_data_dictionary(
 ):
     ok = dbc.Alert("Upload successful", color="success")
 
-    def err(msg): return dbc.Alert(msg, color="danger")
+    def err(msg):
+        return dbc.Alert(msg, color="danger")
 
     if ctx.triggered_id == "upload-btn" and upload_contents is not None:
         try:
@@ -231,7 +232,12 @@ def upload_data_dictionary(
                 return {}, err("Description column not found")
             if col_responses not in df.columns:
                 return {}, err("Responses column not found")
-            data = read_data_dictionary(df, description_field=col_description, response_field=col_responses, response_func="redcap")
+            data = read_data_dictionary(
+                df,
+                description_field=col_description,
+                response_field=col_responses,
+                response_func="redcap",
+            )
             return data.to_json(), ok
 
         except Exception as e:
@@ -258,7 +264,10 @@ def invoke_map_arc(data, _, version, method, num_matches):
             dash_table.DataTable(
                 id="mapping",
                 data=mapped_data.to_dict("records"),
-                columns=[{"name": i, "id": i} for i in mapped_data.columns],
+                columns=[
+                    {"name": i, "id": i, "editable": i != "status"}
+                    for i in mapped_data.columns
+                ],
                 editable=True,
                 style_data={
                     "whiteSpace": "normal",
@@ -269,7 +278,23 @@ def invoke_map_arc(data, _, version, method, num_matches):
                 page_size=25,
             ),
         )
-    return html.Span("No data to see here")
+    else:
+        return html.Span("No data to see here")
+
+@callback(
+    Output("mapping", "data"),
+    Output("mapping", "active_cell"),
+    State("mapping-store", "data"),
+    Input("mapping", "active_cell"),
+)
+def handle_status(data, active_cell):
+    if active_cell and active_cell.get("column_id") == "status":
+        i = active_cell.get("row")
+        row = data[i]
+        active_cell = False  # Permits the button to be clicked again straight away
+        row["status"] = "✓" if row["status"] == "-" else "-"
+    return data, active_cell
+
 
 app.layout = html.Div([navbar, upload_form, arc_form, output_table])
 server = app.server

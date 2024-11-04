@@ -232,5 +232,3 @@ def map(
             return sbert(dictionary, arc, num_matches=num_matches)
         case _:
             raise ValueError(f"Unknown mapping method: {method}")
-
-

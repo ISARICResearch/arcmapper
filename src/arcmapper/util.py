@@ -12,6 +12,10 @@ import pandas as pd
 from .types import Responses
 
 
+def ctx_trigger(ctx, event):
+    return any(k["prop_id"] == event for k in ctx.triggered)
+
+
 def read_data(file_or_dataframe: str | pd.DataFrame) -> pd.DataFrame:
     if isinstance(file_or_dataframe, pd.DataFrame):
         return file_or_dataframe
@@ -22,8 +26,9 @@ def read_data(file_or_dataframe: str | pd.DataFrame) -> pd.DataFrame:
         case ".csv":
             return pd.read_csv(file)
 
+
 def read_upload_data(contents: str, filename) -> pd.DataFrame | None:
-    _, content_string = contents.split(',')
+    _, content_string = contents.split(",")
 
     decoded = base64.b64decode(content_string)
     path = Path(filename)
@@ -31,8 +36,7 @@ def read_upload_data(contents: str, filename) -> pd.DataFrame | None:
         match path.suffix:
             case ".csv":
                 # Assume that the user uploaded a CSV file
-                df = pd.read_csv(
-                    io.StringIO(decoded.decode('utf-8')))
+                df = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
             case ".xlsx":
                 df = pd.read_excel(io.BytesIO(decoded))
             case _:
