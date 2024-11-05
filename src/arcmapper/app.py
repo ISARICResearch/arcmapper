@@ -5,7 +5,6 @@ import dash
 from dash import dcc, html, ctx, callback, dash_table, Input, Output, State
 import dash_bootstrap_components as dbc
 
-
 from .components import arc_form, upload_form
 from .util import read_upload_data
 from .dictionary import read_data_dictionary
@@ -14,6 +13,10 @@ from .arc import read_arc_schema
 
 app = dash.Dash("arcmapper", external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "ARCMapper"
+
+PAGE_SIZE = 25
+OK = "✅"
+HIGHLIGHT_COLOR = "bisque"
 
 navbar = dbc.Navbar(
     dbc.Container(
@@ -125,10 +128,13 @@ def invoke_map_arc(data, _, version, method, num_matches):
         dictionary = pd.read_json(data)
 
         mapped_data = map_data_dictionary_to_arc(method, dictionary, arc, num_matches)
+        data = mapped_data.to_dict("records")
+        for i, row in enumerate(data):
+            row["id"] = i
         return (
             dash_table.DataTable(
                 id="mapping",
-                data=mapped_data.to_dict("records"),
+                data=data,
                 columns=[
                     {"name": i, "id": i, "editable": i != "status"}
                     for i in mapped_data.columns
@@ -140,7 +146,7 @@ def invoke_map_arc(data, _, version, method, num_matches):
                     "fontSize": "90%",
                 },
                 style_table={"overflowX": "auto"},
-                page_size=25,
+                page_size=PAGE_SIZE,
             ),
         )
     else:
@@ -157,16 +163,23 @@ def invoke_map_arc(data, _, version, method, num_matches):
 )
 def handle_status(data, active_cell):
     if active_cell and active_cell.get("column_id") == "status":
-        i = active_cell.get("row")
+        i = active_cell.get("row_id")
         row = data[i]
-        row["status"] = "✅" if row["status"] == "-" else "-"
+        row["status"] = OK if row["status"] == "-" else "-"
     else:
         raise dash.exceptions.PreventUpdate
-    highlight_row_idx = [i for i, row in enumerate(data) if row["status"] == "✅"]
+    highlighted_rows = [i for i in range(len(data)) if data[i]["status"] == OK]
     return (
         data,  # mapping data
         [
-            {"if": {"row_index": highlight_row_idx}, "backgroundColor": "bisque"}
+            {
+                "if": {
+                    "filter_query": " || ".join(
+                        f"{{id}} = {k}" for k in highlighted_rows
+                    )
+                },
+                "backgroundColor": HIGHLIGHT_COLOR,
+            }
         ],  # style_data_conditional
         False,  # unsets active cell, allowing the cell to be clicked immediately again
     )
@@ -181,7 +194,7 @@ def handle_status(data, active_cell):
 def handle_download(_, data):
     if ctx.triggered_id == "download-btn":
         df = pd.DataFrame(data)
-        df = df[df.status == "✅"].drop(columns=["status", "rank"])
+        df = df[df.status == OK].drop(columns=["status", "rank"])
         return dcc.send_data_frame(df.to_csv, "arcmapper-mapping-file.csv", index=False)
     else:
         raise dash.exceptions.PreventUpdate
