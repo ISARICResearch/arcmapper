@@ -21,6 +21,9 @@ uv sync
 uv run arcmapper
 ```
 
+This will run arcmapper in production mode. During development it is helpful to
+see debug information, to do so run arcmapper with the `-d` or `--debug` flag.
+
 ## Usage
 
 The browser should open with the ARCMapper interface

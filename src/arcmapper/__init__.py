@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import socket
 import logging
@@ -60,6 +61,10 @@ def wait_for_server(
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] in ["--debug", "-d"]:
+        print("Using debug mode...")
+        app.run_server(debug=True)
+        return
     if check_port(ARCMAPPER_HOST, ARCMAPPER_PORT):
         logging.info("Port is already in use. Opening browser.")
         webbrowser.open(f"http://{ARCMAPPER_HOST}:{ARCMAPPER_PORT}")
