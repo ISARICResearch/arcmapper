@@ -48,7 +48,7 @@ navbar = dbc.Navbar(
 
 output_table = dbc.Container(
     html.Div(
-        dbc.Row(id="output"),
+        dcc.Loading(dbc.Row(id="output")),
         style={"padding": "0.5em", "border": "1px solid silver", "borderRadius": "5px"},
     )
 )
