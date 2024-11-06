@@ -1,0 +1,1001 @@
+﻿"Variable / Field Name","Form Name","Section Header","Field Type","Field Label","Choices, Calculations, OR Slider Labels","Field Note","Text Validation Type OR Show Slider Number","Text Validation Min","Text Validation Max",Identifier?,"Branching Logic (Show field only if...)","Required Field?","Custom Alignment","Question Number (surveys only)","Matrix Group Name","Matrix Ranking?","Field Annotation"
+subjid,participant_identification_number_pin,,text,"Participant Identification Number (PIN) specify CPMS Site code (hyphen) four to six digit number patient number e.g. Y0401-0001.",,,patient_id_5_alphanum-4to6_digits,,,,,,,,,,
+arm_participant,tiers_consent,,calc,"Arm participant is in",[arm-number],,,,,,,,,,,,
+tiers_faorres,tiers_consent,,checkbox,"Please acknowledge that you have understood the consent taking process for the Tier(s) for which you are entering data.","1, TIER 0 (data collection only); no consent required. | 2, TIER 1 (single point sample collection); consent required. | 3, TIER 2 (multiple point sample collection); consent required.","Please select all that apply",,,,,,,,,,,
+covid19_new,inclusion_criteria,,radio,"<strong><div style=""font-size: 12pt"">SELECT THIS FIELD if you are entering data for a COVID-19 participant where data has been collected via the new short CRF first issued April 2020.
+If you select this field for a participant with data entered on the older/long CRF, some fields could be cleared.
+If you do not select this fields for a participant with data entered on the new shorter CRF, the fields shown will not match it.</div></strong>","1, Data in new COVID-19 short CRF",,,,,,,,RH,,,,
+version_9_7,inclusion_criteria,,radio,"Are you completing details for CRF v9.7 or later? ","1, Yes",,,,,y,"[covid19_new] = '1'",,,,,,
+ni_site,inclusion_criteria,,radio,"Northern Ireland?
+If entering data for Northern Ireland, PLEASE SELECT:","1, Yes",,,,,,,,RH,,,,
+covid19_new_text,inclusion_criteria,,descriptive,"Note that when entering data for the new shorter COVID-19 CRF, select N/A or Unknown if N/K is not present for a field",,,,,,,"[covid19_new] <> """"",,,,,,
+dsstdat,inclusion_criteria,,text,"Date of Enrolment",,,date_dmy,2000-01-01,,,,y,,,,,
+sitename,inclusion_criteria,,text,"Site name",,,,,,,,y,,,,,
+corona_ieorres,inclusion_criteria,"CLINICAL INCLUSION CRITERIA",yesno,"Suspected or proven infection with pathogen of Public Health Interest",,,,,,,,y,RH,,,," @HIDDEN-FORM"
+coriona_ieorres2,inclusion_criteria,,yesno,"Proven or high likelihood of infection with pathogen of Public Health Interest  ",,,,,,,"[version_9_7] = """"",y,RH,,,,
+coriona_ieorres3,inclusion_criteria,,yesno,"Proven infection with pathogen of Public Health Interest
+N.B. For acute covid-19, please only collect data from proven (laboratory test-positive) people.",,,,,,,"[version_9_7] = '1'",y,RH,,,,
+fever,inclusion_criteria,"Experience of the following symptoms during this illness episode (one or more required for inclusion)",yesno,"A history of self reported feverishness or measured fever of ≥ 38°C",,,,,,,"[corona_ieorres] = '1' or [coriona_ieorres2] = '1' or ([covid19_new] <> """" and [version_9_7] =  """")",y,RH,,,,
+cough,inclusion_criteria,,yesno,"Cough ",,,,,,,"[corona_ieorres] = '1' or [coriona_ieorres2] = '1' or ([covid19_new] <> """" and [version_9_7] =  """")",y,RH,,,,
+dyspnoe,inclusion_criteria,,yesno,"Dyspnoea (shortness of breath) OR Tachypnoea*",,,,,,,"[corona_ieorres] = '1' or [coriona_ieorres2] = '1' or ([covid19_new] <> """" and [version_9_7] =  """")",y,RH,,,,
+ari,inclusion_criteria,,yesno,"Clinical suspicion of ARI despite not meeting criteria above",,,,,,,"[corona_ieorres] = '1' or [coriona_ieorres2] = '1' or ([covid19_new] <> """" and [version_9_7] =  """")",y,RH,,,,
+inflammatory_mss,inclusion_criteria,,yesno,"Adult or child who meets Case Definition for Inflammatory Multi-system Syndrome (MIS-C/MIS-A)",,,,,,,"[corona_ieorres] = '1' or [coriona_ieorres2] = '1' or [covid19_new] <> """"",,RH,,,,
+noncorona_expphi,inclusion_criteria,,yesno,"High suspicion of exposure of Public Health Interest:
+N.B. This does not relate to covid-19 exposure.",,,,,,,"[version_9_7] = '1'",,RH,,,,
+resprate,inclusion_criteria,,descriptive,"* respiratory rate ≥50 breaths/min for < 1 year; ≥40 breaths/min for 1-4 years; ≥30 breaths/min for 5-12 years; ≥20 breaths/min for ≥13 years",,,,,,,"[corona_ieorres] = '1' or [coriona_ieorres2] = '1' or ([covid19_new] <> """" and [version_9_7] =  """")",,,,,,
+symptoms_epi_travel,inclusion_criteria,"EPIDEMIOLOGICAL FACTORS  - In the 14 days before onset of illness had any of the following:",radio,"2.A history of travel to an area with documented cases of novel coronavirus infection","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] = """" and ([corona_ieorres] = '1' or [coriona_ieorres2] = '1')",y,,,epi_symptoms,,
+symptoms_epi_physical,inclusion_criteria,,radio,"3.Close contact* with a confirmed or probable case of nCoV infection, while that patient was symptomatic","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] = """" and ([corona_ieorres] = '1' or [coriona_ieorres2] = '1')",y,,,epi_symptoms,,
+symptoms_epi_healthfac,inclusion_criteria,,radio,"4.Presence in a healthcare facility where nCoV infections have been managed","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] = """" and ([corona_ieorres] = '1' or [coriona_ieorres2] = '1')",y,,,epi_symptoms,,
+symptoms_epi_lab,inclusion_criteria,,radio,"5. Presence in a laboratory handling samples suspected or confirmed of having the respiratory pathogen of public health interest present","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] = """" and ([corona_ieorres] = '1' or [coriona_ieorres2] = '1')",y,,,epi_symptoms,,
+symptoms_epi_pathogen,inclusion_criteria,,radio,"6.An otherwise unexplained respiratory illness in the context of an outbreak, suspected outbreak or incident of a respiratory pathogen of public health interest","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] = """" and ([corona_ieorres] = '1' or [coriona_ieorres2] = '1')",,,,epi_symptoms,,
+symptoms_epi_animal,inclusion_criteria,,radio,"7.Direct contact with animals in countries where the nCoV is known to be circulating in animal populations or where human infections have occurred as a result of presumed zoonotic transmission","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] = """" and ([corona_ieorres] = '1' or [coriona_ieorres2] = '1')",y,,,epi_symptoms,,
+contact,inclusion_criteria,,descriptive,"* Close contact' is defined as:
+-      Health care associated exposure, including providing direct care for patients, e.g. health care worker, direct exposure to body fluids or specimens including aerosols, working with health care workers infected with the pathogen of public health interest, visiting patients or staying in the same close environment of relevant case.
+-      Working together in close proximity or sharing the same classroom environment with a relevant case 
+-      Traveling together with in any kind of conveyance with a relevant case
+-      Living in the same household as a relevant case
+",,,,,,,"[covid19_new] = """" and ([corona_ieorres] = '1' or [coriona_ieorres2] = '1')",,,,,,
+sex,demographics,DEMOGRAPHICS,radio,"Sex at Birth:","1, Male | 2, Female | 3, Not specified",,,,,y,,y,,,,,
+dob,demographics,,descriptive,"* WHERE DATA IS BEING COLLECTED WITHOUT CONSENT FOR TIER ZERO, ONLY RECORD AGE AND NOT DATE OF BIRTH",,,,,,,"[tiers_faorres(1)] = '1'",,,,,," @HIDDEN"
+agedatyn,demographics,,yesno,"Is birth date known",,,,,,,"[ni_site] = """"",y,RH,,,,
+agedat,demographics,,text,"Birth date (has approval for entry)",,,date_dmy,,,y,"[agedatyn] = '1'",y,,,,,
+calc_age,demographics,,calc,"Calculated Age (comparing Date of birth with Date of enrolment) 
+May be inaccurate if a date of February 29 is used","rounddown(datediff([agedat], [dsstdat], ""y"", ""dmy"", true))",,,,,,"[agedat] <> """"",,,,,,
+age_estimateyears,demographics,,text,"Age/Estimated age",,"If patient is a child less than one year age,  include age in months",integer,,117,y,"[tiers_faorres(1)] = '1' or [agedatyn] = '0' or [agedatyn] = """"",y,,,,,
+age_estimateyearsu,demographics,,dropdown,"Age/Estimated age Unit","1, Months|2, Years",,,,,,"[tiers_faorres(1)] = '1' or [agedatyn] = '0' or [agedatyn] = """"",y,,,,,
+postcode,demographics,,text,"Postcode (has approval for entry)",,,,,,y,"[ni_site] = """"",y,,,,," @CHARLIMIT=8"
+nhs_chi,demographics,,text,"England & Wales NHS number, Scotland CHI number (has approval for entry)
+NB Northern Ireland Health & Care Number is not being collected at this time",,,,,,y,"[ni_site] = """"",y,LV,,,," @CHARLIMIT=10"
+ethnic,demographics,,checkbox,"Ethnic group (check all that apply)","1, Arab | 2, Black | 3, East Asian | 4, South Asian | 5, West Asian | 6, Latin American | 7, White | 8, Aboriginal/First Nations | 9, Other | 10, N/A",,,,,,,,,,,,
+other_ethnic,demographics,,text,"If Other: Specify",,,,,,,"[ethnic(9)] = '1'",,,,,,
+healthwork_erterm,demographics,,dropdown,"Employed as a healthcare worker?","1, YES | 2, NO | 3, N/A",,,,,,,y,,,,,
+labwork_erterm,demographics,,dropdown,"Employed in a microbiology laboratory?","1, YES | 2, NO | 3, N/A",,,,,,"[covid19_new] = """"",y,,,,,
+pregyn_rptestcd,demographics,,radio,"Pregnant ?","1, YES | 0, NO | 998, Unknown | 999, N/A",,,,,,"( [sex] = '2' and [sex] <> """" and  [age_estimateyears] > ='12' and  [age_estimateyears] <= '55'  and  [age_estimateyears] <> """"  and [age_estimateyearsu] = '2' and [age_estimateyearsu] <> """" ) OR
+( [sex] = '2' and  [sex] <> """" and datediff( [agedat], [dsstdat], ""y"", ""dmy"", true ) >= '12' and datediff( [agedat], [dsstdat], ""y"", ""dmy"", true ) <= '55'  and [agedat] <> """" )",y,,,,,
+egestage_rptestcd,demographics,,text,"If YES: Gestational weeks assessment:",,weeks,number_2dp,20,44,,"[pregyn_rptestcd] = '1'",,,,,,
+postpart_rptestcd,demographics,,radio,"Post Partum (within six weeks of delivery)","1, Yes | 0, No | 3, N/K",,,,,,"[pregyn_rptestcd] = '0' or [pregyn_rptestcd] = '998' or [pregyn_rptestcd] = '999'",,RH,,,,
+pregout_rptestcd,demographics,,radio,"Pregnancy Outcome","1, Live birth | 2, Still birth",,,,,,"[postpart_rptestcd] = '1'",,,,,,
+dlvrdtc_rptestcd,demographics,,text,"Delivery date",,,date_dmy,2000-01-01,,,"[postpart_rptestcd] = '1'",,,,,,
+aplb_lbperf,demographics,,radio,"Baby tested for mother's ARI infection","1, Yes | 2, No | 3, N/A",,,,,,"[postpart_rptestcd] = '1' and [pregout_rptestcd] = '1'",,,,,,
+aplb_lborres,demographics,,radio," If YES","1, Positive | 2, Negative",,,,,,"[aplb_lbperf] = '1'",,,,,,
+aplb_lbmethod,demographics,,radio,Method,"1, PCR | 2, Other",,,,,,"[aplb_lbperf] = '1' and [covid19_new] = """"",,,,,,
+aplb_lbmethodoth,demographics,,text,"If OTHER method; Specify",,,,,,,"[aplb_lbmethod] = '2'",,,,,,
+apdm_age,demographics,,yesno,"INFANT - Less than 1 year old?",,,,,,,"( [age_estimateyearsu] = '1'  and [age_estimateyearsu] <> """" ) OR
+( datediff( [agedat], [dsstdat] , ""y"", ""dmy"", true)  <  '1'  and  [agedat] <> """" )",,,,,,
+apvs_weight,demographics,,text,"Birth weight",,,number_2dp,,,,"[apdm_age] = '1' and [apvs_weightnk] = """"",,,,,,
+apvs_weightu,demographics,,dropdown,"Birth weight unit","1, kg | 2, lbs",,,,,,"[apdm_age] = '1' and [apvs_weightnk] = """"",,,,,,
+apvs_weightnk,demographics,,dropdown,"Birth weight N/K","1, N/K",,,,,,"[apdm_age] = '1' and [apvs_weight] = """" and [apvs_weightu] = """"",,,,,,
+apsc_gestout,demographics,,radio,"Gestational outcome","1, Term birth ( >= 37wk GA) | 2, Preterm birth (< 37wk GA) | 3, N/A",,,,,,"[apdm_age] = '1'",,,,,,
+estgest,demographics,,text,"If < 37wk  confirm estimated gestation   ",,"weeks e.g 25 weeks",number,,,,"[apsc_gestout] = '2'",,,,,,
+apsc_brfedind,demographics,,radio,Breastfed,"1, Yes | 2, No | 3, N/A",,,,,,"[apdm_age] = '1'",,,,,,
+apsc_brfedindy,demographics,,radio,"If  YES","1, Currently breastfed | 2, Breastfeeding discontinued | 3, N/A",,,,,,"[apsc_brfedind] = '1'",,,,,,weeks
+apsc_brdisdat,demographics,,text,"Discontinued breastfeeding at ",,weeks,number,0,300,,"[apsc_brfedindy] = '2' and [covid19_new] = """"",,,,,,
+apsc_dvageind,demographics,,dropdown,"Appropriate development for age?","1, Yes | 2, No | 3, N/A",,,,,,"[apdm_age] = '1' and [covid19_new] = """"",,,,,,
+apsc_vcageind,demographics,,dropdown,"Vaccinations appropriate for age/country?","1, Yes | 2, No | 3, Unknown | 4, N/A",,,,,,"[apdm_age] = '1' and [covid19_new] = """"",,,,,,
+covid19_vaccine,demographics,"VACCINATION STATUS",dropdown,"Has the patient received a Covid-19 vaccine (open label licenced product)","1, Yes | 0, No | 3, N/K",,,,,,"[version_9_7] <>  """"",y,RH,,,,
+covid19_vaccined,demographics,,text,"date first vaccine given (Covid-19) if known",,,date_dmy,2000-01-01,,,"[covid19_vaccine] = '1' and [covid19_vaccined_nk] = """"",,RH,,,,
+covid19_vaccined_nk,demographics,,radio,"first vaccine given (Covid-19) but date not known","1, N/K",,,,,,"[covid19_vaccine] = '1' and [covid19_vaccined] = """"",,,,,,
+covid19_vaccine2d,demographics,,text,"date second vaccine given (Covid-19) if known",,,date_dmy,2000-01-01,,,"[covid19_vaccine] = '1' and [covid19_vaccined_nk] = """"",,RH,,,,
+covid19_vaccine2d_nk,demographics,,radio,"second vaccine given (Covid-19) but date not known","1, N/K",,,,,,"[covid19_vaccine] = '1' and [covid19_vaccine2d] = """"",,,,,,
+covid19_vaccine_type,demographics,,dropdown,"Vaccine type/Manufacturer","1, Pfizer- BioNTECH | 2, Oxford-AstraZeneca | 3, Moderna | 88, Other | 99, N/K",,,,,,"[covid19_vaccine] = '1'",,,,,,
+covid19_vaccine_other_type,demographics,,text,"Other, Vaccine type/Manufacturer",,,,,,,"[covid19_vaccine_type] = '88'",y,,,,,
+vaccine_covid_trial,demographics,,dropdown,"Has the patient been involved in a vaccine COVID trial?","1, Yes | 0, No | 3, N/K",,,,,,"[version_9_7] =  '1'",y,RH,,,,
+vaccine_covid_triald,demographics,,text,"Date if known (first trial vaccination): (please complete study participation CRF Page 3 of outcome CRF)",,,date_dmy,2000-01-01,,,"[vaccine_covid_trial] = '1'",,RH,,,,
+influenza_2021_vaccine,demographics,,dropdown,"Has patient received a 2020/21 seasonal influenza vaccine","1, Yes | 0, No | 3, N/K",,,,,,"[version_9_7] <>  """"",y,RH,,,,
+influenza_2021_vaccined,demographics,,text,"2020/21 seasonal influenza vaccine date if known",,,date_dmy,2000-01-01,,,"[influenza_2021_vaccine] = '1' and [influenza_2021_vaccined_nk] = """"",,RH,,,,
+influenza_2021_vaccined_nk,demographics,,radio,"2020/21 seasonal influenza vaccine date N/K ","1, N/K",,,,,,"[influenza_2021_vaccine] = '1' and [influenza_2021_vaccined] = """"",,,,,,
+asymptomatic,onset_and_admission,"ONSET and ADMISSION",radio,Asymptomatic,"1, Asymptomatic",,,,,,"[cestdat] = """"",,,,,,
+cestdat,onset_and_admission,,text,"Onset date of first/earliest symptom",,,date_dmy,2000-01-01,,,"[asymptomatic] = """"",,,,,,
+hostdat,onset_and_admission,,text,"Admission date at this facility",,,date_dmy,2000-01-01,,,,y,,,,,
+hosttim,onset_and_admission,,text,"Admission time at this facility",,"(24-hr format)",time,,,,"[covid19_new] = """"",y,,,,,
+readm_cov19,onset_and_admission,,radio,"Is the patient being readmitted with Covid-19? (Please only add re-admission episodes for COVID patients remaining or new positive COVID test- Please assign new subject ID) ","1, Yes | 0, No | 3, N/K",,,,,,"[covid19_new] <> """"",y,RH,,,,
+prev_subjid,onset_and_admission,,text,"Previous participant ID ",,,,,,,"[readm_cov19]  = '1' and [prev_subjid_nk] = """"",y,,,,,
+prev_subjid_nk,onset_and_admission,,radio,"Previous participant ID NK","1, N/K",,,,,,"[readm_cov19]  = '1' and [prev_subjid] = """"",y,,,,,
+readminreas,onset_and_admission,,text,"Please provide reason for readmission: ",,,,,,,"[readm_cov19] = '1' and [readminreasnk] = """"",,RH,,,,
+readminreasnk,onset_and_admission,,radio,"Reason for readmission N/K","1, N/K",,,,,,"[readm_cov19] = '1' and [readminreas] = """"",,RH,,,,
+susp_reinf,onset_and_admission,,radio,"Is this a suspected re-infection with COVID-19?
+Defined as proven (PCR or antibody test) or highly probable (clinical case definition met) more than 28 days prior to this new laboratory proven covid-19 infection","1, Yes | 0, No | 3, N/K",,,,,,"[version_9_7] <>  """"",y,RH,,,,
+reinf_text1,onset_and_admission,,descriptive,"If yes, please complete REINFECTION FORM and seek consent for biological sampling, ideally at Tier 2",,,,,,,"[susp_reinf] = '1'",,,,,,
+surgefacil,onset_and_admission,,radio,"Is this a NIGHTINGALE or other SURGE FACILITY?","1, Yes | 0, No | 3, N/K",,,,,,"[covid19_new] <> """"",y,RH,,,,
+hooccur,onset_and_admission,,radio,"Transfer from other facility?","1, Yes-other facility is a study site | 2, Yes-other facility is not a study site | 3, No | 4, N/A",,,,,,,,,,,,
+siteid_transfer,onset_and_admission,,text,"If YES: Name of transfer facility:",,,,,,,"([hooccur] = '1' or [hooccur] = '2') and [siteid_transfernk] = """"",,,,,,
+siteid_transfernk,onset_and_admission,,radio,"If YES: Name of transfer facility N/K","1, N/K",,,,,,"([hooccur] = '1' or [hooccur] = '2') and [siteid_transfer] = """"",,,,,,
+hostdat_transfer,onset_and_admission,,text,"If YES: Admission date at previous facility ",,,date_dmy,2000-01-01,,,"([hooccur] = '1' or [hooccur] = '2') and [hostdat_transfernk] = """"",,,,,,
+hostdat_transfernk,onset_and_admission,,radio,"If YES: Admission date at previous facility N/K","1, N/K",,,,,,"([hooccur] = '1' or [hooccur] = '2') and [hostdat_transfer] = """"",,,,,,
+subjidcat_transfer,onset_and_admission,,radio,"If YES - Study Site: Participant ID # at transfer facility","1, Same as above | 2, Different | 3, N/A",,,,,,"[hooccur] = '1'",,,,,,
+subjid_transfer,onset_and_admission,,text,"If DIFFERENT; Participant number
+Specify CPMS Site code (hypen) four or five digit number patient number e.g Y0401-0001.",,,,,,,"[subjidcat_transfer] = '2'",,,,,,
+travel_erterm,onset_and_admission,,radio,"Travel in the 14 days prior to first symptom onset?","1, Yes | 2, No | 3, N/A",,,,,,"[covid19_new] = """"",y,,,,,
+supper_trcntry,onset_and_admission,,dropdown,"If YES, state location: Country","4, Afghanistan | 5, Albania | 6, Algeria | 7, Andorra | 8, Angola | 9, Antigua and Barbuda | 10, Argentina | 11, Armenia | 12, Aruba | 13, Australia | 14, Austria | 15, Azerbaijan | 1, Bahamas (The) | 16, Bahrain | 17, Bangladesh | 18, Barbados | 19, Belarus | 20, Belgium | 21, Belize | 22, Benin | 23, Bhutan | 24, Bolivia | 25, Bosnia and Herzegovina | 26, Botswana | 27, Brazil | 28, Brunei | 29, Bulgaria | 30, Burkina Faso | 31, Burma | 32, Burundi | 33, Cambodia | 34, Cameroon | 35, Canada | 36, Cabo Verde | 37, Central African Republic | 38, Chad | 39, Chile | 40, China | 41, Colombia | 42, Comoros | 2, Congo (Republic of the) | 43, Costa Rica | 44, Cote d'Ivoire | 45, Croatia | 46, Cuba | 47, Curacao | 48, Cyprus | 49, Czechia | 50, Denmark | 51, Djibouti | 52, Dominica | 53, Dominican Republic | 54, Ecuador | 55, Egypt | 56, El Salvador | 57, Equatorial Guinea | 58, Eritrea | 59, Estonia | 60, Ethiopia | 61, Fiji | 62, Finland | 63, France | 64, Gabon | 3, Gambia (The) | 65, Georgia | 66, Germany | 67, Ghana | 68, Greece | 69, Grenada | 70, Guatemala | 71, Guinea | 72, Guinea-Bissau | 73, Guyana | 74, Haiti | 75, Holy See | 76, Honduras | 77, Hong Kong | 78, Hungary | 79, Iceland | 80, India | 81, Indonesia | 82, Iran | 83, Iraq | 84, Ireland | 85, Israel | 86, Italy | 87, Jamaica | 88, Japan | 89, Jordan | 90, Kazakhstan | 91, Kenya | 92, Kiribati | 202, Korea (South) | 93, Kosovo | 94, Kuwait | 95, Kyrgyzstan | 96, Laos | 97, Latvia | 98, Lebanon | 99, Lesotho | 100, Liberia | 101, Libya | 102, Liechtenstein | 103, Lithuania | 104, Luxembourg | 105, Macau | 106, Macedonia | 107, Madagascar | 108, Malawi | 109, Malaysia | 110, Maldives | 111, Mali | 112, Malta | 113, Marshall Islands | 114, Mauritania | 115, Mauritius | 116, Mexico | 117, Micronesia | 118, Moldova | 119, Monaco | 120, Mongolia | 121, Montenegro | 122, Morocco | 123, Mozambique | 124, Namibia | 125, Nauru | 126, Nepal | 127, Netherlands | 128, New Zealand | 129, Nicaragua | 130, Niger | 131, Nigeria | 132, North Korea | 133, Norway | 134, Oman | 135, Pakistan | 136, Palau | 137, Palestinian Territories | 138, Panama | 139, Papua New Guinea | 140, Paraguay | 141, Peru | 142, Philippines | 143, Poland | 144, Portugal | 145, Qatar | 146, Romania | 147, Russia | 148, Rwanda | 149, Saint Kitts and Nevis | 150, Saint Lucia | 151, Saint Vincent and the Grenadines | 152, Samoa | 153, San Marino | 154, Sao Tome and Principe | 155, Saudi Arabia | 156, Senegal | 157, Serbia | 158, Seychelles | 159, Sierra Leone | 160, Singapore | 161, Sint Maarten | 162, Slovakia | 163, Slovenia | 164, Solomon Islands | 165, Somalia | 166, South Africa | 167, South Korea | 168, South Sudan | 169, Spain | 170, Sri Lanka | 171, Sudan | 172, Suriname | 173, Swaziland | 174, Sweden | 175, Switzerland | 176, Syria | 177, Taiwan | 178, Tajikistan | 179, Tanzania | 180, Thailand | 181, Timor-Leste | 182, Togo | 183, Tonga | 184, Trinidad and Tobago | 185, Tunisia | 186, Turkey | 187, Turkmenistan | 188, Tuvalu | 189, Uganda | 190, Ukraine | 191, United Arab Emirates | 192, United Kingdom | 201, United States | 193, Uruguay | 194, Uzbekistan | 195, Vanuatu | 196, Venezuela | 197, Vietnam | 198, Yemen | 199, Zambia | 200, Zimbabwe",,autocomplete,,,,"[travel_erterm] = '1'",y,,,,,
+supper_trcity,onset_and_admission,,text,"2.6.2 If YES, state location: City/Geographic Area:",,,,,,,"[travel_erterm] = '1'",y,,,,,
+erendat,onset_and_admission,,text,"If YES, return date:",,,date_dmy,,,,"[travel_erterm] = '1'",y,,,,,
+travel_erterm_2,onset_and_admission,,radio,"Travelled to another country in the 14 days prior to first symptom onset?","1, Yes | 2, No | 3, N/A",,,,,,"[travel_erterm] = '1'",y,,,,,
+supper_trcntry_2,onset_and_admission,,dropdown,"If YES, state location: Country","4, Afghanistan | 5, Albania | 6, Algeria | 7, Andorra | 8, Angola | 9, Antigua and Barbuda | 10, Argentina | 11, Armenia | 12, Aruba | 13, Australia | 14, Austria | 15, Azerbaijan | 1, Bahamas (The) | 16, Bahrain | 17, Bangladesh | 18, Barbados | 19, Belarus | 20, Belgium | 21, Belize | 22, Benin | 23, Bhutan | 24, Bolivia | 25, Bosnia and Herzegovina | 26, Botswana | 27, Brazil | 28, Brunei | 29, Bulgaria | 30, Burkina Faso | 31, Burma | 32, Burundi | 33, Cambodia | 34, Cameroon | 35, Canada | 36, Cabo Verde | 37, Central African Republic | 38, Chad | 39, Chile | 40, China | 41, Colombia | 42, Comoros | 2, Congo (Republic of the) | 43, Costa Rica | 44, Cote d'Ivoire | 45, Croatia | 46, Cuba | 47, Curacao | 48, Cyprus | 49, Czechia | 50, Denmark | 51, Djibouti | 52, Dominica | 53, Dominican Republic | 54, Ecuador | 55, Egypt | 56, El Salvador | 57, Equatorial Guinea | 58, Eritrea | 59, Estonia | 60, Ethiopia | 61, Fiji | 62, Finland | 63, France | 64, Gabon | 3, Gambia (The) | 65, Georgia | 66, Germany | 67, Ghana | 68, Greece | 69, Grenada | 70, Guatemala | 71, Guinea | 72, Guinea-Bissau | 73, Guyana | 74, Haiti | 75, Holy See | 76, Honduras | 77, Hong Kong | 78, Hungary | 79, Iceland | 80, India | 81, Indonesia | 82, Iran | 83, Iraq | 84, Ireland | 85, Israel | 86, Italy | 87, Jamaica | 88, Japan | 89, Jordan | 90, Kazakhstan | 91, Kenya | 92, Kiribati | 202, Korea (South) | 93, Kosovo | 94, Kuwait | 95, Kyrgyzstan | 96, Laos | 97, Latvia | 98, Lebanon | 99, Lesotho | 100, Liberia | 101, Libya | 102, Liechtenstein | 103, Lithuania | 104, Luxembourg | 105, Macau | 106, Macedonia | 107, Madagascar | 108, Malawi | 109, Malaysia | 110, Maldives | 111, Mali | 112, Malta | 113, Marshall Islands | 114, Mauritania | 115, Mauritius | 116, Mexico | 117, Micronesia | 118, Moldova | 119, Monaco | 120, Mongolia | 121, Montenegro | 122, Morocco | 123, Mozambique | 124, Namibia | 125, Nauru | 126, Nepal | 127, Netherlands | 128, New Zealand | 129, Nicaragua | 130, Niger | 131, Nigeria | 132, North Korea | 133, Norway | 134, Oman | 135, Pakistan | 136, Palau | 137, Palestinian Territories | 138, Panama | 139, Papua New Guinea | 140, Paraguay | 141, Peru | 142, Philippines | 143, Poland | 144, Portugal | 145, Qatar | 146, Romania | 147, Russia | 148, Rwanda | 149, Saint Kitts and Nevis | 150, Saint Lucia | 151, Saint Vincent and the Grenadines | 152, Samoa | 153, San Marino | 154, Sao Tome and Principe | 155, Saudi Arabia | 156, Senegal | 157, Serbia | 158, Seychelles | 159, Sierra Leone | 160, Singapore | 161, Sint Maarten | 162, Slovakia | 163, Slovenia | 164, Solomon Islands | 165, Somalia | 166, South Africa | 167, South Korea | 168, South Sudan | 169, Spain | 170, Sri Lanka | 171, Sudan | 172, Suriname | 173, Swaziland | 174, Sweden | 175, Switzerland | 176, Syria | 177, Taiwan | 178, Tajikistan | 179, Tanzania | 180, Thailand | 181, Timor-Leste | 182, Togo | 183, Tonga | 184, Trinidad and Tobago | 185, Tunisia | 186, Turkey | 187, Turkmenistan | 188, Tuvalu | 189, Uganda | 190, Ukraine | 191, United Arab Emirates | 192, United Kingdom | 201, United States | 193, Uruguay | 194, Uzbekistan | 195, Vanuatu | 196, Venezuela | 197, Vietnam | 198, Yemen | 199, Zambia | 200, Zimbabwe",,autocomplete,,,,"[travel_erterm_2] = '1'",y,,,,,
+supper_trcity_2,onset_and_admission,,text,"If YES, state location: City/Geographic Area:",,,,,,,"[travel_erterm_2] = '1'",y,,,,,
+erendat_2,onset_and_admission,,text,"If YES, return date:",,,date_dmy,,,,"[travel_erterm_2] = '1'",y,,,,,
+animal_eryn,onset_and_admission,,radio,"Contact with animals, raw meat or insect bites in the 14 days prior to symptom onset?","1, Yes | 2, No | 3, Unknown | 4, N/A",,,,,,"[covid19_new] = """"",y,,,,,
+animal_erterm,onset_and_admission,,text,"If YES, specify the animal/insect",,,,,,,"[animal_eryn] = '1'",y,,,,,
+animal_erdat,onset_and_admission,,text,"If YES, specify the animal/insect date of exposure ",,,date_dmy,,,,"[animal_eryn] = '1'",y,,,,,
+animal_eryn_2,onset_and_admission,,radio,"Contact with another animals, raw meat or insect bites in the 14 days prior to symptom onset?","1, Yes | 2, No | 3, Unknown | 4, N/A",,,,,,"[animal_eryn] = '1'",y,,,,,
+animal_erterm_2,onset_and_admission,,text,"If YES, specify the animal/insect",,,,,,,"[animal_eryn_2] = '1'",y,,,,,
+animal_erdat_2,onset_and_admission,,text,"If YES, specify the animal/insect date of exposure ",,,date_dmy,,,,"[animal_eryn_2] = '1'",y,,,,,
+temp_vsyn,admission_signs_and_symptoms,"VITAL SIGNS AT HOSPITAL ADMISSION -first available data at presentation/Admission to the facility.                    
+(This section should refer to data from the date of admission to this facility)",yesno,"Temperature on admission available?",,,,,,,"[covid19_new] = """"",y,RH,,,,
+temp_vsorres,admission_signs_and_symptoms,,text,Temperature,,,number,,,,"[temp_vsyn] = '1' or [covid19_new] <> """"",y,,,,,
+temp_vsorresu,admission_signs_and_symptoms,,radio,"Temperature Units","1, °C|2, °F",,,,,,"[temp_vsyn] = '1' or ([temp_vsorres] <> """" and [covid19_new] <> """")",y,RH,,,,
+hr_vsyn,admission_signs_and_symptoms,,yesno,"Heart rate on admission available?",,,,,,,"[covid19_new] = """"",y,RH,,,,
+hr_vsorres,admission_signs_and_symptoms,,text,"Heart Rate",,"beats per minute",number,,300,,"[hr_vsyn] = '1' or [covid19_new] <> """"",y,,,,,
+rr_vsyn,admission_signs_and_symptoms,,yesno,"Respiratory rate on admission available?",,,,,,,"[covid19_new] = """"",y,RH,,,,
+rr_vsorres,admission_signs_and_symptoms,,text,"Respiratory Rate",,"breaths per minute",number,,100,,"[rr_vsyn] = '1' or [covid19_new] <> """"",y,RH,,,,
+sysbp_vsyn,admission_signs_and_symptoms,,yesno,"Systolic blood pressure on admission available? ",,,,,,,"[covid19_new] = """"",y,RH,,,,
+sysbp_vsorres,admission_signs_and_symptoms,,text,"Systolic blood pressure",,mmHg,number,0,300,,"[sysbp_vsyn] = '1' or [covid19_new] <> """"",y,RH,,,,
+diabp_vsyn,admission_signs_and_symptoms,,yesno,"Diastolic blood pressure on admission available?",,,,,,,"[covid19_new] = """"",y,RH,,,,
+admission_diabp_vsorres,admission_signs_and_symptoms,,text,"Diastolic blood pressure",,mmHg,number,0,200,,"[diabp_vsyn] = '1' or [covid19_new] <> """"",y,RH,,,,
+dehydration_vsorres,admission_signs_and_symptoms,,radio,"Severe dehydration: ","1, Yes|2, No|3, Unknown",,,,,,,y,RH,,,,
+stercap_vsyn,admission_signs_and_symptoms,,yesno,"Sternal capillary refill time  on admission available?",,,,,,,"[covid19_new] = """"",y,RH,,,,
+stercap_vsorres,admission_signs_and_symptoms,,radio,"Sternal capillary refill time >2 seconds ?","1, Yes|2, No|3, Unknown",,,,,,"[stercap_vsyn] = '1' or [covid19_new] <> """"",y,RH,,,,
+oxy_vsyn,admission_signs_and_symptoms,,yesno,"Oxygen saturation on admission available: ",,,,,,,"[covid19_new] = """"",y,RH,,,,
+oxy_vsorres,admission_signs_and_symptoms,,text,"Oxygen saturation",,%,integer,0,100,,"[oxy_vsyn] = '1' or [covid19_new] <> """"",y,RH,,,,
+oxy_vsorresu,admission_signs_and_symptoms,,radio,"Oxygen saturation on:","1, Room air|2, Oxygen therapy|3, N/A",,,,,,"[oxy_vsyn] = '1' or [covid19_new] <> """"",y,RH,,,,
+adm_no_symp,admission_signs_and_symptoms,"SIGNS AND SYMPTOMS-  This section should refer to the start of the COVID episode ",radio,"None (asymptomatic)","1, None (asymptomatic)",,,,,,"[fever_ceoccur_v2] = """" and [cough_ceoccur_v2] = """" and [coughsput_ceoccur_v2] = """" and [coughhb_ceoccur_v2] = """" and [sorethroat_ceoccur_v2] = """" and [runnynose_ceoccur_v2] = """" and [earpain_ceoccur_v2] = """" and [wheeze_ceoccur_v2] = """" and [chestpain_ceoccur_v2] = """" and [myalgia_ceoccur_v2] = """" and [jointpain_ceoccur_v2] = """" and [fatigue_ceoccur_v2] = """" and [shortbreath_ceoccur_v2] = """" and [ageusia_ceoccur_v2] = """" and [lowerchest_ceoccur_v2] = """" and [headache_ceoccur_v2] = """" and [confusion_ceoccur_v2] = """" and [seizures_cecoccur_v2] = """" and [abdopain_ceoccur_v2] = """" and [vomit_ceoccur_v2] = """" and [diarrhoea_ceoccur_v2] = """" and [conjunct_ceoccur_v2] = """" and [rash_ceoccur_v2] = """" and [skinulcers_ceoccur_v2] = """" and [lymp_ceoccur_v2] = """" and [bleed_ceoccur_v2] = """" and [bleed_ceterm_v2] = """" and [anosmia_ceoccur_v2] = """" and [no_symptoms] = """"",y,,,,,
+fever_ceoccur_v2,admission_signs_and_symptoms,,radio,"History of fever","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+cough_ceoccur_v2,admission_signs_and_symptoms,,radio,Cough,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+coughsput_ceoccur_v2,admission_signs_and_symptoms,,radio,"Cough: with sputum production","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+coughhb_ceoccur_v2,admission_signs_and_symptoms,,radio,"Cough: bloody sputum / haemoptysis","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+sorethroat_ceoccur_v2,admission_signs_and_symptoms,,radio,"Sore throat","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+runnynose_ceoccur_v2,admission_signs_and_symptoms,,radio,"Runny nose (Rhinorrhoea)","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+earpain_ceoccur_v2,admission_signs_and_symptoms,,radio,"Ear pain","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+wheeze_ceoccur_v2,admission_signs_and_symptoms,,radio,Wheezing,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+chestpain_ceoccur_v2,admission_signs_and_symptoms,,radio,"Chest pain","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+myalgia_ceoccur_v2,admission_signs_and_symptoms,,radio,"Muscle aches (Myalgia)","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+jointpain_ceoccur_v2,admission_signs_and_symptoms,,radio,"Joint pain (Arthralgia)","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+fatigue_ceoccur_v2,admission_signs_and_symptoms,,radio,"Fatigue / Malaise","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+shortbreath_ceoccur_v2,admission_signs_and_symptoms,,radio,"Shortness of breath (Dyspnea)","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+ageusia_ceoccur_v2,admission_signs_and_symptoms,,radio,"Disturbance or loss of taste (Ageusia )","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] <> """" and [adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+lowerchest_ceoccur_v2,admission_signs_and_symptoms,,radio,"Lower chest wall indrawing","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+headache_ceoccur_v2,admission_signs_and_symptoms,,radio,Headache,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+confusion_ceoccur_v2,admission_signs_and_symptoms,,radio,"Altered consciousness / confusion","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+seizures_cecoccur_v2,admission_signs_and_symptoms,,radio,Seizures,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+abdopain_ceoccur_v2,admission_signs_and_symptoms,,radio,"Abdominal pain","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+vomit_ceoccur_v2,admission_signs_and_symptoms,,radio,"Vomiting / Nausea","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+diarrhoea_ceoccur_v2,admission_signs_and_symptoms,,radio,Diarrhoea,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+conjunct_ceoccur_v2,admission_signs_and_symptoms,,radio,Conjunctivitis,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+rash_ceoccur_v2,admission_signs_and_symptoms,,radio,"Skin rash","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+skinulcers_ceoccur_v2,admission_signs_and_symptoms,,radio,"Skin ulcers","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+lymp_ceoccur_v2,admission_signs_and_symptoms,,radio,Lymphadenopathy,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+bleed_ceoccur_v2,admission_signs_and_symptoms,,radio,"Bleeding (Haemorrhage)","1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+bleed_ceterm_v2,admission_signs_and_symptoms,,radio,"If Bleeding (others)","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] <> """" and [adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+anosmia_ceoccur_v2,admission_signs_and_symptoms,,radio,"Disturbance or loss of smell (Anosmia)","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] <> """" and [adm_no_symp] = """"",y,,,core_admission_signs_and_symptoms_v2,,
+no_symptoms,admission_signs_and_symptoms,,radio,None,"1, YES | 2, NO | 3, Unknown",,,,,,"[adm_no_symp] = """"",,,,core_admission_signs_and_symptoms_v2,,
+bleed_cetermy_v2,admission_signs_and_symptoms,,text,"If Yes to Bleeding, specify site(s)",,,,,,,"[bleed_ceterm_v2] = '1' or ([bleed_ceoccur_v2] = '1' and [covid19_new] <> """")",,RH,,,,
+comorb_none,comorbidities,"CO-MORBIDITIES & Risk Factors
+Charlson index will be calculated for each patient at analysis",radio,"No comorbidities","1, No comorbidities",,,,,,"[chrincard] = """" and [hypertension_mhyn] = """" and [chronicpul_mhyn] = """" and [asthma_mhyn] = """" and [renal_mhyn] = """" and [modliv] = """" and [mildliver] = """" and [chronicneu_mhyn] = """" and [malignantneo_mhyn] = """" and [chronichaemo_mhyn] = """" and [aidshiv_mhyn] = """" and [obesity_mhyn] = """" and [diabetes_type_mhyn] = """" and [diabetescom_mhyn] = """" and [diabetes_mhyn] = """" and [rheumatologic_mhyn] = """" and [dementia_mhyn] = """" and [malnutrition_mhyn] = """" and [smoking_mhyn] = """" and [other_mhyn] = """"",y,,,,,
+chrincard,comorbidities,,radio,"Chronic cardiac disease, including congenital heart disease (not hypertension)","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+hypertension_mhyn,comorbidities,,radio,"Hypertension (physician diagnosed)","1, YES | 2, NO | 3, Unknown",,,,,,"[covid19_new] <> """" and [comorb_none] = """"",y,RH,,,,
+chronicpul_mhyn,comorbidities,,radio,"Chronic pulmonary disease (not asthma)","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+asthma_mhyn,comorbidities,,radio,"Asthma (physician diagnosed)
+","1, YES | 0, NO | 2, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+renal_mhyn,comorbidities,,radio,"Chronic kidney disease","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+modliv,comorbidities,,radio,"Moderate or severe liver disease","1, YES | 0, NO | 2, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+mildliver,comorbidities,,radio,"Mild Liver disease
+","1, YES | 0, NO | 2, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+chronicneu_mhyn,comorbidities,,radio,"Chronic neurological disorder
+","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+malignantneo_mhyn,comorbidities,,radio,"Malignant neoplasm
+","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+chronichaemo_mhyn,comorbidities,,radio,"Chronic hematologic disease
+","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+aidshiv_mhyn,comorbidities,,radio,"AIDS/HIV
+","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+obesity_mhyn,comorbidities,,radio,"Obesity (as defined by clinical staff)","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+diabetes_type_mhyn,comorbidities,,radio,"Diabetes and Type","0, NO | 1, 1 | 2, 2 | 3, N/K",,,,,,"[covid19_new] <> """" and [comorb_none] = """"",y,RH,,,,
+diabetescom_mhyn,comorbidities,,radio,"Diabetes with complications","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+diabetes_mhyn,comorbidities,,radio,"Diabetes without complications
+","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+rheumatologic_mhyn,comorbidities,,radio,"Rheumatologic disorder
+","1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+dementia_mhyn,comorbidities,,radio,Dementia,"1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+malnutrition_mhyn,comorbidities,,radio,Malnutrition,"1, YES | 2, NO | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+smoking_mhyn,comorbidities,,radio,Smoking,"1, Yes | 2, Never Smoked | 3, Former Smoker | 4, N/K",,,,,,"[comorb_none] = """"",y,RH,,,,
+other_mhyn,comorbidities,,radio,"Other relevant risk factors?","1, Yes | 2, No | 3, Unknown",,,,,,"[comorb_none] = """"",y,RH,,,,
+otherrisktext,comorbidities,,text,"Other  relevant risk factor; Specify",,,,,,,"[other_mhyn] = '1'",y,,,,,
+vulnerable_no_nk,comorbidities,"Is the patient thought to be a member of a CLINICALLY EXTREMELY VULNERABLE GROUP",radio,"Clinically extremely vulnerable No or Not known","2, No | 3, N/K",,,,,,"[covid19_new] <> """" and [vulnerable_transplant] = """" and [vulnerable_cancers] = """" and [vulnerable_copd] = """" and [vulnerable_scid] = """" and [vulnerable_immuno] = """" and [vulnerable_preg] = """"",y,RH,,,,
+vulnerable_transplant,comorbidities,,radio,"Solid organ transplant recipients:   ","1, Yes | 2, No | 3, N/K",,,,,," [covid19_new] <> """" and [vulnerable_no_nk] = """"",y,RH,,,,
+vulnerable_cancers,comorbidities,,radio,"People with specific cancers:
+• people with cancer who are undergoing active chemotherapy
+• people with lung cancer who are undergoing radical radiotherapy
+• people with cancers of the blood or bone marrow such as leukaemia, lymphoma or myeloma who are at any stage of treatment
+• people having immunotherapy or other continuing antibody treatments for cancer
+• people having other targeted cancer treatments which can affect the immune system, such as protein kinase inhibitors or PARP inhibitors
+• people who have had bone marrow or stem cell transplants in the last 6 months, or who are still taking immunosuppression drugs
+","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """" and [vulnerable_no_nk] = """"",y,LH,,,,
+vulnerable_copd,comorbidities,,radio,"People with severe respiratory conditions including all cystic fibrosis, severe asthma requiring daily oral steroid or injectable maintenance therapy and severe chronic obstructive pulmonary requiring oxygen (COPD):","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """" and [vulnerable_no_nk] = """"",y,LH,,,,
+vulnerable_scid,comorbidities,,radio,"People with rare diseases and inborn errors of metabolism that significantly increase the risk of infections (such as Severe combined immunodeficiency (SCID), homozygous sickle cell):   ","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """" and [vulnerable_no_nk] = """"",y,LH,,,,
+vulnerable_immuno,comorbidities,,radio,"People on immunosuppression therapies sufficient to significantly increase risk of infection: ","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """" and [vulnerable_no_nk] = """"",y,LH,,,,
+vulnerable_preg,comorbidities,,radio,"Women who are pregnant with significant heart disease, congenital or acquired:","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """" and [vulnerable_no_nk] = """"",y,LH,,,,
+immno_cmtrt,preadmission_treatment,,radio,"Treated with immunosuppressants, including oral (not inhaled) corticosteroids prior to admission / Immunosuppressant e.g. oral (not inhaled) corticosteroids (not low dose hydrocortisone)                             ","1, Yes | 2, No | 3, N/A",,,,,,,y,RH,,,,
+infect_cmtrt,preadmission_treatment,,radio,"Treated with anti-infectives  for illness episode prior to admission?","1, Yes|2, No|3, N/A",,,,,,,y,RH,,,,
+infect,preadmission_treatment,,text,"If yes,  please specify anti infectives",,,,,,,"[infect_cmtrt] = '1'",y,RH,,,,
+chronic_ace_cmoccur,preadmission_treatment,,radio,"Angiotensin converting enzyme inhibitors (ACEI)?","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """"",y,RH,,,,
+chronic_arb_cmoccur,preadmission_treatment,,radio,"Angiotensin II receptor blockers (ARBs)?","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """"",y,RH,,,,
+chronic_nsaid_cmoccur,preadmission_treatment,,radio,"Non-steroidal anti-inflammatory (NSAID)?","1, Yes | 2, No | 3, N/K",,,,,,"[covid19_new] <> """"",y,RH,,,,
+clinical_frailty,preadmission_treatment,"CLINICAL FRAILTY SCORE        
+With reference to the Dalhousie University Clinical Frailty Score 
+",dropdown,"Clinical frailty score","1, 1 | 2, 2 | 3, 3 | 4, 4 | 5, 5 | 6, 6 | 7, 7 | 8, 8 | 9, 9 | 10, N/K",,,,,,"[covid19_new] <> """"",y,RH,,,,
+no_medication,preadmission_medication,"CURRENT MEDICATION  
+Record medication the patient is currently taking or has taken within the past 14 days
+",radio,"No medication currently or within the last 14 days","1, No medication currently or within the last 14 days",,,,,,"[cmtrt] = """" and [cmdose] = """" and [cmdose_unit] = """" and [cmdosfrq] = """" and [cmroute] = """"",,,,,,
+cmtrt,preadmission_medication,,text,"Medication name
+(generic name preferred) 
+",,,,,,,"[no_medication] = """"",,,,,,
+cmnodetails,preadmission_medication,,descriptive,"For v9.6 onwards there is no need to record Dose, Frequency and Route details: please enter only the Medication name.",,,,,,,,,,,,,
+cmdose,preadmission_medication,,text,Dose,,,number,,,,"[no_medication] = """"",,,,,,
+cmdose_unit,preadmission_medication,,dropdown,"Dose unit","1, microgram | 2, milligram | 3, gram | 4, int. unit | 5, other | 99, Unknown",,,,,,"[no_medication] = """"",,,,,,
+cmdose_unitoth,preadmission_medication,,text,"Specify other Dose unit",,,,,,,"[cmdose_unit] = '5'",y,,,,,
+cmdosfrq,preadmission_medication,,dropdown,"Dose Frequency","1, q.d - once a day | 2, b.i.d - twice a day | 3, t.i.d - three times a day | 4, q.i.d - four times a day | 5, q.h.s - before bed | 6, 5X a day - five times a day | 7, q.4h - every four hours | 8, q.6h - every six hours | 9, q.o.d - every other day | 10, prn - as needed | 11, Other frequency | 99, Unknown",,,,,,"[no_medication] = """"",,,,,,
+cmdosfrqoth,preadmission_medication,,text,"Specify other dose frequency",,,,,,,"[cmdosfrq] = '11'",y,,,,,
+cmroute,preadmission_medication,,dropdown,Route,"1, IV | 2, oral | 3, Inhaled | 4, Unknown | 5, Other",,,,,,"[no_medication] = """"",,,,,,
+cmrouteoth,preadmission_medication,,text,"Specify other route",,,,,,,"[cmroute] = '5'",y,,,,,
+reinf_text2,reinfection_form,,descriptive,"Questions in this form will only display if you have selected Yes for Is this a suspected re-infection with COVID-19?, in the Onset and Admission form",,,,,,,"[susp_reinf] <> '1'",,,,,,
+reinf_prev_enrol,reinfection_form,"SUSPECTED RE-INFECTION WITH COVID-19: DETAILS OF PREVIOUS INFECTION",radio,"Was the patient previously enrolled?","1, Yes | 0, No | 3, N/K",,,,,,"[susp_reinf] = '1'",,RH,,,,
+reinf_pcr,reinfection_form,,radio,"Did the patient have a positive PCR (virus) test for SARS-CoV-2?  ","1, Yes | 0, No | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1'",y,RH,,,,
+reinf_pcrd,reinfection_form,,text,"If yes (to positive PCR (virus) test for SARS-CoV-2), enter date of positive test: ",,,date_dmy,2000-01-01,,,"[reinf_pcr] = '1'",y,RH,,,,
+reinf_antigen,reinfection_form,,radio,"Did the patient have a positive antigen (virus) test for SARS-CoV-2?   ","1, Yes | 0, No | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1'",y,RH,,,,
+reinf_antigend,reinfection_form,,text,"If yes (to positive antigen (virus) test for SARS-CoV-2), enter date of positive test: ",,,date_dmy,2000-01-01,,,"[reinf_antigen] = '1'",y,RH,,,,
+reinf_serology,reinfection_form,,radio,"Did the patient have a positive serology (antibody) test for SARS-CoV-2?  ","1, Yes | 0, No | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1'",y,RH,,,,
+reinf_serologyd,reinfection_form,,text,"If yes (to positive serology (antibody) test for SARS-CoV-2), enter date of positive test: ",,,date_dmy,2000-01-01,,,"[reinf_serology] = '1'",y,RH,,,,
+reinf_cestdat,reinfection_form,,text,"Symptom onset date of first/earliest symptom for previous infection: ",,,date_dmy,2000-01-01,,,"[susp_reinf] = '1' and [reinf_asymptomatic] = """" and [reinf_prev_enrol] <> '1'",y,RH,,,,
+reinf_asymptomatic,reinfection_form,"SIGNS AND SYMPTOMS for PREVIOUS COVID-19 episode",radio,Asymptomatic,"1, Asymptomatic",,,,,,"[susp_reinf] = '1' and [reinf_cestdat] = """" and [reinf_prev_enrol] <> '1' and [fever_ceoccur_v3] = """" and [cough_ceoccur_v3] = """" and [coughsput_ceoccur_v3] = """" and [coughhb_ceoccur_v3] = """" and [sorethroat_ceoccur_v3] = """" and [runnynose_ceoccur_v3] = """" and [earpain_ceoccur_v3] = """" and [wheeze_ceoccur_v3] = """" and [chestpain_ceoccur_v3] = """" and [myalgia_ceoccur_v3] = """" and [jointpain_ceoccur_v3] = """" and [fatigue_ceoccur_v3] = """" and [shortbreath_ceoccur_v3] = """" and [ageusia_ceoccur_v3] = """" and [lowerchest_ceoccur_v3] = """" and [headache_ceoccur_v3] = """" and [confusion_ceoccur_v3] = """" and [seizures_cecoccur_v3] = """" and [abdopain_ceoccur_v3] = """" and [vomit_ceoccur_v3] = """" and [diarrhoea_ceoccur_v3] = """" and [conjunct_ceoccur_v3] = """" and [rash_ceoccur_v3] = """" and [skinulcers_ceoccur_v3] = """" and [lymp_ceoccur_v3] = """" and [bleed_ceoccur_v3] = """" and [anosmia_ceoccur_v3] = """" and [no_symptoms_v3] = """"",y,RH,,,,
+fever_ceoccur_v3,reinfection_form,,radio,"History of fever","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+cough_ceoccur_v3,reinfection_form,,radio,Cough,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+coughsput_ceoccur_v3,reinfection_form,,radio,"Cough: with sputum production","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+coughhb_ceoccur_v3,reinfection_form,,radio,"Cough: bloody sputum / haemoptysis","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+sorethroat_ceoccur_v3,reinfection_form,,radio,"Sore throat","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+runnynose_ceoccur_v3,reinfection_form,,radio,"Runny nose (Rhinorrhoea)","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+earpain_ceoccur_v3,reinfection_form,,radio,"Ear pain","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+wheeze_ceoccur_v3,reinfection_form,,radio,Wheezing,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+chestpain_ceoccur_v3,reinfection_form,,radio,"Chest pain","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+myalgia_ceoccur_v3,reinfection_form,,radio,"Muscle aches (Myalgia)","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+jointpain_ceoccur_v3,reinfection_form,,radio,"Joint pain (Arthralgia)","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+fatigue_ceoccur_v3,reinfection_form,,radio,"Fatigue / Malaise","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+shortbreath_ceoccur_v3,reinfection_form,,radio,"Shortness of breath (Dyspnoea)","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+ageusia_ceoccur_v3,reinfection_form,,radio,"Disturbance or loss of taste (Ageusia )","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+lowerchest_ceoccur_v3,reinfection_form,,radio,"Lower chest wall indrawing","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+headache_ceoccur_v3,reinfection_form,,radio,Headache,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+confusion_ceoccur_v3,reinfection_form,,radio,"Altered consciousness / confusion","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+seizures_cecoccur_v3,reinfection_form,,radio,Seizures,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+abdopain_ceoccur_v3,reinfection_form,,radio,"Abdominal pain","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+vomit_ceoccur_v3,reinfection_form,,radio,"Vomiting / Nausea","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+diarrhoea_ceoccur_v3,reinfection_form,,radio,Diarrhoea,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+conjunct_ceoccur_v3,reinfection_form,,radio,Conjunctivitis,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+rash_ceoccur_v3,reinfection_form,,radio,"Skin rash","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+skinulcers_ceoccur_v3,reinfection_form,,radio,"Skin ulcers","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+lymp_ceoccur_v3,reinfection_form,,radio,Lymphadenopathy,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+bleed_ceoccur_v3,reinfection_form,,radio,"Bleeding (Haemorrhage)","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+anosmia_ceoccur_v3,reinfection_form,,radio,"Disturbance or loss of smell (Anosmia)","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",y,,,reinf_signs_and_symptoms,,
+no_symptoms_v3,reinfection_form,,radio,None,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_asymptomatic] = """"",,,,reinf_signs_and_symptoms,,
+bleed_cetermy_v3,reinfection_form,,text,"If Yes to Bleeding, specify site(s)",,,,,,,"[bleed_ceoccur_v3] = '1'",,RH,,,,
+reinf_treat_none,reinfection_form,"TREATMENT: During the previous episode, was the patient:",radio,"Treatment None","1, None",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_pre_adm_hosp] = """" and [reinf_pre_oxygen] = """" and [reinf_pre_hdu_icu] = """" and [reinf_pre_inv_vent] = """" and [reinf_pre_ecmo] = """" and [reinf_pre_dexameth] = """" and [reinf_pre_steroid] = """" and [reinf_pre_tociliz] = """" and [reinf_pre_remdesivir] = """" and [reinf_pre_conv_plasma] = """" and [reinf_pre_lopin_riton] = """" and [reinf_pre_interferon] = """" and [reinf_pre_chloro_hchlo] = """" and [reinf_pre_casiriv] = """"",y,,,,,
+reinf_pre_adm_hosp,reinfection_form,,radio,"Admitted to hospital","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_oxygen,reinfection_form,,radio,"Treated with oxygen","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_hdu_icu,reinfection_form,,radio,"Admitted to HDU/ICU","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_inv_vent,reinfection_form,,radio,"Receive invasive ventilation","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_ecmo,reinfection_form,,radio,"Receive extracorporeal membrane oxygenation (ECMO)","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_dexameth,reinfection_form,,radio,"Treated with: Dexamethasone","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_steroid,reinfection_form,,radio,"Any other steroid","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_tociliz,reinfection_form,,radio,Tocilizumab,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_remdesivir,reinfection_form,,radio,Remdesivir,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_conv_plasma,reinfection_form,,radio,"Convalescent plasma","1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_lopin_riton,reinfection_form,,radio,Lopinavir/Ritonavir,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_interferon,reinfection_form,,radio,Interferon,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_chloro_hchlo,reinfection_form,,radio,Chloroquine/Hydroxychloroquine,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",y,,,reinf_treatment,,
+reinf_pre_casiriv,reinfection_form,,radio,Casirivimab/Imdevimab,"1, YES | 2, NO | 3, N/K",,,,,,"[susp_reinf] = '1' and [reinf_prev_enrol] <> '1' and [reinf_treat_none] = """"",,,,reinf_treatment,,
+daily_form_v9_6_onwards,daily_form,,descriptive,"Note that from V9.6 of the CRF, if completing TIER 0 details, then you DO NOT NEED TO COMPLETE THIS FORM FOR DAYS 3, 6 and 9",,,,,,,,,,,,,
+daily_form_desc_text1,daily_form,,descriptive,"1. DAILY ASSESSMENT FORM (complete one form on admission, one form on admission to ICU, and daily up to 14 days or until discharge or death if earlier) ",,,,,,,"[covid19_new] = """"",,,,,," @HIDDEN"
+daily_form_desc_text2,daily_form,,descriptive,"DAILY FORM complete per Tier of activity AND if research samples are collected Page 1 of 1",,,,,,,"[covid19_new] <> """"",,,,,,
+daily_dsstdat,daily_form,,text,"DATE OF ASSESSMENT ",,"may not be the date of completion",date_dmy,2000-01-01,,,,y,,,,,
+daily_hoterm,daily_form,"Record the worst value from 00:00-24:00 taken on day of assessment (if Not Available write 'N/A')):",radio,"Current admission to ICU/ITU/IMC/HDU","1, Yes | 2, No | 3, N/A",,,,,,,y,RH,,,,
+daily_temp_vsorres,daily_form,,text,"Highest Temperature",,,number,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [daily_temp_vsorresnk] = """"",,RH,,,,
+daily_temp_vsorresu,daily_form,,radio,"Highest Temperature Unit","1, °C | 2, °F",,,,,,"[daily_temp_vsorres] <> """"",,RH,,,,
+daily_temp_vsorresnk,daily_form,,radio,"Highest Temperature N/K","1, N/K",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [daily_temp_vsorres] = """"",,RH,,,,
+daily_fi02_lbyn,daily_form,,radio,"FiO2  available / Any supplemental oxygen?","1, Yes | 2, No | 3, N/K",,,,,,,,RH,,,,
+daily_fio2_lborres,daily_form,,text,"FiO2 (0.21-1.0)",,(0.21-1.0),number,0.21,1,,"[daily_fi02_lbyn] = '1' and [daily_fio2b_lborres] = """" and [daily_fio2c_lborres] = """"",,,,,,
+daily_fio2b_lborres,daily_form,,text,"FiO2 %",,%,integer,,99,,"[daily_fi02_lbyn] = '1' and [daily_fio2_lborres] = """" and [daily_fio2c_lborres] = """"",,,,,,
+daily_fio2c_lborres,daily_form,,text,"FiO2 L/min (highest)",,"L/min (highest)",integer,,99,,"[daily_fi02_lbyn] = '1' and [daily_fio2_lborres] = """" and [daily_fio2b_lborres] = """"",,,,,,
+daily_sa02_lbyn,daily_form,,radio,"SaO2 (Oxygen saturation in newer CRF) available?","1, Yes | 2, No | 3, N/K",,,,,,,,RH,,,,
+daily_sao2_lborres,daily_form,,text,"SaO2 (SpO2 on the newer CRF)",,"% (lowest for newer CRF)",number,1,100,,"[daily_sa02_lbyn] = '1'",y,,,,,
+daily_pao2_lbyn,daily_form,,yesno,"PaO2 available?",,"at time of FiO2 above",,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_pao2_lborres,daily_form,,text,PaO2:,,"at time of FiO2 specified above",number,0,500,,"[daily_pao2_lbyn] = '1'",y,,,,,
+daily_pao2_lborresu,daily_form,,dropdown,"PaO2 unit:","1, kPa|2, mmHg",,,,,,"[daily_pao2_lbyn] = '1'",y,,,,,
+daily_pao2_lbspec,daily_form,,dropdown,"PaO2 sample type","1, Arterial|2, Venous|3, Capillary|4, N/A",,,,,,"[daily_pao2_lbyn] = '1'",y,,,,,
+daily_pco2_lbyn,daily_form,,radio,"PCO2 available?","1, Yes | 2, No","from same blood gas record as PaO2",,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_pco2_lborres,daily_form,,text,"PCO2 ",,"from same blood gas record as PaO2",number,0,200,,"[daily_pco2_lbyn] = '1'",y,,,,,
+daily_pco2_lborresu,daily_form,,dropdown,"PCO2 Unit","1, kPa|2, mmHg",,,,,,"[daily_pco2_lbyn] = '1'",y,,,,,
+daily_ph_lbyn,daily_form,,yesno,"pH available",,,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_ph_lborres,daily_form,,text,pH,,,number_2dp,,,,"[daily_ph_lbyn] = '1'",y,,,,,
+daily_hco3_lbyn,daily_form,,yesno,"HCO3-  available",,,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_hco3_lborres,daily_form,,text,"HCO3- ",,,number,0,,,"[daily_hco3_lbyn] = '1'",y,,,,,
+daily_hco3_lborresu,daily_form,,dropdown,"HCO3- Unit","1, mEq/L | 2, mmol/L",,,,,,"[daily_hco3_lborres] <> """"",,,,,,
+daily_baseex_lbyn,daily_form,,yesno,"Base excess available",,,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_baseex_lborres,daily_form,,text,"Base excess",,mmol/L,,,,,"[daily_baseex_lbyn] = '1'",y,,,,,
+daily_rr,daily_form,,text,"RR breaths per minute (highest)",,,integer,0,99,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """")) and [daily_rr_nk] = """"",,,,,,
+daily_rr_nk,daily_form,,radio,"RR breaths per minute N/K ","1, N/K",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """")) and [daily_rr] = """"",,,,,,
+avpu_vsorres,daily_form,,radio,AVPU,"1, Alert | 2, Verbal | 3, Pain | 4, Unresponsive | 5, N/K",,,,,,,y,RH,,,,
+daily_gcs_lbyn,daily_form,,radio,"Glasgow Coma Score available?","1, Yes | 0, No | 3, N/K",,,,,,,,RH,,,,
+daily_gcs_vsorres,daily_form,,text,"Glasgow Coma Score:",,"out of 15",number,0,15,,"[daily_gcs_lbyn] = '1'",y,,,,,
+systolic_vsyn,daily_form,,yesno,"Systolic Blood Pressure available?",,,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+systolic_vsorres,daily_form,,text,"Systolic Pressure",,mmHg,,,,,"[systolic_vsyn] = '1'",y,,,,,
+diastolic_vsyn,daily_form,,yesno,"Diastolic Blood Pressure available?",,,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+diastolic_vsorres,daily_form,,text,"Diastolic Pressure",,mmHg,,,,,"[diastolic_vsyn] = '1'",y,,,,,
+daily_meanart_lbyn,daily_form,,radio,"Mean Arterial Pressure available?","1, Yes | 0, No",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_meanart_vsorres,daily_form,,text,"Mean Arterial Pressure:",,mmHg,number,10,300,,"[daily_meanart_lbyn] = '1'",y,,,,,
+daily_urine_lbyn,daily_form,,radio,"Urine flow rate available?","1, Yes | 2, Estimated | 0, No",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_urine_lborres,daily_form,,text,"Urine flow rate:",,"mL/24 hours",number,0,15000,,"[daily_urine_lbyn] = '1' or [daily_urine_lbyn] = '2'",y,,,,,
+daily_noninvasive_prtrt,daily_form,"Is the patient currently receiving, or has received in the past 24 hours ?(e.g. blood products, plasma exchange)
+Shorter CRF: Is the patient currently receiving, or has received (from 00:00 to 24:00) on day of assessment: ",radio,"Non-invasive ventilation (e.g. NIV (if shorter CRF), BIPAP, CPAP)?","1, YES | 2, NO | 3, N/A",,,,,,,,,,daily_intervention,,
+daily_invasive_prtrt,daily_form,,radio,"Invasive ventilation?","1, YES | 2, NO | 3, N/A",,,,,,,,,,daily_intervention,,
+daily_nasaloxy_cmtrt,daily_form,,radio,"High-flow nasal canula?","1, YES | 2, NO | 3, N/A",,,,,,,,,,daily_intervention,,
+daily_ecmo_prtrt,daily_form,,radio,ECLS/ECMO,"1, YES | 2, NO | 3, N/A",,,,,,,,,,daily_intervention,,
+daily_rrt_cmtrt,daily_form,,radio,"Dialysis / Hemofiltration?","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,daily_intervention,,
+daily_inotrope_cmyn,daily_form,,radio,"Any vasopressor / inotropic support?","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,daily_intervention,,"If No; answer the next 3 questions 'NO'"
+daily_dopless5_cmtrt,daily_form,,radio,"Dopamine <  5 µg/min OR Dobutamine OR Milrinone OR Levosimendan:","1, YES | 2, NO | 3, N/A",,,,,,"[daily_inotrope_cmyn] = '1'",,,,daily_intervention,,
+daily_dop5to15_cmtrt,daily_form,,radio,"Dopamine 5-15 µg/min OR Epinephrine/Norepinephrine <  0.1 µg/kg/min OR Vasopressin OR Phenylephrine:","1, YES | 2, NO | 3, N/A",,,,,,"[daily_inotrope_cmyn] = '1'",,,,daily_intervention,,
+daily_dopgr15_cmtrt,daily_form,,radio,"Dopamine > 15 µg/min OR Epinephrine/Norepinephrine > 0.1 µg/kg/min:","1, YES | 2, NO | 3, N/A",,,,,,"[daily_inotrope_cmyn] = '1'",,,,daily_intervention,,
+daily_neuro_cmtrt,daily_form,,radio,"Neuromuscular blocking agents?","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,daily_intervention,,
+daily_nitritc_cmtrt,daily_form,,radio,"Inhaled Nitric Oxide ?","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,daily_intervention,,
+daily_prone_cmtrt,daily_form,,radio,"Prone Positioning","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,daily_intervention,,
+daily_trach_prperf,daily_form,,radio,"Tracheostomy inserted?","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,daily_intervention,,
+daily_prperf,daily_form,,radio,"Other intervention or procedure?","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,daily_intervention,,
+daily_other_prtrt,daily_form,,text,"If YES other intervention, Specify,",,,,,,,"[daily_prperf] = '1'",y,,,,,
+remdesivir,daily_form,"REMDESIVIR USE: Complete this section ONLY if remdesivir administered and you are completing a CRF PRIOR TO v9.6",radio,"Is patient receiving Remdesivir through EAMS (Early Access to Medicine Scheme) criteria?     ","1, YES | 0, NO | 2, N/K",,,,,,,,RH,,,,
+remdesivir_day,daily_form,,text,"Which day of Remdesivir therapy is this: (number)         ",,,integer,1,,,,,RH,,,,
+remdesivir_last_dose,daily_form,,radio,"Is this the intended last dose?","1, YES | 0, NO | 2, N/K",,,,,,,,RH,,,,
+remdesivir_text,daily_form,,descriptive,"A DAILY CRF must be completed for each day of remdesivir administration and for Day 14 after first dose of remdesivir (if patient remains admitted) If not already done, please retrospectively complete the ADMISSION CRF and any scheduled DAILY CRF forms.",,,,,,,,,,,,,
+daily_lab_text,daily_form,,descriptive,"DAILY LABORATORY RESULTS",,,,,,,,,,,,,
+daily_lbperf,daily_form,,yesno,"Results available for sample taken on the date in section 1 above ?",,,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+daily_lbdat,daily_form,,text,"Date of  assessment",,,date_dmy,,,,"[daily_lbperf] = '1'",y,,,,,
+daily_hb_lbyn,daily_form,"Record the most abnormal value.
+Shorter CRF: Record the values of laboratory results taken between 00:00 to 24:00 on day of assessment (if Not Available write 'N/K, if multiple record the values for the blood draw taken closest to midday'):",radio,"Haemoglobin available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_hbop_lborres,daily_form,,dropdown,"Haemoglobin < or > (optional)","1, < | 2, >",,,,,,"[daily_hb_lbyn] = '1'",,RH,,,,
+daily_hb_lborres,daily_form,,text,Haemoglobin,,,number,0,300,,"[daily_hb_lbyn] = '1'",y,,,,,
+daily_hb_lborresu,daily_form,,dropdown,"Haemoglobin Unit","1, g/L|2, g/dL",,,,,,"[daily_hb_lbyn] = '1'",y,,,,,
+daily_wbc_lbyn,daily_form,,radio,"WBC count available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_wbcop_lborres,daily_form,,dropdown,"WBC count < or > (optional)","1, < | 2, >",,,,,,"[daily_wbc_lbyn] = '1'",,RH,,,,
+daily_wbc_lborres,daily_form,,text,"WBC count",,,number,0,200000,,"[daily_wbc_lbyn] = '1'",y,,,,,
+daily_wbc_lborresu,daily_form,,dropdown,"WBC Unit","1, x 10^9 / L|2, x 103/µL",,,,,,"[daily_wbc_lbyn] = '1'",y,,,,,
+daily_lymp_lbyn,daily_form,,radio,"Lymphocyte count available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_lympop_lbyn,daily_form,,dropdown,"Lymphocyte count < or > (optional)","1, < | 2, >",,,,,,"[daily_lymp_lbyn] = '1'",,RH,,,,
+daily_lymp_lborres,daily_form,,text,"Lymphocyte count",,,number,0,200000000,,"[daily_lymp_lbyn] = '1'",y,,,,,
+daily_lymp_lborresu,daily_form,,dropdown,"Lymphocyte count Unit","1, cells/ μL | 2, x 10^9 / L | 3, x 10³/μL",,,,,,"[daily_lymp_lbyn] = '1'",y,,,,,
+daily_neutro_lbyn,daily_form,,radio,"Neutrophil count available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_neutroop_lbyn,daily_form,,dropdown,"Neutrophil count < or > (optional)","1, < | 2, >",,,,,,"[daily_neutro_lbyn] = '1'",,RH,,,,
+daily_neutro_lborres,daily_form,,text,"Neutrophil count",,,number,0,200000000,,"[daily_neutro_lbyn] = '1'",y,,,,,
+daily_neutro_lborresu,daily_form,,dropdown,"Neutrophil count Unit","1, cells/ μL | 2, x 10^9 / L | 3, x 10³/μL",,,,,,"[daily_neutro_lbyn] = '1'",y,,,,,
+daily_haematocrit_lbyn,daily_form,,yesno,"Haematocrit available",,,,,,,"[daily_lbperf] = '1'",,,,,,
+daily_haematocrit_lborres,daily_form,,text,Haematocrit,,,number,0,,,"[daily_haematocrit_lbyn] = '1'",,,,,,
+daily_haematocrit_lborresu,daily_form,,dropdown,"Haematocrit Unit","1, % | 2, L/L",,,,,,"[daily_haematocrit_lborres] <> """"",,,,,,
+daily_plt_lbyn,daily_form,,radio,"Platelets available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_pltop_lborres,daily_form,,dropdown,"Platelet count < or > (optional)","1, < | 2, >",,,,,,"[daily_plt_lbyn] = '1'",,RH,,,,
+daily_plt_lborres,daily_form,,text,"Platelet Count",,,number,0,9999000000,,"[daily_plt_lbyn] = '1'",y,,,,,
+daily_plt_lborresu,daily_form,,dropdown,"Platelets Unit","1, x 10^9 / L|2, x 103/μL",,,,,,"[daily_plt_lbyn] = '1'",y,,,,,
+daily_aptt_lbyn,daily_form,,radio,"APTT/APTR available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_apttop_lborres,daily_form,,dropdown,"APTT/APTR < or > (optional)","1, < | 2, >",,,,,,"[daily_aptt_lbyn] = '1'",,RH,,,,
+daily_aptt_lborres,daily_form,,text,APTT/APTR,,seconds,number,0,200,,"[daily_aptt_lbyn] = '1'",,,,,,
+daily_pt_inr_lbyn,daily_form,,dropdown,"PT or INR available","1, PT done | 2, INR done | 3, PT or INR not done | 4, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,,,,,
+daily_ptop_lborres,daily_form,,dropdown,"PT < or > (optional)","1, < | 2, >",,,,,,"[daily_pt_inr_lbyn] = '1'",,RH,,,,
+daily_pt_lborres,daily_form,,text,"PT ",,seconds,number,0,100,,"[daily_pt_inr_lbyn] = '1'",y,,,,,
+daily_inrop_lborres,daily_form,,dropdown,"INR < or > (optional)","1, < | 2, >",,,,,,"[daily_pt_inr_lbyn] = '2'",,RH,,,,
+daily_inr_lborres,daily_form,,text,INR,,,number,0,100,,"[daily_pt_inr_lbyn] = '2'",y,,,,,
+daily_esr_lbyn,daily_form,,radio,"ESR available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_esrop_lbyn,daily_form,,dropdown,"ESR < or > (optional)","1, < | 2, >",,,,,,"[daily_esr_lbyn] = '1'",,RH,,,,
+daily_esr_lborres,daily_form,,text,ESR,,mm/hr,integer,0,20,,"[daily_esr_lbyn] = '1'",y,,,,,
+daily_ferr_lbyn,daily_form,,radio,"Ferritin available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_ferrop_lbyn,daily_form,,dropdown,"Ferritin < or > (optional)","1, < | 2, >",,,,,,"[daily_ferr_lbyn] = '1'",,RH,,,,
+daily_ferr_lborres,daily_form,,text,Ferritin,,,integer,0,10000,,"[daily_ferr_lbyn] = '1'",,,,,,
+daily_ferr_lborresu,daily_form,,dropdown,"Ferritin Unit","1, μg/L | 2, ng/mL",,,,,,"[daily_ferr_lbyn] = '1'",,,,,,
+daily_alt_lbyn,daily_form,,radio,"ALT / SGPT available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_altop_lbyn,daily_form,,dropdown,"ALT / SGPT < or > (optional)","1, < | 2, >",,,,,,"[daily_alt_lbyn] = '1'",,RH,,,,
+daily_alt_lborres,daily_form,,text,"ALT / SGPT",,U/L,number,0,8000,,"[daily_alt_lbyn] = '1'",,,,,,
+daily_bil_lbyn,daily_form,,radio,"Total Bilirubin available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_bilop_lborres,daily_form,,dropdown,"Total Bilirubin < or > (optional)","1, < | 2, >",,,,,,"[daily_bil_lbyn] = '1'",,RH,,,,
+daily_bil_lborres,daily_form,,text,"Total Bilirubin",,,number,0,700,,"[daily_bil_lbyn] = '1'",,,,,,
+daily_bil_lborresu,daily_form,,dropdown,"Total Bilirubin Unit","1, µmol/L | 2, mg/dL",,,,,,"[daily_bil_lbyn] = '1'",,,,,,
+daily_ast_lbyn,daily_form,,radio,"AST/SGOT available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_astop_lborres,daily_form,,dropdown,"AST/SGOT < or > (optional)","1, < | 2, >",,,,,,"[daily_ast_lbyn] = '1'",,RH,,,,
+daily_ast_lborres,daily_form,,text,AST/SGOT,,U/L,number,0,8000,,"[daily_ast_lbyn] = '1'",,,,,,
+daily_glucose_lbyn,daily_form,,radio,"Glucose available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_glucoseop_lborres,daily_form,,dropdown,"Glucose < or > (optional)","1, < | 2, >",,,,,,"[daily_glucose_lbyn] = '1'",,RH,,,,
+daily_glucose_lborres,daily_form,,text,Glucose,,,number,0,1000,,"[daily_glucose_lbyn] = '1'",y,,,,,
+daily_glucose_lborresu,daily_form,,dropdown,"Glucose Unit ","1, mmol/L|2, mg/dL",,,,,,"[daily_glucose_lbyn] = '1'",y,,,,,
+daily_bun_lbyn,daily_form,,radio,"Blood Urea Nitrogen (urea) available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_bunop_lborres,daily_form,,dropdown,"Blood Urea Nitrogen (urea) < or > (optional)","1, < | 2, >",,,,,,"[daily_bun_lbyn] = '1'",,RH,,,,
+daily_bun_lborres,daily_form,,text,"Blood Urea Nitrogen (urea)",,,number,0,300,,"[daily_bun_lbyn] = '1'",y,,,,,
+daily_bun_lborresu,daily_form,,dropdown,"Blood Urea Nitrogen (urea) Unit","1, mmol/L | 2, mg/dL",,,,,,"[daily_bun_lbyn] = '1'",y,,,,,
+daily_lactate_lbyn,daily_form,,radio,"Lactate available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_lactateop_lbyn,daily_form,,dropdown,"Lactate < or > (optional)","1, < | 2, >",,,,,,"[daily_lactate_lbyn] = '1'",,RH,,,,
+daily_lactate_lborres,daily_form,,text,Lactate,,,number,0,200,,"[daily_lactate_lbyn] = '1'",y,,,,,
+daily_lactate_lborresu,daily_form,,dropdown,"Lactate Unit","1, mmol/L|2, mg/dL",,,,,,"[daily_lactate_lbyn] = '1'",y,,,,,
+daily_ldh_lbyn,daily_form,,radio,"Lactate dehydrogenase (LDH) available?","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",y,RH,,,,
+daily_ldhop_lborres,daily_form,,dropdown,"LDH < or > (optional)","1, < | 2, >",,,,,,"[daily_ldh_lbyn] = '1'",,RH,,,,
+daily_ldh_lborres,daily_form,,text,"Lactate dehydrogenase (LDH) ",,U/L,integer,0,10000,,"[daily_ldh_lbyn] = '1'",y,,,,,
+daily_cpk_lby,daily_form,,radio,"Creatine Phosphokinase (CPK) available?","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_cpkop_lbyn_2,daily_form,,dropdown,"Creatine Phosphokinase (CPK)  < or > (optional)","1, < | 2, >",,,,,,"[daily_cpk_lby] = '1'",,RH,,,,
+daily_cpk_lbyn_2,daily_form,,text,"Creatine Phosphokinase (CPK) ",,U/L,integer,0,200000,,"[daily_cpk_lby] = '1'",,,,,,
+daily_creat_lbyn,daily_form,,radio,"Creatinine available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_creatop_lborres,daily_form,,dropdown,"Creatinine  < or > (optional)","1, < | 2, >",,,,,,"[daily_creat_lbyn] = '1'",,RH,,,,
+daily_creat_lborres,daily_form,,text,Creatinine,,,number,0,5000,,"[daily_creat_lbyn] = '1'",,,,,,
+daily_creat_lborresu,daily_form,,dropdown,"Creatinine Unit","1, μmol/L | 2, mg/dL | 3, umol/L",,,,,,"[daily_creat_lbyn] = '1'",,,,,,
+daily_sodium_lbyn,daily_form,,radio,"Sodium  available ","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_sodiumop_lborres,daily_form,,dropdown,"Sodium < or > (optional)","1, < | 2, >",,,,,,"[daily_sodium_lbyn] = '1'",,RH,,,,
+daily_sodium_lborres,daily_form,,text,Sodium,,,integer,120,160,,"[daily_sodium_lbyn] = '1'",,,,,,
+daily_sodium_lborresu,daily_form,,dropdown,"Sodium Unit","1, mmol/L | 2, mEq/L",,,,,,"[daily_sodium_lbyn] = '1'",,,,,,
+daily_potassium_lbyn,daily_form,,radio,"Potassium available ","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_potassiumop_lborres,daily_form,,dropdown,"Potassium < or > (optional)","1, < | 2, >",,,,,,"[daily_potassium_lbyn] = '1'",,RH,,,,
+daily_potassium_lborres,daily_form,,text,Potassium,,,number,2,8,,"[daily_potassium_lbyn] = '1'",,,,,,
+daily_potassium_lborresu,daily_form,,dropdown,"Potassium Unit","1, mmol/L | 2, mEq/L",,,,,,"[daily_potassium_lbyn] = '1'",,,,,,
+daily_procal_lbyn,daily_form,,radio,"Procalcitonin available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_procalop_lborres,daily_form,,dropdown,"Procalcitonin < or > (optional)","1, < | 2, >",,,,,,"[daily_procal_lbyn] = '1'",,RH,,,,
+daily_procal_lborres,daily_form,,text,Procalcitonin,,ng/mL,number,0,600,,"[daily_procal_lbyn] = '1'",,,,,,
+daily_crp_lbyn,daily_form,,radio,"C-reactive protein (CRP) available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_crpop_lborres,daily_form,,dropdown,"C-reactive protein (CRP) < or > (optional)","1, < | 2, >",,,,,,"[daily_crp_lbyn] = '1'",,RH,,,,
+daily_crp_lborres,daily_form,,text,"C-reactive protein (CRP)",,,number,0,500,,"[daily_crp_lbyn] = '1'",y,,,,,
+daily_crp_lborresu,daily_form,,dropdown,"C-reactive protein (CRP) Unit","1, mg/L | 2, mg/dL | 3, ug/ml",,,,,,"[daily_crp_lbyn] = '1'",y,,,,,
+daily_egfr_lbyn,daily_form,,radio,"eGFR available","1, Yes | 0, No | 3, N/K",,,,,,"[daily_lbperf] = '1' or (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,RH,,,,
+daily_egfrop_lborres,daily_form,,dropdown,"eGFR < or > (optional)","1, < | 2, >",,,,,,"[daily_egfr_lbyn] = '1'",,RH,,,,
+daily_egfr_lborres,daily_form,,text,eGFR,,"mL/min/1.73 m2   ",integer,0,200,,"[daily_egfr_lbyn] = '1'",y,,,,,
+daily_egfr_equation,daily_form,,checkbox,"eGFR equation/formula","1, CKD-EPI | 2, MDRD | 3, CG | 4, N/K",,,,,,"[daily_egfr_lbyn] = '1'",y,RH,,,,
+daily_hba1cop_lborres,daily_form,,dropdown,"Most recent HbA1c < or > (optional)","1, < | 2, >",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [daily_hba1c_lborresnk] = """"",,RH,,,,
+daily_hba1c_lborres,daily_form,,text,"Most recent HbA1c",,,number,1,17,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [daily_hba1c_lborresnk] = """"",,,,,,
+daily_hba1c_lborresu,daily_form,,dropdown,"Most recent HbA1c Unit","1, % | 2, mmol/mol",,,,,,"[daily_hba1c_lborres] <> """"",,,,,,
+daily_hba1c_lborresnk,daily_form,,radio,"Most recent HbA1c N/K","1, N/K",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [daily_hba1c_lborres] = """"",,,,,,
+daily_hba1c_lborresd,daily_form,,text,"Date of HbA1c",,,date_dmy,2000-01-01,,,"[daily_hba1c_lborres] <> """"",,,,,,
+xray_prperf,daily_form,,radio,"X-Ray/CT performed (this is chest X-ray if shorter CRF)?","1, YES | 2, NO | 3, N/A",,,,,,,,RH,,,,
+infiltrates_faorres,daily_form,,radio,"If yes, were infiltrates present?","1, YES|2, NO|3, N/A",,,,,,"[xray_prperf] = '1'",y,RH,,,,
+daily_samples,daily_form,"RESEARCH   SAMPLES",yesno,"Was a biological sample taken for research on this day?",,,,,,,,,RH,,,,
+daily_samples_kitno,daily_form,,text,"If yes, please record the KIT number",,"KIT NUMBER (first 3 characters should be CCP then record 5 characters):",,,,,"([daily_samples] = """" or [daily_samples] = '1')",,,,,," @CHARLIMIT=8"
+mbperf,infectious_respiratory_disease_pathogen_diagnosis,"PATHOGEN TESTING:
+",radio,"Was pathogen testing done during this illness episode?","1, YES | 2, NO | 3, N/A","Pathogen testing is available as a repeating instrument in the next section",,,,,,y,,,,,
+cov19sars_mbyn_v2,infectious_respiratory_disease_pathogen_diagnosis,,radio,"COVID-19 / SARS-CoV-2","2, Tested and POSITIVE | 1, Tested and NEGATIVE | 0, NOT TESTED",,,,,,"[mbperf] = '1'  and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",y,LH,,,,
+influ_mbyn,infectious_respiratory_disease_pathogen_diagnosis,,radio,"Influenza: ","2, YES - Confirmed | 1, YES - Probable | 0, NO",,,,,,"[mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+influ_mbyn_v2,infectious_respiratory_disease_pathogen_diagnosis,,radio,Influenza,"2, Tested and POSITIVE | 1, Tested and NEGATIVE | 0, NOT TESTED",,,,,,"[mbperf] = '1'  and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",y,LH,,,,
+influ_mbcat,infectious_respiratory_disease_pathogen_diagnosis,,radio,"If Yes to Influenza","1, A/H3N2 | 2, A/H1N1pdm09 | 3, A/H7N9 | 4, A/H5N1 | 5, A - not typed | 7, Other A | 6, B - not typed | 888, Other",,,,,,"[influ_mbyn] = '2' or [influ_mbyn] = '1' or [influ_mbyn_v2] = '2'",y,,,,,
+influothera_mborres,infectious_respiratory_disease_pathogen_diagnosis,,text,"Other influenza A, specify:",,,,,,,"[influ_mbcat] = '7'",y,,,,,
+influother_mborres,infectious_respiratory_disease_pathogen_diagnosis,,text,"Other influenza, specify:",,,,,,,"[influ_mbcat] = '888'",y,,,,,
+influenza_text,infectious_respiratory_disease_pathogen_diagnosis,,descriptive,"NB: Please do not enter Haemophilus influenza or parainfluenza above here - enter them under ""other"" below",,,,,,,"[mbperf] = '1'",,,,,,
+corna_mbcat,infectious_respiratory_disease_pathogen_diagnosis,,radio,"Coronavirus: ","2, YES - Confirmed | 1, YES - Probable | 0, NO",,,,,,"[mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+corna_mbcaty,infectious_respiratory_disease_pathogen_diagnosis,,radio,"If Yes to Coronavirus:","1, MERS-CoV | 2, 2019nCoV | 3, COVID-19/SARS-CoV-2 2019 | 888, Other CoV",,,,,,"[corna_mbcat] = '2' or [corna_mbcat] = '1'",y,,,,,
+coronaother_mborres,infectious_respiratory_disease_pathogen_diagnosis,,text,"IF Other coronavirus; Specify:",,,,,,,"[corna_mbcaty] = '888'",y,,,,,
+rsv_mbcat,infectious_respiratory_disease_pathogen_diagnosis,,radio,RSV,"2, YES - Confirmed | 1, YES - Probable | 0, NO",,,,,,"[mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+rsv_mbcat_v2,infectious_respiratory_disease_pathogen_diagnosis,,radio,"Respiratory syncytial virus (RSV)","2, Tested and POSITIVE | 1, Tested and NEGATIVE | 0, NOT TESTED",,,,,,"[mbperf] = '1'  and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",y,LH,,,,
+adeno_mbcat,infectious_respiratory_disease_pathogen_diagnosis,,radio,Adenovirus,"2, YES - Confirmed | 1, YES - Probable | 0, NO",,,,,,"[mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+adeno_mbcat_v2,infectious_respiratory_disease_pathogen_diagnosis,,radio,Adenovirus,"2, Tested and POSITIVE | 1, Tested and NEGATIVE | 0, NOT TESTED",,,,,,"[mbperf] = '1'  and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",y,LH,,,,
+bact_mborres,infectious_respiratory_disease_pathogen_diagnosis,,radio,Bacteria,"1, YES-Confirmed | 2, NO",,,,,,"[mbperf] = '1'",,,,,," @HIDDEN"
+bacteria_mborres,infectious_respiratory_disease_pathogen_diagnosis,,text,"If yes, specify bacteria
+(list all below)",,,,,,,"[bact_mborres] = '1'",y,,,,," @HIDDEN"
+clinicalpneu_mborres,infectious_respiratory_disease_pathogen_diagnosis,,dropdown,"Clinical pneumonia: ","1, YES | 0, NO | 2, Unknown",,,,,,"[mbperf] = '1' and
+(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",y,,,,,
+infectuk_mborres,infectious_respiratory_disease_pathogen_diagnosis,,dropdown,"IF NONE OF THE ABOVE: Suspected Non-infective:","1, Yes | 2, N/A",,,,,,"[mbperf] = '1' and
+(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",,,,,,
+pcr_path_diag,infectious_respiratory_disease_pathogen_diagnosis,,checkbox,"Other respiratory PCR-diagnosed pathogens Tick all that apply","0, None positive | 1, Mycoplasma pneumoniae positive | 2, Legionella species (L. pneumophila or L. longbeachae) positive | 3, Metapneumovirus positive | 4, Parainfluenza virus positive | 5, Coronavirus HKU1/OC43/229E/NL63 (**NOT COVID-19**) positive | 6, Bocavirus positive | 10, Other - please specify",,,,,,"[mbperf] = '1'  and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",y,LV,,,," @NONEOFTHEABOVE=0"
+pcr_path_diago,infectious_respiratory_disease_pathogen_diagnosis,,text,"If selected Yes for Other respiratory PCR-diagnosed pathogen, specify",,,,,,,"[pcr_path_diag(10)] = '1'",y,LV,,,,
+other_mbyn,infectious_respiratory_disease_pathogen_diagnosis,,radio,"Other Infectious Respiratory Diagnosis: 
+(complete for PRE_v9.7 CRF only)","2, YES - Confirmed | 1, YES - Probable | 0, NO",,,,,,"[mbperf] = '1'",,,,,,
+other_mborres,infectious_respiratory_disease_pathogen_diagnosis,,text," If YES: Other infectious respiratory diagnosis, specify:",,,,,,,"[other_mbyn] = '2' or [other_mbyn] = '1'",y,,,,,
+daily_mbperf,infectious_respiratory_disease_pathogen_testing,"PATHOGEN TESTING: Only complete under the 'Discharge/Death' column in REDCap.
+Details of pathogen testing and sample type
+(this is a repeating instrument, include as many as necessary)",yesno,"Pathogen testing done",,,,,,,,,RH,,,,
+llimsno_bnum,infectious_respiratory_disease_pathogen_testing,,text,"LIMS number",,,,,,,"[daily_mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",,,,,," @HIDDEN-FORM"
+mbdat,infectious_respiratory_disease_pathogen_testing,,text,"Collection Date",,,date_dmy,2000-01-01,,,"[daily_mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+mbspec,infectious_respiratory_disease_pathogen_testing,,dropdown,"Bio specimen type","1, Nasal / NP swab | 2, Throat swab | 3, Combined nasal / NP + throat swab | 4, Sputum | 5, Bronchoalveolar Lavage (BAL) | 6, ETA | 7, CSF | 8, SAM | 9, Urine | 10, Faeces / rectal swab | 11, Blood serum | 12, Blood EDTA | 13, Blood RNA | 15, Blood | 14, Other",,,,,,"[daily_mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+other_mbspec,infectious_respiratory_disease_pathogen_testing,,text,"If  OTHER; Specify",,,,,,,"[mbspec] = '14'",y,,,,,
+mbmethod,infectious_respiratory_disease_pathogen_testing,,dropdown,"Laboratory Test Method","1, PCR | 2, Culture | 3, Other",,,,,,"[mbspec] = '1' or [mbspec] = '2' or [mbspec] = '3' or [mbspec] = '4' or [mbspec] = '5' or [mbspec] = '6' or [mbspec] = '7' or [mbspec] = '8' or [mbspec] = '9' or [mbspec] = '10' or [mbspec] = '11'  or [mbspec] = '12' or [mbspec] = '13'  or [mbspec] = '14'",y,,,,,
+other_mbmethod,infectious_respiratory_disease_pathogen_testing,,text,"If Other Laboratory test method; Specify",,,,,,,"[mbmethod] = '3'",y,,,,,
+mborres,infectious_respiratory_disease_pathogen_testing,,radio,Result,"1, Positive|2, Negative|3, N/A",,,,,,"[daily_mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+mbtestcd,infectious_respiratory_disease_pathogen_testing,,text,"Pathogen Detected (full name without abbreviations)",,,,,,,"[daily_mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",y,,,,,
+mbspec_v2,infectious_respiratory_disease_pathogen_testing,"(Please record the details of all test carried out during this illness episode below - including the details of the tests indicated above)",dropdown,"Type of test
+(for V9.9 CRF onwards there is no need to record Urine, CSF or Faeces (stool))","7, Nasal / and or throat swab | 1, Blood culture | 2, Sputum | 3, Deep respiratory sample (BAL/ETA) | 4, Urine | 5, Cerebrospinal fluid (CSF) | 6, Faeces (stool)",,,,,,"[daily_mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",,RH,,,,
+mborres_v2,infectious_respiratory_disease_pathogen_testing,,dropdown,"Test result, select one:","1, Obtained: positive | 2, Obtained: negative | 3, Not obtained",,,,,,"[mbspec_v2] <> """"",y,RH,,,,
+mbtestcd_nsth,infectious_respiratory_disease_pathogen_testing,,dropdown,"Organism - Nasal and / or throat swab","1, SARS-CoV-2 (COVID-19) | 2, Influenza - A/H3N2 | 3, Influenza- A/H1N1pdm09 | 4, Influenza- A/H7N9 | 5, Influenza- type B | 6, Influenza- type C | 7, Influenza-untyped | 8, Respiratory Syncytial virus (RSV) | 9, Adenovirus | 10, Bocavirus | 11, Bordetella parapertussis | 12, Bordetella pertussis | 13, Chlamydophila pneumoniae | 14, Coronavirus 229E | 15, Coronavirus HKU1 | 16, Coronavirus OC43 | 17, Coronavirus NL63 | 18, CoronaVirus (Mers-CoV) | 19, Human Metapneumovirus | 20, Human Rhinovirus/Enterovirus | 21, Metapneumovirus | 22, Middle East Respiratory Syndrome | 23, Mycoplasma pneumoniae (L. pneumophila or L. longbeachae) | 24, Parainfluenza 1 Parainfluenza2 | 25, Parainfluenza3 | 26, Parainfluenza 4 | 27, Severe Acute Respiratory Syndrome | 40, Other - specify",,,,,,"([mborres_v2] = '1' or [mborres_v2] = '2') and [mbspec_v2] = '7'",y,RH,,,,
+mbtestcd_nstho,infectious_respiratory_disease_pathogen_testing,,text,"Other Nasal and / or throat swab organism - specify",,,,,,,"[mbtestcd_nsth] = '40'",y,RH,,,,
+mbtestcd_bc,infectious_respiratory_disease_pathogen_testing,,dropdown,"Organism - Blood culture","1, Staphylococcus aureus | 2, Staphylococcus species (NOT ""aureus"" or ""lugdunensis"") | 3, Escherichia coli | 4, Klebsiella pneumoniae | 5, Klebsiella aerogenes | 6, Klebsiella oxytoca | 7, Enterococcus faecium | 8, Enterococcus faecalis | 9, Candida species (NOT ""yeasts"") | 10, Pseudomonas aeruginosa | 11, Streptococcus pneumoniae | 12, Enterobacter cloacae | 13, Proteus mirabilis | 14, Streptococcus pyogenes (Group A Streptococcus) | 15, Streptococcus agalactiae (Group B Streptococcus) | 16, Streptococcus anginosus or constellatus or intermedius | 17, Streptococcus bovis or gallolyticus | 18, Streptococcus dysgalactiae | 19, Streptococcus viridans or gordonii or mitis or oralis or parasanguinis or salivarius or sanguinis | 20, Citrobacter koseri | 21, Serratia marcescens | 22, Acinetobacter baumannii | 23, Morganella morganii | 24, Stenotrophomonas maltophilia | 25, Staphylococcus lugdunensis | 40, Other (do not record microscopy/gram stain only results)",,,,,,"[mborres_v2] = '1'  and [mbspec_v2] = '1'",y,RH,,,,
+mbtestcd_bco,infectious_respiratory_disease_pathogen_testing,,text,"Other Blood Culture organism",,,,,,,"[mbtestcd_bc] = '40'",y,RH,,,,
+mbtestcd_sp,infectious_respiratory_disease_pathogen_testing,,dropdown,"Organism - Sputum","1, Staphylococcus aureus | 2, Escherichia coli | 3, Pseudomonas aeruginosa | 4, Klebsiella pneumoniae | 5, Klebsiella aerogenes | 6, Klebsiella oxytoca | 7, Haemophilus influenzae | 8, Moraxella catarrhalis | 9, Serratia marcescens | 10, Enterobacter cloacae | 11, Citrobacter koseri | 12, Stenotrophomonas maltophilia | 13, Streptococcus pneumoniae | 14, Proteus mirabilis | 15, Acinetobacter baumannii | 16, Morganella morganii | 17, Aspergillus fumigatus | 18, Aspergillus sp (NOT ""fumigatus"") | 19, Enterococcus faecium | 20, Enterococcus faecalis | 21, Candida species (NOT ""yeasts"") | 22, Streptococcus pyogenes (Group A Streptococcus) | 23, Streptococcus agalactiae (Group B Streptococcus) | 24, Streptococcus anginosus or constellatus or intermedius | 25, Staphylococcus lugdunensis | 26, Staphylococcus species (NOT ""aureus"" or ""lugdunensis"") | 27, Mycobacterium tuberculosis | 28, Other Mycobacteria (NOT ""tuberculosis"") | 40, Other (do not record microscopy/gram stain only results)",,,,,,"([mborres_v2] = '1'  or [mborres_v2] = '2') and [mbspec_v2] = '2'",y,RH,,,,
+mbtestcd_spo,infectious_respiratory_disease_pathogen_testing,,text,"Other Sputum organism",,,,,,,"[mbtestcd_sp] = '40'",y,RH,,,,
+mbtestcd_drs,infectious_respiratory_disease_pathogen_testing,,dropdown,"Organism - Deep respiratory sample","1, Staphylococcus aureus | 2, Escherichia coli | 3, Pseudomonas aeruginosa | 4, Klebsiella pneumoniae | 5, Klebsiella aerogenes | 6, Klebsiella oxytoca | 7, Haemophilus influenzae | 8, Moraxella catarrhalis | 9, Serratia marcescens | 10, Enterobacter cloacae | 11, Citrobacter koseri | 12, Stenotrophomonas maltophilia | 13, Streptococcus pneumoniae | 14, Proteus mirabilis | 15, Acinetobacter baumannii | 16, Morganella morganii | 17, Aspergillus fumigatus | 18, Aspergillus sp (NOT ""fumigatus"") | 19, Enterococcus faecium | 20, Enterococcus faecalis | 21, Candida species (NOT ""yeasts"") | 22, Streptococcus pyogenes (Group A Streptococcus) | 23, Streptococcus agalactiae (Group B Streptococcus) | 24, Streptococcus anginosus or constellatus or intermedius | 25, Staphylococcus lugdunensis | 26, Staphylococcus species (NOT ""aureus"" or ""lugdunensis"") | 27, Mycobacterium tuberculosis | 28, Other Mycobacteria (NOT ""tuberculosis"") | 40, Other (do not record microscopy/gram stain only results)",,,,,,"([mborres_v2] = '1'  or [mborres_v2] = '2') and [mbspec_v2] = '3'",y,RH,,,,
+mbtestcd_drso,infectious_respiratory_disease_pathogen_testing,,text,"Other Deep respiratory sample organism",,,,,,,"[mbtestcd_drs] = '40'",y,RH,,,,
+mbtestcd_ur,infectious_respiratory_disease_pathogen_testing,,dropdown,"Organism - Urine","1, Escherichia coli | 2, Escherichia coli | 3, Klebsiella pneumoniae | 4, Klebsiella aerogenes | 5, Klebsiella oxytoca | 6, Pseudomonas aeruginosa | 7, Serratia marcescens | 8, Enterobacter cloacae | 9, Enterococcus faecium | 10, Enterococcus faecalis | 11, Staphylococcus aureus | 12, Staphylococcus saprophyticus | 13, Staphylococcus species (NOT ""aureus"" or ""saprophyticus"") | 14, Candida species (NOT ""yeasts"") | 40, Other (do not record microscopy/gram stain only results)",,,,,,"[mborres_v2] = '1' and [mbspec_v2] = '4'",,RH,,,,
+mbtestcd_uro,infectious_respiratory_disease_pathogen_testing,,text,"Other Urine organism",,,,,,,"[mbtestcd_ur] = '40'",,RH,,,,
+mbtestcd_csf,infectious_respiratory_disease_pathogen_testing,,dropdown,"Organism - Cerebrospinal fluid (CSF)","1, Neisseria meningitidis | 2, Streptococcus pneumoniae | 3, Listeria monocytogenes | 4, Haemophilus influenzae | 5, Herpes simplex virus | 6, Enterovirus | 7, Varicella zoster virus | 40, Other",,,,,,"[mborres_v2] = '1' and [mbspec_v2] = '5'",,RH,,,,
+mbtestcd_csfo,infectious_respiratory_disease_pathogen_testing,,text,"Other Cerebrospinal fluid (CSF) organism",,,,,,,"[mbtestcd_csf] = '40'",,RH,,,,
+mbtestcd_fst,infectious_respiratory_disease_pathogen_testing,,dropdown,"Organism - Faeces (stool)","1, Clostridium difficile (ONLY if ""toxin positive"") | 2, Strongyloides stercoralis | 3, Salmonella species | 4, Shigella species | 5, Campylobacter species | 40, Other",,,,,,"[mborres_v2] = '1' and [mbspec_v2] = '6'",,RH,,,,
+mbtestcd_fsto,infectious_respiratory_disease_pathogen_testing,,text,"Other Faeces (stool) organism",,,,,,,"[mbtestcd_fst] = '40'",,RH,,,,
+mbdat_v2,infectious_respiratory_disease_pathogen_testing,,text,"Date sample obtained",,,date_dmy,2000-01-01,,,"[mborres_v2] = '1'  or [mborres_v2] = '2'",y,RH,,,,
+mbspec_v3,infectious_respiratory_disease_pathogen_testing,,dropdown,"Other sample type with Positive results: Sample type
+This does not need to be recorded for V9.9 of the CRF onwards","1, Abdominopelvic | 2, Vascular access tip | 3, Catheter urine | 4, Abscess aspirate | 10, Other",,,,,,"[daily_mbperf] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",,RH,,,,
+mbtestcd_v3,infectious_respiratory_disease_pathogen_testing,,text,"Other sample type with Positive results: Organism",,,,,,,"[mbspec_v3] <> """"",y,RH,,,,
+mbdat_v3,infectious_respiratory_disease_pathogen_testing,,text,"Other sample type with Positive results : Date sample obtained",,,date_dmy,2000-01-01,,,"[mbspec_v3] <> """"",y,RH,,,,
+antiviral_cmyn,treatment,"MEDICATION: While hospitalised or at discharge, were any of the following administered?",radio,"Antiviral agent?","1, Yes | 2, No | 3, N/A",,,,,,,y,RH,,,,
+antiviral_cmtrt,treatment,,checkbox,"IF YES to antiviral agent","1, Ribavirin | 2, Lopinavir/Ritonvir | 3, Interferon alpha | 4, Interferon beta | 7, Chloroquine / Hydroxychloroquine | 10, Oseltamivir (Tamiflu) | 11, Zanamivir | 12, Casirivimab /Imdevimab | 8, Remdesivir | 9, IL6 inhibitor | 5, Neuraminidase inhibitors | 6, Other or novel antiviral",,,,,,"[antiviral_cmyn] = '1'",y,,,,,
+casiriv_cmtrt_first,treatment,,text,"If  YES to Casirivimab/Imdevimab: first dose",,,date_dmy,2000-01-01,,,"[antiviral_cmtrt(12)] = '1'",y,,,,,
+remdes_cmtrt_first,treatment,,text,"If  YES to Remdesivir: first dose",,,date_dmy,2000-01-01,,,"[antiviral_cmtrt(8)] = '1'",y,,,,,
+remdes_cmtrt_last,treatment,,text,"If  YES to Remdesivir: last dose",,,date_dmy,2000-01-01,,,"[antiviral_cmtrt(8)] = '1'",,,,,,
+il6_cmtrt,treatment,,dropdown,"If  YES to IL6 inhibitor: which","1, Tocilizumab | 2, Anakinra | 3, drug X | 10, Other IL6 inhibitor",,,,,,"[antiviral_cmtrt(9)] = '1'",y,,,,," @HIDECHOICE='3'"
+il6_cmtrt_other,treatment,,text,"Specify other IL6 inhibitor:",,,,,,,"[il6_cmtrt] = '10'",y,,,,,
+il6_cmtrt_first,treatment,,text,"If  YES to  IL6 inhibitor: first dose",,,date_dmy,2000-01-01,,,"[antiviral_cmtrt(9)] = '1'",y,,,,,
+il6_cmtrt_last,treatment,,text,"If  YES to IL6 inhibitor: last dose",,,date_dmy,2000-01-01,,,"[antiviral_cmtrt(9)] = '1'",,,,,,
+neuro_cmtrt,treatment,,text,"If  'Neuraminidase inhibitors'; Specify which",,,,,,,"[antiviral_cmtrt(5)] = '1'",,,,,,
+othantiviral_cmtrt,treatment,,text,"If  'Other' antiviral agent; Specify type",,,,,,,"[antiviral_cmtrt(6)] = '1'",,,,,,
+othantiviral2_cmyn,treatment,,yesno,"Would you like to add another antiviral?",,,,,,,"[antiviral_cmtrt(6)] = '1'",y,RH,,,,
+othhantiviral2_cmtrt,treatment,,text,"If  'Other' antiviral agent; Specify type",,,,,,,"[othantiviral2_cmyn] = '1'",,,,,,
+othantiviral3_cmyn,treatment,,yesno,"Would you like to add another antiviral?",,,,,,,"[othantiviral2_cmyn] = '1'",y,RH,,,,
+othantiviral3_cmtrt,treatment,,text,"If  'Other' antiviral agent; Specify type",,,,,,,"[othantiviral3_cmyn] = '1'",,,,,,
+othantiviral4_cmyn,treatment,,yesno,"Would you like to add another antiviral?",,,,,,,"[othantiviral3_cmyn] = '1'",,RH,,,,
+othantiviral4_cmtrt,treatment,,text,"If  'Other' antiviral agent; Specify type",,,,,,,"[othantiviral4_cmyn] = '1'",,,,,,
+othantiviral5_cmyn,treatment,,yesno,"Would you like to add another antiviral?",,,,,,,"[othantiviral4_cmyn] = '1'",,RH,,,,
+othantiviral5_cmtrt,treatment,,text,"If  'Other' antiviral agent; Specify type",,,,,,,"[othantiviral5_cmyn] = '1'",,,,,,
+antibiotic_cmyn,treatment,,radio,"Antibiotic agent?","1, Yes | 2, No | 3, N/A",,,,,,,y,RH,,,,
+antibiotic_cmtrt,treatment,,text,"IF YES to antibiotic agent; Specify type",,,,,,,"[antibiotic_cmyn] = '1'",y,,,,,
+antibiotic2_cmyn,treatment,,radio,"Would you like to add another antibiotic?","1, Yes | 2, No | 3, N/A",,,,,,"[antibiotic_cmyn] = '1'",y,RH,,,,
+antibiotic2_cmtrt,treatment,,text,"IF YES to antibiotic agent; Specify type",,,,,,,"[antibiotic2_cmyn] = '1'",y,,,,,
+antibiotic3_cmyn,treatment,,radio,"Would you like to add another antibiotic?","1, Yes | 2, No | 3, N/A",,,,,,"[antibiotic2_cmyn] = '1'",y,RH,,,,
+antibiotic3_cmtrt,treatment,,text,"IF YES to antibiotic agent; Specify type",,,,,,,"[antibiotic3_cmyn] = '1'",y,,,,,
+antibiotic4_cmyn,treatment,,radio,"Would you like to add another antibiotic?","1, Yes | 2, No | 3, N/A",,,,,,"[antibiotic3_cmyn] = '1'",y,RH,,,,
+antibiotic4_cmtrt,treatment,,text,"IF YES to antibiotic agent; Specify type",,,,,,,"[antibiotic4_cmyn] = '1'",y,,,,,
+antibiotic5_cmyn,treatment,,radio,"Would you like to add another antibiotic?","1, Yes | 2, No | 3, N/A",,,,,,"[antibiotic4_cmyn] = '1'",y,RH,,,,
+antibiotic5_cmtrt,treatment,,text,"IF YES to antibiotic agent; Specify type",,,,,,,"[antibiotic5_cmyn] = '1'",y,,,,,
+antibiotic6_cmyn,treatment,,radio,"Would you like to add another antibiotic?","1, Yes | 2, No | 3, N/A",,,,,,"[antibiotic5_cmyn] = '1'",y,RH,,,,
+antibiotic6_cmtrt,treatment,,text,"IF YES to antibiotic agent; Specify type",,,,,,,"[antibiotic6_cmyn] = '1'",y,,,,,
+antibiotic7_cmyn,treatment,,radio,"Would you like to add another antibiotic?","1, Yes | 2, No | 3, N/A",,,,,,"[antibiotic6_cmyn] = '1'",y,RH,,,,
+antibiotic7_cmtrt,treatment,,text,"IF YES to antibiotic agent; Specify type",,,,,,,"[antibiotic7_cmyn] = '1'",y,,,,,
+corticost_cmyn,treatment,,radio,"Corticosteroid agent?","1, Yes | 2, No | 3, N/A",,,,,,,y,RH,,,,
+corticost_cmtrt_type,treatment,,dropdown,"If YES to Corticosteroid, please confirm type: ","1, Methylprednisolone | 2, Prednisolone | 3, Dexamethasone | 88, Other",,,,,,"[corticost_cmyn] = '1'",,,,,,
+corticost_cmtrt,treatment,,text,"If YES to Corticosteroid, specify type/name or details of 'Other' corticosteroid:",,,,,,,"[corticost_cmyn] = '1'",,,,,,
+corticost_text,treatment,,descriptive,"Please record Dexamethasone into the Dexamethasone fields below, rather than the Corticosteroid Route and Dose fields here",,,,,,,"[corticost_cmtrt_type] = '3'",,,,,,
+corticost_cmroute,treatment,,dropdown,"If YES to Corticosteroid, specify Route","1, Oral|2, Intravenous|3, Inhaled",,,,,,"[corticost_cmyn] = '1'",,,,,,
+corticost_cmdose,treatment,,text,"If YES to Corticosteroid, specify dose",,,,,,,"[corticost_cmyn] = '1'",,,,,,
+corticost2_cmyn,treatment,,radio,"Would you like to add another Corticosteroid agent?","1, Yes | 2, No | 3, N/A",,,,,,"[corticost_cmyn] = '1'",,RH,,,,
+corticost2_cmtrt_type,treatment,,dropdown,"If YES to Corticosteroid, please confirm type: ","1, Methylprednisolone | 2, Prednisolone | 3, Dexamethasone | 88, Other",,,,,,"[corticost2_cmyn] = '1'",,,,,,
+corticost2_cmtrt,treatment,,text,"If YES to Corticosteroid, specify type/name or details of 'Other' corticosteroid:",,,,,,,"[corticost2_cmyn] = '1'",,,,,,
+corticos2_text,treatment,,descriptive,"Please record Dexamethasone into the Dexamethasone fields below, rather than the Corticosteroid Route and Dose fields here",,,,,,,"[corticost2_cmtrt_type] = '3'",,,,,,
+corticost2_cmroute,treatment,,dropdown,"If YES to Corticosteroid, specify Route","1, Oral | 2, Intravenous | 3, Inhaled",,,,,,"[corticost2_cmyn] = '1'",,,,,,
+corticost2_cmdose,treatment,,text,"If YES to Corticosteroid, specify dose",,,,,,,"[corticost2_cmyn] = '1'",,,,,,
+corticost3_cmyn,treatment,,radio,"Would you like to add another Corticosteroid agent?","1, Yes | 2, No | 3, N/A",,,,,,"[corticost2_cmyn] = '1'",,RH,,,,
+corticost3_cmtrt_type,treatment,,dropdown,"If YES to Corticosteroid, please confirm type: ","1, Methylprednisolone | 2, Prednisolone | 3, Dexamethasone | 88, Other",,,,,,"[corticost3_cmyn] = '1'",,,,,,
+corticost3_cmtrt,treatment,,text,"If YES to Corticosteroid, specify type/name or details of 'Other' corticosteroid:",,,,,,,"[corticost3_cmyn] = '1'",,,,,,
+corticos3_text,treatment,,descriptive,"Please record Dexamethasone into the Dexamethasone fields below, rather than the Corticosteroid Route and Dose fields here",,,,,,,"[corticost3_cmtrt_type] = '3'",,,,,,
+corticost3_cmroute,treatment,,dropdown,"If YES to Corticosteroid, specify Route","1, Oral | 2, Intravenous | 3, Inhaled",,,,,,"[corticost3_cmyn] = '1'",,,,,,
+corticost3_cmdose,treatment,,text,"If YES to Corticosteroid, specify dose",,,,,,,"[corticost3_cmyn] = '1'",,,,,,
+corticost4_cmyn,treatment,,radio,"Would you like to add another Corticosteroid agent?","1, Yes | 2, No | 3, N/A",,,,,,"[corticost3_cmyn] = '1'",,RH,,,,
+corticost4_cmtrt_type,treatment,,dropdown,"If YES to Corticosteroid, please confirm type: ","1, Methylprednisolone | 2, Prednisolone | 3, Dexamethasone | 88, Other",,,,,,"[corticost4_cmyn] = '1'",,,,,,
+corticost4_cmtrt,treatment,,text,"If YES to Corticosteroid, specify type/name or details of 'Other' corticosteroid:",,,,,,,"[corticost4_cmyn] = '1'",,,,,,
+corticos4_text,treatment,,descriptive,"Please record Dexamethasone into the Dexamethasone fields below, rather than the Corticosteroid Route and Dose fields here",,,,,,,"[corticost4_cmtrt_type] = '3'",,,,,,
+corticost4_cmroute,treatment,,dropdown,"If YES to Corticosteroid, specify Route","1, Oral | 2, Intravenous | 3, Inhaled",,,,,,"[corticost4_cmyn] = '1'",,,,,,
+corticost4_cmdose,treatment,,text,"If YES to Corticosteroid, specify dose",,,,,,,"[corticost4_cmyn] = '1'",,,,,,
+corticost5_cmyn,treatment,,radio,"Would you like to add another Corticosteroid agent?","1, Yes | 2, No | 3, N/A",,,,,,"[corticost4_cmyn] = '1'",,RH,,,,
+corticost5_cmtrt_type,treatment,,dropdown,"If YES to Corticosteroid, please confirm type: ","1, Methylprednisolone | 2, Prednisolone | 3, Dexamethasone | 88, Other",,,,,,"[corticost5_cmyn] = '1'",,,,,,
+corticost5_cmtrt,treatment,,text,"If YES to Corticosteroid, specify type/name or details of 'Other' corticosteroid:",,,,,,,"[corticost5_cmyn] = '1'",,,,,,
+corticos5_text,treatment,,descriptive,"Please record Dexamethasone into the Dexamethasone fields below, rather than the Corticosteroid Route and Dose fields here",,,,,,,"[corticost5_cmtrt_type] = '3'",,,,,,
+corticost5_cmroute,treatment,,dropdown,"If YES to Corticosteroid, specify Route","1, Oral | 2, Intravenous | 3, Inhaled",,,,,,"[corticost5_cmyn] = '1'",,,,,,
+corticost5_cmdose,treatment,,text,"If YES to Corticosteroid, specify dose",,,,,,,"[corticost5_cmyn] = '1'",,,,,,
+dexamethasone,treatment,,radio,"Dexamethasone 6mg once per day?","1, Yes | 2, No | 3, N/K | 4, Yes to Dexamethasone but other dose | 5, Yes to Dexamethasone but other frequency | 6, Yes to Dexamethasone but other dose AND other frequency",,,,,,,y,,,,,
+dexamethasone_days,treatment,,text,"Dexamethasone, for how many days",,,integer,1,,,"[dexamethasone] = '1' or [dexamethasone] = '4' or [dexamethasone] = '5' or [dexamethasone] = '6'",,,,,,
+dexamethasone_dose,treatment,,text,"Dexamethasone Dose in milligrams (mg)",,,number,0,,,"[dexamethasone] = '4' or [dexamethasone] = '6'",y,,,,,
+dexamethasone_freq,treatment,,dropdown,"Dexamethasone Frequency ","1, q.d - once a day | 2, b.i.d - twice a day | 3, t.i.d - three times a day | 4, q.i.d - four times a day | 5, q.h.s - before bed | 6, 5X a day - five times a day | 7, q.4h - every four hours | 8, q.6h - every six hours | 9, q.o.d - every other day | 10, prn - as needed | 11, Other frequency | 99, Unknown",,,,,,"[dexamethasone] = '5' or [dexamethasone] = '6'",y,,,,," @HIDECHOICE='1'"
+dexamethasone_other_freq,treatment,,text,"Dexamethasone, specify Other frequency ",,,,,,,"[dexamethasone_freq] = '11'",y,,,,,
+dexamethasone_route,treatment,,dropdown,"If Yes to Dexamethasone, specify Route:","1, Oral | 2, Intravenous",,,,,,"[dexamethasone] = '1' or [dexamethasone] = '4' or [dexamethasone] = '5' or [dexamethasone] = '6'",y,RH,,,,
+dexamethasone2,treatment,,radio,"Second dose of Dexamethasone given? ","1, Yes | 0, No | 3, N/K",,,,,,"[dexamethasone] = '1' or [dexamethasone] = '4' or [dexamethasone] = '5' or [dexamethasone] = '6'",,RH,,,,
+dexamethasone2_dose,treatment,,text,"Dexamethasone 2  Dose in milligrams (mg)",,,number,1,,,"[dexamethasone2] = '1'",y,,,,,
+dexamethasone2_freq,treatment,,dropdown,"Dexamethasone 2 Frequency ","1, q.d - once a day | 2, b.i.d - twice a day | 3, t.i.d - three times a day | 4, q.i.d - four times a day | 5, q.h.s - before bed | 6, 5X a day - five times a day | 7, q.4h - every four hours | 8, q.6h - every six hours | 9, q.o.d - every other day | 10, prn - as needed | 11, Other frequency | 99, Unknown",,,,,,"[dexamethasone2] = '1'",y,,,,,
+dexamethasone2_other_freq,treatment,,text,"Dexamethasone 2, specify Other frequency ",,,,,,,"[dexamethasone2_freq] = '11'",y,,,,,
+dexamethasone2_route,treatment,,dropdown,"Dexamethasone 2 Route","1, Oral | 2, Intravenous",,,,,,"[dexamethasone2] = '1'",y,RH,,,,
+dexamethasone2_days,treatment,,text,"Dexamethasone 2, number of days given",,,integer,1,,,"[dexamethasone2] = '1'",y,RH,,,,
+dexamethasone3,treatment,,radio,"Third dose of Dexamethasone given? ","1, Yes | 0, No | 3, N/K",,,,,,"[dexamethasone2] = '1'",,RH,,,,
+dexamethasone3_dose,treatment,,text,"Dexamethasone 3  Dose in milligrams (mg)",,,number,1,,,"[dexamethasone3] = '1'",y,,,,,
+dexamethasone3_freq,treatment,,dropdown,"Dexamethasone 3 Frequency ","1, q.d - once a day | 2, b.i.d - twice a day | 3, t.i.d - three times a day | 4, q.i.d - four times a day | 5, q.h.s - before bed | 6, 5X a day - five times a day | 7, q.4h - every four hours | 8, q.6h - every six hours | 9, q.o.d - every other day | 10, prn - as needed | 11, Other frequency | 99, Unknown",,,,,,"[dexamethasone3] = '1'",y,,,,,
+dexamethasone3_other_freq,treatment,,text,"Dexamethasone 3, specify Other frequency ",,,,,,,"[dexamethasone3_freq] = '11'",y,,,,,
+dexamethasone3_route,treatment,,dropdown,"Dexamethasone 3 Route","1, Oral | 2, Intravenous",,,,,,"[dexamethasone3] = '1'",y,RH,,,,
+dexamethasone3_days,treatment,,text,"Dexamethasone 3, number of days given",,,integer,1,,,"[dexamethasone3] = '1'",y,RH,,,,
+dexamethasone4,treatment,,radio,"Fourth dose of Dexamethasone given? ","1, Yes | 0, No | 3, N/K",,,,,,"[dexamethasone3] = '1'",,RH,,,,
+dexamethasone4_dose,treatment,,text,"Dexamethasone 4  Dose in milligrams (mg)",,,number,1,,,"[dexamethasone4] = '1'",y,,,,,
+dexamethasone4_freq,treatment,,dropdown,"Dexamethasone 4 Frequency ","1, q.d - once a day | 2, b.i.d - twice a day | 3, t.i.d - three times a day | 4, q.i.d - four times a day | 5, q.h.s - before bed | 6, 5X a day - five times a day | 7, q.4h - every four hours | 8, q.6h - every six hours | 9, q.o.d - every other day | 10, prn - as needed | 11, Other frequency | 99, Unknown",,,,,,"[dexamethasone4] = '1'",y,,,,,
+dexamethasone4_other_freq,treatment,,text,"Dexamethasone 4, specify Other frequency ",,,,,,,"[dexamethasone4_freq] = '11'",y,,,,,
+dexamethasone4_route,treatment,,dropdown,"Dexamethasone 4 Route","1, Oral | 2, Intravenous",,,,,,"[dexamethasone4] = '1'",y,RH,,,,
+dexamethasone4_days,treatment,,text,"Dexamethasone 4, number of days given",,,integer,1,,,"[dexamethasone4] = '1'",y,RH,,,,
+dexamethasone5,treatment,,radio,"Fifth dose of Dexamethasone given? ","1, Yes | 0, No | 3, N/K",,,,,,"[dexamethasone4] = '1'",,RH,,,,
+dexamethasone5_dose,treatment,,text,"Dexamethasone 5  Dose in milligrams (mg)",,,number,1,,,"[dexamethasone5] = '1'",y,,,,,
+dexamethasone5_freq,treatment,,dropdown,"Dexamethasone 5 Frequency ","1, q.d - once a day | 2, b.i.d - twice a day | 3, t.i.d - three times a day | 4, q.i.d - four times a day | 5, q.h.s - before bed | 6, 5X a day - five times a day | 7, q.4h - every four hours | 8, q.6h - every six hours | 9, q.o.d - every other day | 10, prn - as needed | 11, Other frequency | 99, Unknown",,,,,,"[dexamethasone5] = '1'",y,,,,,
+dexamethasone5_other_freq,treatment,,text,"Dexamethasone 5, specify Other frequency ",,,,,,,"[dexamethasone5_freq] = '11'",y,,,,,
+dexamethasone5_route,treatment,,dropdown,"Dexamethasone 5 Route","1, Oral | 2, Intravenous",,,,,,"[dexamethasone5] = '1'",y,RH,,,,
+dexamethasone5_days,treatment,,text,"Dexamethasone 5, number of days given",,,integer,1,,,"[dexamethasone5] = '1'",y,RH,,,,
+antifung_cmyn,treatment,,radio,"Antifungal agent?","1, Yes | 2, No | 3, N/A",,,,,,,y,RH,,,,
+antifungal_cmtrt,treatment,,text,"IF YES to antifungal agent; Specify which",,,,,,,"[antifung_cmyn] = '1'",y,,,,,
+offlabel_cmyn,treatment,,radio,"Off-label / Compassionate Use medications?  ","1, Yes | 2, No | 3, N/K",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",y,RH,,,,
+offlabel_cmtrt,treatment,,text,"IF YES to Off-label / Compassionate Use medications; Specify which",,,,,,,"[offlabel_cmyn] = '1'",y,RH,,,,
+interleukin_cmyn,treatment,,radio,"Interleukin inhibitors","1, Yes | 2, No | 3, N/K",,,,,,,,RH,,,,
+interleukin_cmtrt,treatment,,text,"IF YES to Interleukin inhibitors; Specify which",,,,,,,"[interleukin_cmyn] = '1'",y,RH,,,,
+conv_plasma_cmyn,treatment,,radio,"Convalescent plasma","1, Yes | 2, No | 3, N/K",,,,,,,,RH,,,,
+icu_hoterm,treatment,"TREATMENT: At ANY time during hospitalisation, did the patient receive/undergo:",dropdown,"ICU or High Dependency admission","1, Yes | 2, No | 3, N/A",,,,,,,y,,,,,
+icu_no,treatment,,radio,"If No to ICU or High Dependency Unit admission:","1, Not indicated | 2, Not appropriate",,,,,,"[icu_hoterm] = '2' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",y,RH,,,,
+icu_hostdat,treatment,,text,"Date of ICU/HDU admission:",,,date_dmy,2000-01-01,,,"[icu_hoterm] = '1' and [icu_hostdatnk] = """"",,,,,,
+icu_hostdatnk,treatment,,radio,"Date of ICU/HDU admission N/K","1, N/K",,,,,,"([icu_hoterm] = '1' and [icu_hostdat] = """")",,,,,,
+icu_hoendat,treatment,,text,"Date of ICU/HDU discharge:",,,date_dmy,2000-01-01,,,"[icu_hoterm] = '1' and [icu_hoendatnk] = """" and [icu_hostillin] = """"",,,,,,
+icu_hoendatnk,treatment,,radio,"Date of discharge N/K","1, N/K",,,,,,"[icu_hoterm] = '1' and [icu_hoendat] = """" and [icu_hostillin] = """"",,,,,,
+icu_hostdat2,treatment,,text,"Date of ICU/HDU admission 2:",,,date_dmy,2000-01-01,,,"[icu_hoterm] = '1' and [icu_hostdat2_nk] = """"",,,,,,
+icu_hostdat2_nk,treatment,,radio,"Date of ICU/HDU admission 2 N/K","1, N/K",,,,,,"[icu_hoterm] = '1' and [icu_hostdat2] = """"",,,,,,
+icu_hoendat2,treatment,,text,"Date of ICU/HDU discharge 2:",,,date_dmy,2000-01-01,,,"[icu_hoterm] = '1' and [icu_hoendat2_nk] = """" and [icu_hostillin] = """"",,,,,,
+icu_hoendat2_nk,treatment,,radio,"Date of ICU/HDU discharge 2 N/K","1, N/K",,,,,,"[icu_hoterm] = '1' and [icu_hoendat2] = """" and [icu_hostillin] = """"",,,,,,
+icu_hostdat3,treatment,,text,"Date of ICU/HDU admission 3:",,,date_dmy,2000-01-01,,,"[icu_hoterm] = '1' and [icu_hostdat3_nk] = """"",,,,,,
+icu_hostdat3_nk,treatment,,radio,"Date of ICU/HDU admission 3 N/K","1, N/K",,,,,,"[icu_hoterm] = '1' and [icu_hostdat3] = """"",,,,,,
+icu_hoendat3,treatment,,text,"Date of ICU/HDU discharge 3:",,,date_dmy,2000-01-01,,,"[icu_hoterm] = '1' and [icu_hoendat3_nk] = """" and [icu_hostillin] = """"",,,,,,
+icu_hoendat3_nk,treatment,,radio,"Date of ICU/HDU discharge 3 N/K","1, N/K",,,,,,"[icu_hoterm] = '1' and [icu_hoendat3] = """" and [icu_hostillin] = """"",,,,,,
+icu_hostillin,treatment,,radio,"Still in ICU/HDU","1, Yes",,,,,,"[icu_hoterm] = '1' and (([icu_hoendat] = """" and [icu_hoendatnk] = """") or ([icu_hostdat2] <> """" and [icu_hoendat2] = """" and [icu_hoendat2_nk] = """") or ([icu_hostdat3] <> """" and [icu_hoendat3] = """" and [icu_hoendat3_nk] = """"))",,,,,,
+hodur,treatment,,text,"If YES, total duration (days)",,,integer,1,,,"[icu_hoterm] = '1' and [icu_hostillin] = """"",y,,,,,
+oxygen_cmoccur,treatment,"At ANY time during hospitalisation, did the patient receive/undergo",radio,"Oxygen therapy","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+oxygenhf_cmoccur,treatment,,radio,"High-flow nasal canula?","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",y,,,core_treatment,,
+noninvasive_proccur,treatment,,radio,"Non-invasive ventilation ? (e.g. BIPAP, CPAP)","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+invasive_proccur,treatment,,radio,"Invasive ventilation (Any intubation) ?","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+pronevent_prtrt,treatment,,radio,"Prone ventilation","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+inhalednit_cmtrt,treatment,,radio,"Inhaled Nitric Oxide","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+tracheo_prtrt,treatment,,radio,"Tracheostomy inserted","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+extracorp_prtrt,treatment,,radio,"Extracorporeal (ECMO) support","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+rrt_prtrt,treatment,,radio,"Renal replacement therapy (RRT) or dialysis","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+inotrop_cmtrt,treatment,,radio,"Inotropes / vasopressors","1, YES | 2, NO | 3, N/A",,,,,,,y,,,core_treatment,,
+invasive_prdur,treatment,,text,"If yes to Invasive ventilation; confirm duration ",,days,integer,1,,,"[invasive_proccur] = '1' and [invasive_still_on] = """"",,,,,,
+invasive_still_on,treatment,,radio,"If yes to Invasive ventilation - still on it","1, still on",,,,,,"[invasive_proccur] = '1' and [invasive_prdur] = """"",,,,,,
+excorp_prdur,treatment,,text,"If YES to Extracorporeal (ECMO) support; confirm duration",,days,integer,1,,,"[extracorp_prtrt] = '1' and [excorp_still_on] = """"",,,,,,
+excorp_still_on,treatment,,radio,"If yes to Extracorporeal (ECMO) support - still on it","1, still on",,,,,,"[extracorp_prtrt] = '1' and [excorp_prdur] = """"",,,,,,
+rrt_totdur,treatment,,text,"If YES to RRT or dialysis, total duration",,days,integer,1,,,"[rrt_prtrt] = '1' and [rrt_still_on] = """"",,,,,,
+rrt_still_on,treatment,,radio,"If YES to RRT or dialysis - still on it","1, still on",,,,,,"[rrt_prtrt] = '1' and  [rrt_totdur] = """"",,,,,,
+inotrope_cmdur,treatment,,text,"If YES to Inotropes/vasopressors; confirm duration",,days,integer,1,,,"[inotrop_cmtrt] = '1' and [inotrope_still_on] = """"",,,,,,
+inotrope_still_on,treatment,,radio,"If YES to Inotropes/vasopressors - still on them","1, still on",,,,,,"[inotrop_cmtrt] = '1' and [inotrope_cmdur] = """"",,,,,,
+other_cmyn,treatment,,radio,"OTHER intervention or procedure","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",y,RH,,,,
+other_cm,treatment,,text,"IF  YES OTHER intervention or procedure; Specify",,"Write 'N/A' for no additional procedure",,,,,"[other_cmyn] = '1'",y,,,,,
+bloodgroup,treatment,,radio,"Blood Group (please check past as well as current medical record)","1, A | 2, B | 3, AB | 4, O | 9, N/K",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",y,RH,,,,
+complications_none,complications,"COMPLICATIONS:
+At any time during hospitalisation did the patient experience:",radio,"No complications","1, No complications",,,,,,"[vrialpneu_ceoccur] = """" and [bactpneu_ceoccur] = """" and [ards_ceoccur] = """" and [cryptogenic_ceterm] = """" and [pneumothorax_ceterm] = """" and [pleuraleff_ceterm] = """" and [bronchio_ceterm] = """" and [meningitis_ceterm] = """" and [seizure_ceterm] = """" and [stroke_ceterm] = """" and [neuro_comp] = """" and [heartfailure_ceterm] = """" and [endocarditis_aeterm] = """" and [myocarditis_ceterm] = """" and [cardiomyopathy_ceterm] = """" and [arrhythmia_ceterm] = """" and [ischaemia_ceterm] = """" and [cardiacarrest_ceterm] = """" and [bacteraemia_ceterm] = """" and [coagulo_ceterm] = """" and [dvt_ceterm] = """" and [pulmthromb_ceterm] = """" and [aneamia_ceterm] = """" and [rhabdomyolsis_ceterm] = """" and [renalinjury_ceterm] = """" and [gastro_ceterm] = """" and [pancreat_ceterm] = """" and [liverdysfunction_ceterm] = """" and [hyperglycemia_aeterm] = """" and [hypoglycemia_ceterm] = """" and [other_ceoccur] = """"",y,,,,,
+vrialpneu_ceoccur,complications,,radio,"Viral Pneumonia","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+bactpneu_ceoccur,complications,,radio,"Bacterial pneumonia","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+ards_ceoccur,complications,,radio,"Acute Respiratory Distress Syndrome","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+cryptogenic_ceterm,complications,,radio,"Cryptogenic organizing pneumonia (COP)","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+pneumothorax_ceterm,complications,,radio,Pneumothorax,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+pleuraleff_ceterm,complications,,radio,"Pleural effusion","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+bronchio_ceterm,complications,,radio,Bronchiolitis,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+meningitis_ceterm,complications,,radio,"Meningitis / Encephalitis","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+seizure_ceterm,complications,,radio,Seizure,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+stroke_ceterm,complications,,radio,"Stroke / Cerebrovascular accident","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+neuro_comp,complications,,radio,"Other neurological complication","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [complications_none] = """"",y,,,core_complications,,
+heartfailure_ceterm,complications,,radio,"Congestive heart failure","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+endocarditis_aeterm,complications,,radio,"Endocarditis / Myocarditis Pericarditis (for newer CRF this option covers Endocarditis only)","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+myocarditis_ceterm,complications,,radio,"Myocarditis / Pericarditis","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [complications_none] = """"",y,,,core_complications,,
+cardiomyopathy_ceterm,complications,,radio,Cardiomyopathy,"1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """")) and [complications_none] = """"",y,,,core_complications,,
+arrhythmia_ceterm,complications,,radio,"Cardiac arrhythmia","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+ischaemia_ceterm,complications,,radio,"Cardiac ischemia","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+cardiacarrest_ceterm,complications,,radio,"Cardiac arrest","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+bacteraemia_ceterm,complications,,radio,Bacteraemia,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+coagulo_ceterm,complications,,radio,"Coagulation disorder / Disseminated intravascular coagulation","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+dvt_ceterm,complications,,radio,"Deep vein thrombosis","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """")) and [complications_none] = """"",y,,,core_complications,,
+pulmthromb_ceterm,complications,,radio,"Pulmonary thromboembolism","1, YES | 2, NO | 3, N/A",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """")) and [complications_none] = """"",y,,,core_complications,,
+aneamia_ceterm,complications,,radio,Anaemia,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+rhabdomyolsis_ceterm,complications,,radio,"Rhabdomyolysis / Myositis","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+renalinjury_ceterm,complications,,radio,"Acute renal injury / Acute renal failure","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+gastro_ceterm,complications,,radio,"Gastrointestinal hemorrhage","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+pancreat_ceterm,complications,,radio,Pancreatitis,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+liverdysfunction_ceterm,complications,,radio,"Liver dysfunction","1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+hyperglycemia_aeterm,complications,,radio,Hyperglycaemia,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+hypoglycemia_ceterm,complications,,radio,Hypoglycaemia,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",y,,,core_complications,,
+other_ceoccur,complications,,radio,Other,"1, YES | 2, NO | 3, N/A",,,,,,"[complications_none] = """"",,,,core_complications,,
+other_ceterm,complications,,text,"If  ""Other""; Specify",,,,,,,"[other_ceoccur] = '1'",y,,,,,
+recruitment,study_participation,,yesno,"Is/Has the participant being recruited to a trial or multi-centre study during the period of their current illness (including initiation in the community and hospital)?",,,,,,,,y,RH,,,,
+study_1_name,study_participation,,text,"If YES, specify name of study: 
+
+",,,,,,,"[recruitment] = '1'",y,,,,,
+study_1_id,study_participation,,text,"Study Participant ID: 
+
+",,,,,,,"[recruitment] = '1'",y,,,,,
+study_2,study_participation,,yesno,"Add another study?",,,,,,,"[recruitment] = '1'",y,RH,,,,
+study_2_name,study_participation,,text,"If YES, specify name of study: ",,,,,,,"[study_2] = '1'",y,RH,,,,
+study_2_id,study_participation,,text,"Study Participant ID: ",,,,,,,"[study_2] = '1'",y,RH,,,,
+study_3,study_participation,,yesno,"Add another study? ",,,,,,,"[study_2] = '1'",y,RH,,,,
+study_3_name,study_participation,,text,"If YES, specify name of study: ",,,,,,,"[study_3] = '1'",y,RH,,,,
+study_3_id,study_participation,,text,"Study Participant ID: ",,,,,,,"[study_3] = '1'",y,RH,,,,
+postpart_rptestcd_out,outcome,,radio,"PREGNANCY OUTCOME: If delivered during admission, please confirm:
+POST PARTUM (within six weeks of delivery)","1, Yes | 0, No | 3, N/K",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][pregyn_rptestcd] = '1') or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][pregyn_rptestcd] = '1') or ([arm-number] = '3' and [day_1_arm_3][pregyn_rptestcd] = '1'))",,RH,,,,
+pregout_rptestcd_out,outcome,,radio,"Pregnancy Outcome","1, Live birth | 2, Still birth",,,,,,"[postpart_rptestcd_out] = '1'",y,RH,,,,
+dlvrdtc_rptestcd_out,outcome,,text,"Delivery Date",,,date_dmy,2000-01-01,,,"[postpart_rptestcd_out] = '1'",y,RH,,,,
+aplb_lbperf_out,outcome,,radio,"Has infant(s) been tested for Mother's infection?","1, Yes | 2, No | 3, N/K",,,,,,"[postpart_rptestcd_out] = '1' and [pregout_rptestcd_out] = '1'",y,RH,,,,
+aplb_lborres_out,outcome,,radio,"If YES (to Has infant been tested for Mother's infection):","1, Positive | 2, Negative",,,,,,"[aplb_lbperf_out] = '1'",y,RH,,,,
+outcome_text1,outcome,,descriptive,"OUTCOME: (complete at discharge, transfer, death or DAY 28, whichever occurs first)",,,,,,,,,,,,,
+dsterm,outcome,,dropdown,Outcome:,"1, Discharged alive | 2, Hospitalisation (Remains in Hospital &geq; Day 28 after symptom onset) | 3, Transfer to other facility | 4, Death | 5, Palliative discharge | 6, Unknown",,,,,,,y,,,,,
+dshosp,outcome,,dropdown,"If hospitalised:","1, Ongoing health care needs relating to this admission for COVID-19 | 3, Ongoing health care needs NOT related to COVID episode | 2, Medically fit for discharge (COVID-19 resolved) but remains in hospital for other reason (e.g. awaiting suitable care in community, resident in long term health care or mental health facility)",,,,,,"[dsterm] = '2' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",y,,,,,
+dsstdtcyn,outcome,,radio,"Is the Outcome date known","1, Yes|2, No|3, N/A",,,,,,,y,,,,,
+dsstdtc,outcome,,text,"Outcome date",,,date_dmy,2000-01-01,,,"[dsstdtcyn] = '1'",y,,,,,
+suppds_qval,outcome,"IF Discharged alive:",dropdown,"If Discharged alive:
+Ability to self-care at discharge versus before illness","1, Same as before illness | 2, Worse | 3, Better | 4, N/A",,,,,,"[dsterm] = '1'",y,,,,,
+oxygen_proccur,outcome,"Post-discharge treatment:",radio,"Oxygen therapy","1, YES | 2, NO | 3, N/A",,,,,,"[dsterm] = '1'",y,,,core_outcome_discharged,,
+renal_proccur,outcome,,radio,"Dialysis / renal treatment?","1, YES | 2, NO | 3, N/A",,,,,,"[dsterm] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",y,,,core_outcome_discharged,,
+other_cmoccur,outcome,,radio,"Other intervention or procedure?","1, YES | 2, NO | 3, N/A",,,,,,"[dsterm] = '1' and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] = """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] = """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] = """"))",y,,,core_outcome_discharged,,
+other_cmtrt,outcome,,text,"If YES: Specify (multiple permitted)",,,,,,,"[other_cmoccur] = '1'",y,,,,,
+siteid,outcome,"IF Transferred:",text,"If Transferred: Facility name",,,,,,,"[dsterm] = '3' and [siteidnk] = """"",,,,,,
+siteidnk,outcome,,radio,"If Transferred: Facility name N/K","1, N/K",,,,,,"[dsterm] = '3' and [siteid] = """" and (([arm-number] = '1' and [day_1_hospital_adm_arm_1][covid19_new] <> """") 
+or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][covid19_new] <> """") 
+or ([arm-number] = '3' and [day_1_arm_3][covid19_new] <> """"))",,,,,,
+siteyn,outcome,,dropdown,"If Transferred: Is the transfer facility a study site?","1, Yes | 2, No | 3, N/A",,,,,,"[dsterm] = '3'",y,,,,,
+subjidcat,outcome,,dropdown,"If a Study Site: Participant number at new facility","1, Same as the above | 2, Different | 3, N/K",,,,,,"[siteyn] = '1'",y,,,,,
+transfer_subjid,outcome,,text,"If Different, Participant number at the new facility
+(CPMS Site code (hypen) four or five digit number patient number e.g Y0401-0001).",,,,,,,"[subjidcat] = '2'",y,,,,,
+final_outcome_text1,final_outcome,,descriptive,"Questions in this form will only display if you have selected Yes for Are you completing details for CRF v9.7 or later?, in the Inclusion Criteria form",,,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] = """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] = """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] = """"))",,,,,," @HIDDEN"
+dsterm_v2,final_outcome,"FINAL OUTCOME - this form no longer needs completing",dropdown,Outcome,"1, Discharged alive expected to survive | 5, Palliative discharge | 4, Death, | 3, Transfer to other facility | 6, N/K",,,,,,"(([arm-number] = '1' and [day_1_hospital_adm_arm_1][version_9_7] <> """") or ([arm-number] = '2' and [day_1_hospitalicu_arm_2][version_9_7] <> """") or ([arm-number] = '3' and [day_1_arm_3][version_9_7] <> """"))",,,,,,
+dsstdtc_v2,final_outcome,,text,"Outcome date",,,date_dmy,2000-01-01,,,"[dsterm_v2] <> """" and [dsstdtc_v2_nk] = """"",y,,,,,
+dsstdtc_v2_nk,final_outcome,,radio,"Outcome date N/K","1, N/K",,,,,,"[dsterm_v2] <> """" and [dsstdtc_v2] = """"",y,,,,,
+suppds_qval_v2,final_outcome,"If discharged alive",dropdown,"Ability to self-care at discharge versus before illness:  ","1, Same as before illness | 2, Worse | 3, Better | 4, N/K",,,,,,"[dsterm_v2] = '1'",y,,,,,
+oxygen_proccur_v2,final_outcome,,radio,"Post-discharge treatment:
+Oxygen therapy","1, Yes | 2, No | 3, N/K",,,,,,"[dsterm_v2] = '1'",y,RH,,,,
+siteid_v2,final_outcome,"If transferred",text,"If Transferred: Facility name",,,,,,,"[dsterm_v2] = '3' and [siteid_v2_nk] = """"",y,RH,,,,
+siteid_v2_nk,final_outcome,,radio,"If Transferred: Facility name N/K","1, N/K",,,,,,"[dsterm_v2] = '3' and [siteid_v2] = """"",y,RH,,,,
+siteyn_v2,final_outcome,,radio,"If transferred, is the transfer facility a study site? ","1, Yes | 2, No | 3, N/K",,,,,,"[dsterm_v2] = '3'",y,RH,,,,
+siteyn_v3,final_outcome,,radio," If a Study Site: Participant number at new facility ","1, Same as the above | 2, Different | 3, N/K",,,,,,"[dsterm_v2] = '3'",y,RH,,,,
+subjidcat_v2,final_outcome,,text," If a Study Site: Participant # at new facility ",,,,,,,"[siteyn_v3] = '2'",y,RH,,,,
+sample_obtained,research_samples,,yesno,"Was a convalescent sample obtained?",,,,,,,,y,RH,,,,
+sample_kit,research_samples,,text,"If yes, please record the KIT number:",,"KIT NUMBER (first 3 characters should be CCP then record 5 characters)",,,,,"[sample_obtained] = '1'",y,RH,,,," @CHARLIMIT=8"
+sample_date,research_samples,,text,"Date sample obtained:",,,date_dmy,2000-01-01,,,"[sample_obtained] = '1'",y,RH,,,,
+core_addinfo,core_additional_information,"Detail any additional information NOT captured in the CASE REPORT FORM",notes,"Additional Information",,,,,,,,,,,,,
+withd_text,withdrawal_form,,descriptive,"WITHDRAWAL form only to be completed for participants with data being collected on the shorter CRF first issued April 2020, so no fields will show here for participants where data was recorded in the older/longer CRF",,,,,,,,,,,,," @HIDDEN"
+withddat,withdrawal_form,WITHDRAWAL,text,"Date of withdrawal:",,,date_dmy,2000-01-01,,,,,,,,,
+withdtype,withdrawal_form,,radio,"Type of withdrawal:","1, Withdrawal from samples only | 10, Other  Please specify:",,,,,,"[withddat] <> """"",y,,,,,
+withdreas,withdrawal_form,,text,"Other type of withdrawal:",,,,,,,"[withdtype] = '10'",y,,,,,
+reason_for_withdrawal,withdrawal_form,,text,"Reason for withdrawal:",,,,,,,"[withddat] <> """"",y,,,,,
+consent_text,consent_ctu_dms,,descriptive,"Consent form questions will only show if Tier 1 or Tier 2 selected in the Tiers form",,,,,,,"[tiers_faorres(2)] <> '1' and [tiers_faorres(3)]<> '1'",,,,,,
+consent_given,consent_ctu_dms,,yesno,"Any mode of Consent or Assent Given : ",,,,,,,"[tiers_faorres(2)] = '1' or [tiers_faorres(3)] = '1'",,RH,,,,
+consent_daterec,consent_ctu_dms,,text,"Date received:",,,date_dmy,2000-01-01,,,"[consent_given] = '1'",y,RH,,,,
+consent_mode,consent_ctu_dms,,checkbox,"Mode of consent (check all that apply): ","1, Adult | 2, Adult Extra Convalescent Sampling | 3, Adult BioAID | 4, Consultee | 5, Witnessed | 6, Telephone | 7, Next of Kin (Scotland only) | 8, Adult Regained Capacity  (Scotland only) | 9, Young Person 12-18y | 10, Child under 12y | 11, Parent/Guardian",,,,,,"[consent_given] = '1'",y,LV,,,,
+consent_optcondit,consent_ctu_dms,,checkbox,"Agreement to optional conditions of consent (check all that apply): ","1, Other unrelated use | 2, Manufacture and Commercial lack | 3, DNA RNA sequence sharing | 4, Future contact by mobile phone text message (SMS)",,,,,,"[consent_given] = '1'",,LV,,,,
+consent_phone,consent_ctu_dms,,text,"If yes to future contact by mobile phone, enter UK mobile phone number: ",,"Start with 07 then enter rest of mobile number",integer,7000000001,7999999999,y,"[consent_optcondit(4)] = '1'",y,LV,,,,
+confirmed_negative_pcr,confirmed_negative_pcr,,radio,"Confirmed negative PCR on direct DM enquiry","1, Yes",,,,,,,,,,,,
+flw_consent_text,follow_up_consent,,descriptive,"Your permission to proceed
+Thank you for coming this far. Now to take part, please read the statements below, and initial the boxes if you're happy to go ahead.
+",,,,,,,,,,,,,
+flw_consent_init,follow_up_consent,,yesno,"I give my consent for the information I provide in this study to be used as advised",,,,,,,,,RH,,,,
+flw_consent_verbal,follow_up_consent,,radio,"Verbal consent given?","1, Yes",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_consent_no_init,follow_up_consent,,descriptive,"NOTE: Unless 'I give my consent for the information I provide in this study to be used as advised' is answered as Yes, the questions in the follow-up survey form will not be visible",,,,,,,"[flw_consent_init] = '0' or [flw_consent_init] = """"",,,,,,
+flw_consent_3_6m,follow_up_consent,,yesno,"I give my consent for this survey to be sent to me in 3 to 6 months' time, and over the course of the next 3 years.
+",,,,,,,"[flw_consent_verbal] = """"",,RH,,,,
+flw_consent_phone,follow_up_consent,,yesno,"I would like the possibility to be contacted by a nurse, doctor or researcher to discuss my COVID-19 illness further",,,,,,,"[flw_consent_verbal] = """"",,RH,,,,
+flw_phone,follow_up_consent,,text,"If yes, please enter your telephone numbers below:
+Telephone:",,,integer,,,y,"[flw_consent_phone] = '1'",,,,,,
+flw_mobile,follow_up_consent,,text,"Mobile phone:",,"Start with 07 then enter rest of mobile number",integer,7000000001,7999999999,y,"[flw_consent_phone] = '1'",,,,,,
+flw_consent_signed,follow_up_consent,,yesno,"Patient / Adult's signature provided?",,,,,,,"[flw_consent_verbal] = """"",,RH,,,,
+flw_consent_date,follow_up_consent,,text,"Date consent provided",,,date_dmy,2000-01-01,,,,,RH,,,," @HIDDEN"
+flw_survey_completed_by,follow_up_self_assessment_survey,,dropdown,"Survey completed by:","1, Patient self-assessment | 2, Telephone-led follow-up | 3, In-clinic nurse/clinican or research-led follow-up",,,,,,,,,,,,
+flw_desceased_lost,follow_up_self_assessment_survey,,radio,"Participant deceased or lost to follow-up?","1, Deceased | 2, Lost to follow-up",,,,,,,,RH,,,,
+flw_date_death,follow_up_self_assessment_survey,,text,"Date of death",,,date_dmy,2000-01-01,,,"[flw_desceased_lost] = '1' and [flw_date_deathnk] = """"",y,,,,,
+flw_date_deathnk,follow_up_self_assessment_survey,,radio,"Date of death unknown","1, Date of death unknown",,,,,,"[flw_desceased_lost] = '1' and [flw_date_death] = """"",y,,,,,
+flw_date_lost_flw,follow_up_self_assessment_survey,,text,"Date lost to follow-up",,,date_dmy,2000-01-01,,,"[flw_desceased_lost] = '2' and [flw_date_lost_flwnk] = """"",y,,,,,
+flw_date_lost_flwnk,follow_up_self_assessment_survey,,radio,"Date lost to follow-up unknown","1, Date lost to follow-up unknown",,,,,,"[flw_desceased_lost] = '2' and [flw_date_lost_flw] = """"",y,,,,,
+flw_no_consent,follow_up_self_assessment_survey,,descriptive,"CONSENT HAS NOT BEEN RECORDED FOR THIS PARTICIPANT - it needs to be done in the the Follow up consent form.
+Once this has been done and you return to this form, the questions in the survey will be visible.",,,,,,,"[flw_consent_init] = """" or [flw_consent_init] = '0'",,,,,,
+flw_survey_date,follow_up_self_assessment_survey,"About you and your COVID-19 illness (if you're completing this survey on behalf of a child or adult that you care for, all the questions relate to their health and wellbeing)                         ",text,"Date you did the survey (DD/MM/YYYY): ",,,date_dmy,2000-01-01,,,"[flw_consent_init] = '1'",y,,,,,
+flw_date_symptoms,follow_up_self_assessment_survey,,text,"Roughly what day did you first experience symptoms of COVID-19? ",,,date_dmy,2000-01-01,,,"[flw_consent_init] = '1'",,,,,,
+flw_covid19_adm,follow_up_self_assessment_survey,,yesno,"Were you admitted to hospital due to COVID-19? ",,,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_date_adm,follow_up_self_assessment_survey,,text,"Roughly at what date were you first admitted to hospital? ",,,date_dmy,2000-01-01,,,"[flw_consent_init] = '1'",,,,,,
+flw_date_disch,follow_up_self_assessment_survey,,text,"Roughly at what date were you first discharged from hospital?  ",,,date_dmy,2000-01-01,,,"[flw_consent_init] = '1'",,,,,,
+flw_covid19_readm,follow_up_self_assessment_survey,,yesno,"Have you been re-admitted to hospital due to COVID-19? ",,,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_icu,follow_up_self_assessment_survey,,radio,"If admitted to hospital, were you ever admitted to intensive care (ICU/ITU)?  ","1, Yes | 0, No | 2, Not applicable",,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_hospitals,follow_up_self_assessment_survey,,text,"Name of hospital/s",,,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_recovered,follow_up_self_assessment_survey,"About your health now",radio,"Do you feel fully recovered from COVID-19?    ","1, Yes | 0, No | 2, Not sure",,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_fever,follow_up_self_assessment_survey,,radio,"Have you felt feverish recently?  ","1, Yes | 0, No | 2, Not sure",,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_last_fever,follow_up_self_assessment_survey,,dropdown,"If yes roughly when did you last feel feverish?","1, within last 7 days | 2, between 1 to  2 weeks ago | 3, between 2 to 4  weeks ago | 4, between 1 to 2 months ago | 5, between 2 to 3 months ago",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_illness_cause,follow_up_self_assessment_survey,,checkbox,"If yes, what was the cause of your recent feverish illness?","1, COVID-19 | 2, Other respiratory infection (cough/cold/sore throat) | 3, Stomach infection (diarrhoea/vomiting) | 4, Urinary infection | 5, Other: | 6, Unknown | 7, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_illness_other_cause,follow_up_self_assessment_survey,,text,"specify (other cause of recent illness):",,,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_diag_dvt,follow_up_self_assessment_survey,"Since having COVID-19, have you been diagnosed with any of these?",radio,"Deep vein thrombosis (DVT, ""Clot in leg"")","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_diag,,
+flw_diag_stroke,follow_up_self_assessment_survey,,radio,"Stroke or mini stroke/TIA","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_diag,,
+flw_diag_pe,follow_up_self_assessment_survey,,radio,"Pulmonary embolism (PE, ""Clot in lung"")","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_diag,,
+flw_diag_heart_attack,follow_up_self_assessment_survey,,radio,"Heart attack","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_diag,,
+flw_diag_kidney,follow_up_self_assessment_survey,,radio,"Kidney problems","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_diag,,
+flw_diag_other,follow_up_self_assessment_survey,,text,"Other condition (please specify)?  ",,,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_headache,follow_up_self_assessment_survey,"Within the last seven days, have you had any of these symptoms?",radio,Headache,"1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_balance,follow_up_self_assessment_survey,,radio,"Problems with balance","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_cough,follow_up_self_assessment_survey,,radio,"Persistent cough","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_limb_weakness,follow_up_self_assessment_survey,,radio,"Weakness in limbs","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_loss_smell,follow_up_self_assessment_survey,,radio,"Loss of smell","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_pain_breathing,follow_up_self_assessment_survey,,radio,"Pain on breathing","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_loss_taste,follow_up_self_assessment_survey,,radio,"Loss of taste","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_chest_pains,follow_up_self_assessment_survey,,radio,"Chest pains","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_breathless,follow_up_self_assessment_survey,,radio,"Shortness of breath/breathlessness","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_palpitations,follow_up_self_assessment_survey,,radio,"Palpitations (heart racing)","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_muscle_pain,follow_up_self_assessment_survey,,radio,"Persistent muscle pain","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_weight_loss,follow_up_self_assessment_survey,,radio,"Weight loss","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_joint_pain,follow_up_self_assessment_survey,,radio,"Joint pain or swelling","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_appetite,follow_up_self_assessment_survey,,radio,"Loss of appetite","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_swollen_ankle,follow_up_self_assessment_survey,,radio,"Swollen ankle(s)","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_stomach_pain,follow_up_self_assessment_survey,,radio,"Stomach pain","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_nausea,follow_up_self_assessment_survey,,radio,Nausea/vomiting,"1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_sleeping,follow_up_self_assessment_survey,,radio,"Problems sleeping","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_constipation,follow_up_self_assessment_survey,,radio,Constipation,"1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_diarrhoea,follow_up_self_assessment_survey,,radio,Diarrhoea,"1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_lesions_toes,follow_up_self_assessment_survey,,radio,"Lumpy lesions (purple/pink/bluish) on toes/COVID-toes?","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_urine,follow_up_self_assessment_survey,,radio,"Problems passing urine","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_skin_rash,follow_up_self_assessment_survey,,radio,"Skin rash","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_one_side,follow_up_self_assessment_survey,,radio,"Can't fully move and / or feel one side of your body or face?","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_dizziness,follow_up_self_assessment_survey,,radio,"Dizziness/light headedness","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_swallow,follow_up_self_assessment_survey,,radio,"Problems swallowing or chewing","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_seeing,follow_up_self_assessment_survey,,radio,"Problems seeing","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_other_symp,follow_up_self_assessment_survey,,radio,"Any other NEW symptoms?","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,,
+flw_fainting,follow_up_self_assessment_survey,,radio,"Fainting/ blackouts","1, Yes | 0, No | 99, Not answered",,,,,,"[flw_consent_init] = '1'",,,,flw_symp,," @HIDDEN"
+flw_new_symptoms,follow_up_self_assessment_survey,,text,"If yes (to any other NEW symptoms), specify:",,,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_ed,follow_up_self_assessment_survey,,radio,"Erectile dysfunction","1, Yes | 0, No | 2, N/A",,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_cough_type,follow_up_self_assessment_survey,,radio,"If yes to Persistent cough - specify type:","1, dry cough | 2, with phlegm",,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_rash_area,follow_up_self_assessment_survey,,checkbox,"If yes to Skin rash, please tick all body areas that apply:","1, Face | 2, Trunk (stomach or back) | 3, Arms | 4, Legs | 5, Buttocks | 6, Toes | 7, Fingers",,,,,,"[flw_consent_init] = '1'",,LH,,,,
+flw_eq5d_mb_p,follow_up_self_assessment_survey,"About your health
+Under each heading, please tick the ONE box that best describes your health BEFORE Your COVID19 illness",radio,MOBILITY,"1, I had no problems in walking about | 2, I had slight problems in walking about | 3, I had moderate problems in walking about | 4, I had severe problems in walking about | 5, I was unable to walk about",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_sc_p,follow_up_self_assessment_survey,,radio,SELF-CARE,"1, I had no problems washing or dressing myself | 2, I had slight problems washing or dressing myself | 3, I had moderate problems washing or dressing myself | 4, I had severe problems washing or dressing myself | 5, I was unable to wash or dress myself",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_ua_p,follow_up_self_assessment_survey,,radio,"USUAL ACTIVITIES
+(e.g. work, study, housework, family or leisure activities)","1, I had no problems doing my usual activities | 2, I had slight problems doing my usual activities | 3, I had moderate problems doing my usual activities | 4, I had severe problems doing my usually activities | 5, I was unable to do my usual activities",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_pd_p,follow_up_self_assessment_survey,,radio,"PAIN/DISCOMFORT ","1, I had no pain or discomfort | 2, I had slight pain or discomfort | 3, I had moderate pain or discomfort | 4, I had severe pain or discomfort | 5, I had extreme pain or discomfort",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_ad_p,follow_up_self_assessment_survey,,radio,"ANXIETY/DEPRESSION ","1, I was not anxious or depressed | 2, I was slightly anxious or depressed | 3, I was moderately anxious or depressed | 4, I was severely anxious or depressed | 5, I was extremely anxious or depressed",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_mb,follow_up_self_assessment_survey,"Under each heading, please tick the ONE box that best describes your health TODAY",radio,MOBILITY,"1, I have no problems in walking about | 2, I have slight problems in walking about | 3, I have moderate problems in walking about | 4, I have severe problems in walking about | 5, I am unable to walk about",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_sc,follow_up_self_assessment_survey,,radio,SELF-CARE,"1, I have no problems washing or dressing myself | 2, I have slight problems washing or dressing myself | 3, I have moderate problems washing or dressing myself | 4, I have severe problems washing or dressing myself | 5, I am unable to wash or dress myself",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_ua,follow_up_self_assessment_survey,,radio,"USUAL ACTIVITIES
+(e.g. work, study, housework, family or leisure activities)","1, I have no problems doing my usual activities | 2, I have slight problems doing my usual activities | 3, I have moderate problems doing my usual activities | 4, I have severe problems doing my usually activities | 5, I am unable to do my usual activities",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_pd,follow_up_self_assessment_survey,,radio,"PAIN/DISCOMFORT ","1, I have no pain or discomfort | 2, I have slight pain or discomfort | 3, I have moderate pain or discomfort | 4, I have severe pain or discomfort | 5, I have extreme pain or discomfort",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d_ad,follow_up_self_assessment_survey,,radio,"ANXIETY/DEPRESSION ","1, I am not anxious or depressed | 2, I am slightly anxious or depressed | 3, I am moderately anxious or depressed | 4, I am severely anxious or depressed | 5, I am extremely anxious or depressed",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_eq5d5l_vas,follow_up_self_assessment_survey,,slider,"• We would like to know how good or bad your health is TODAY.
+• This scale is numbered from 0 to 100.
+• 100 means the best health you can imagine.
+0 means the worst health you can imagine.
+• Mark an X on the scale to indicate how your health is TODAY.
+• Now, please write the number you marked on the scale in the box below
+
+YOUR HEALTH TODAY = ","The worst health you can imagine 0 | 50 | The best health you can imagine100",,number,,,,"[flw_consent_init] = '1'",,RV,,,,
+eq5d5l_text,follow_up_self_assessment_survey,,descriptive,"© EuroQol Research Foundation. EQ-5D™ is a trade mark of the EuroQol Research Foundation",,,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_breathless_now,follow_up_self_assessment_survey,"Breathlessness and fatigue
+Please tick ONE box that best describes how breathless you feel  and ONE box that describes how breathless you felt before your Covid 19 illness",checkbox,"(Breathless) Within the last 24 hours","1, Not troubled by breathlessness except on strenuous exercise | 2, Short of breath when hurrying or when walking up a slight hill | 3, Walks slower than most people of my age because of breathlessness, or have to stop for breath when walking at own pace | 4, Stops for breath after walking 100 yards/ 90-100 metres, or after a few minutes on level ground | 5, Too breathless to leave the house, or breathless when dressing/undressing",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_breathless_pre_c19,follow_up_self_assessment_survey,,checkbox,"(Breathless) Before your Covid 19 illness","1, Not troubled by breathlessness except on strenuous exercise | 2, Short of breath when hurrying or when walking up a slight hill | 3, Walks slower than most people of my age because of breathlessness, or have to stop for breath when walking at own pace | 4, Stops for breath after walking 100 yards/ 90-100 metres, or after a few minutes on level ground | 5, Too breathless to leave the house, or breathless when dressing/undressing",,,,,,"[flw_consent_init] = '1'",,LV,,,,
+flw_fatigue,follow_up_self_assessment_survey,,text,"Please rate the intensity of your fatigue on average over the last 24 hours, on a scale from 0 - 10.
+Where:
+0 = No fatigue
+10 = Fatigue as bad as you can imagine",,"Type in the number recorded in the CRF, between 0 and 10",number,0,10,,"[flw_consent_init] = '1'",,RH,,,,
+flw_seeing_today,follow_up_self_assessment_survey,"The next questions ask about difficulties you may have doing certain activities because of a HEALTH PROBLEM. ",radio,"Do you have difficulty seeing, even if wearing glasses? Today","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_seeing_pre_c19,follow_up_self_assessment_survey,,radio,"Do you have difficulty seeing, even if wearing glasses? Before your Covid 19 illness","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_hearing_today,follow_up_self_assessment_survey,,radio,"Do you have difficulty hearing, even if using a hearing aid? Today","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_hearing_pre_c19,follow_up_self_assessment_survey,,radio,"Do you have difficulty hearing, even if using a hearing aid? Before your Covid 19 illness","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_walking_today,follow_up_self_assessment_survey,,radio,"Do you have difficulty walking or climbing steps? Today","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_walking_pre_c19,follow_up_self_assessment_survey,,radio,"Do you have difficulty walking or climbing steps? Before your Covid 19 illness","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_remember_today,follow_up_self_assessment_survey,,radio,"Do you have difficulty remembering or concentrating? Today","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_remember_pre_c19,follow_up_self_assessment_survey,,radio,"Do you have difficulty remembering or concentrating? Before your Covid 19 illness","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_washing_today,follow_up_self_assessment_survey,,radio,"Do you have difficulty (with self-care such as) washing all over or dressing? Today","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_washing_pre_c19,follow_up_self_assessment_survey,,radio,"Do you have difficulty (with self-care such as) washing all over or dressing? Before your Covid 19 illness","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_comm_today,follow_up_self_assessment_survey,,radio,"Using your usual (customary) language, do you have difficulty communicating, for example understanding or being understood? Today","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_comm_pre_c19,follow_up_self_assessment_survey,,radio,"Using your usual (customary) language, do you have difficulty communicating, for example understanding or being understood? Before your Covid 19 illness","1, No - no difficulty | 2, Yes - some difficulty | 3, Yes - a lot of difficulty | 4, Cannot do at all",,,,,,"[flw_consent_init] = '1'",,,,flw_activites,,
+flw_smoking,follow_up_self_assessment_survey,"Have you made lifestyle changes since your COVID-19 infection?",radio,Smoking,"1, I do this more often | 2, I do this less often | 3, No difference | 4, N/A",,,,,,"[flw_consent_init] = '1'",,,,flw_lifestyle,,
+flw_alcohol,follow_up_self_assessment_survey,,radio,"Drinking alcohol","1, I do this more often | 2, I do this less often | 3, No difference | 4, N/A",,,,,,"[flw_consent_init] = '1'",,,,flw_lifestyle,,
+flw_healthy_eating,follow_up_self_assessment_survey,,radio,"Eating healthy food","1, I do this more often | 2, I do this less often | 3, No difference | 4, N/A",,,,,,"[flw_consent_init] = '1'",,,,flw_lifestyle,,
+flw_phys_activ,follow_up_self_assessment_survey,,radio,"Physical activity (including walking & cycling)","1, I do this more often | 2, I do this less often | 3, No difference | 4, N/A",,,,,,"[flw_consent_init] = '1'",,,,flw_lifestyle,,
+flw_walking_cycling,follow_up_self_assessment_survey,,radio,"Walking or cycling to work or school/college","1, I do this more often | 2, I do this less often | 3, No difference | 4, N/A",,,,,,"[flw_consent_init] = '1'",,,,flw_lifestyle,,
+flw_employ_pre_c19,follow_up_self_assessment_survey,"A few questions about your employment status",checkbox,"Before you got COVID-19 what was your employment status?  ","1, Full-time employment | 2, Part time employment | 3, Furloughed | 4, Full time carer (children or other) | 5, Unemployed | 6, Unable to work due to chronic illness | 7, Student | 8, Retired | 9, Medically retired | 10, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_employ_chg,follow_up_self_assessment_survey,,dropdown,"What is your employment status today?          ","1, Same as before | 2, Different from before | 3, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_employ_today,follow_up_self_assessment_survey,,checkbox,"If different, please describe your employment status today? ","1, Full-time employment | 2, Part time employment | 3, Furloughed | 4, Full time carer (children or other) | 5, Unemployed | 6, Unable to work due to chronic illness | 7, Student | 8, Retired | 9, Medically retired | 10, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_employ_chg_reason,follow_up_self_assessment_survey,,checkbox,"If different, why did you employment status change? ","1, Poor health | 2, New caring responsibility | 3, Made redundant | 4, Working hours reduced by employer | 5, Other | 6, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_employ_chg_other,follow_up_self_assessment_survey,,text,"(If employment status has changed) specify other reason:",,,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_sex_at_birth,follow_up_self_assessment_survey,"A few questions about yourself",dropdown,"Sex at Birth: ","1, Male | 2, Female | 3, Non-binary | 4, Prefer not to say",,,,,,"[flw_consent_init] = '1'",y,,,,,
+flw_ethinicity,follow_up_self_assessment_survey,,checkbox,"Ethnicity (tick all that apply):","1, White | 2, Arab | 3, Black | 4, East Asian | 5, South Asian | 6, West Asian | 7, Latin American | 8, Other | 9, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,LH,,,,
+flw_ethinicity_oth,follow_up_self_assessment_survey,,text,"Other ethnicity",,,,,,,"[flw_consent_init] = '1'",,LH,,,,
+flw_height,follow_up_self_assessment_survey,,text,"What is your estimated height:",,,number,1,,,"[flw_consent_init] = '1'",,,,,,
+flw_height_unit,follow_up_self_assessment_survey,,radio,"Height: Indicate unit measured in:","1, cm | 2, feet | 3, feet and inches | 4, metres",,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_height_na,follow_up_self_assessment_survey,,radio,"What is your estimated height - prefer not to say","1, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_weight,follow_up_self_assessment_survey,,text,"What is your current estimated weight:",,,number,1,,,"[flw_consent_init] = '1'",,,,,,
+flw_weight_unit,follow_up_self_assessment_survey,,radio,"Weight: Indicate unit measured in:","1, kg | 2, lbs | 3, stones and pounds",,,,,,"[flw_consent_init] = '1'",,RH,,,,
+flw_weight_na,follow_up_self_assessment_survey,,radio,"What is your estimated weight - prefer not to say","1, Prefer not to say",,,,,,"[flw_consent_init] = '1'",,,,,,
+flw_c19_effects,follow_up_self_assessment_survey,,notes,"Please let us know if you feel COVID-19 has affected your health or wellbeing in a way not described above?",,,,,,,"[flw_consent_init] = '1'",,LV,,,,
