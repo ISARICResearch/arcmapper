@@ -48,7 +48,7 @@ navbar = dbc.Navbar(
 
 output_table = dbc.Container(
     html.Div(
-        dcc.Loading(dbc.Row(id="output")),
+        dbc.Row(id="output"),
         style={"padding": "0.5em", "border": "1px solid silver", "borderRadius": "5px"},
     )
 )
@@ -114,7 +114,17 @@ def upload_data_dictionary(
 
 
 @callback(
+    Output("map-btn", "children"),
+    Input("map-btn", "n_clicks"),
+    prevent_initial_call=True,
+)
+def set_loading(_):
+    return [dbc.Spinner(size="sm"), " Map to ARC"]
+
+
+@callback(
     Output("output", "children"),
+    Output("map-btn", "children", allow_duplicate=True),
     State("upload-data-dictionary", "data"),
     Input("map-btn", "n_clicks"),
     State("arc-version", "value"),
@@ -148,9 +158,9 @@ def invoke_map_arc(data, _, version, method, num_matches):
                 style_table={"overflowX": "auto"},
                 page_size=PAGE_SIZE,
             ),
-        )
+        ), "Map to ARC"
     else:
-        return html.Span("No data to see here")
+        return html.Span("No data to see here"), "Map to ARC"
 
 
 @callback(
