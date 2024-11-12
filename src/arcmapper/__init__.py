@@ -11,7 +11,6 @@ from waitress import serve
 from .app import app
 from .arc import read_arc_schema
 from .dictionary import read_data_dictionary
-from .strategies import map
 
 __version__ = "0.1.0"
 

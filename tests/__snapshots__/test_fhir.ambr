@@ -1,0 +1,16 @@
+# serializer version: 1
+# name: test_merge
+  '''
+  {{{ resource Patient
+  raw_variable	raw_response	arc_variable	arc_response	raw_description	arc_description
+  subjid		subjid		Participant Identification Number (PIN) specify CPMS Site code (hyphen) four to six digit number patient number e.g. Y0401-0001.	Participant Identification Number (PIN) The Participant Identification Number or PIN is a unique number used to identify the patient's (participant's) data.
+  sex	1, Male	demog_sex	1, Male	Sex at Birth:	Sex at birth This refers to the physical sexual characteristics at birth.
+  sex	2, Female	demog_sex	2, Female	Sex at Birth:	Sex at birth This refers to the physical sexual characteristics at birth.
+  sex	3, Not specified	demog_sex	99, Not specified/Unknown	Sex at Birth:	Sex at birth This refers to the physical sexual characteristics at birth.
+  age_estimateyears		demog_age		Age/Estimated age	Age This refers to the patient's age.
+  age_estimateyearsu	1, Months	demog_age_units	2, Months	Age/Estimated age Unit	Age units This refers to the patient's age at presentation to the health facility.
+  age_estimateyearsu	2, Years	demog_age_units	1, Years	Age/Estimated age Unit	Age units This refers to the patient's age at presentation to the health facility.
+  }}}
+
+  '''
+# ---

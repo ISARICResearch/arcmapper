@@ -8,7 +8,7 @@ import dash_bootstrap_components as dbc
 from .components import arc_form, upload_form
 from .util import read_upload_data
 from .dictionary import read_data_dictionary
-from .strategies import map as map_data_dictionary_to_arc
+from .strategies import use_map
 from .arc import read_arc_schema
 
 app = dash.Dash("arcmapper", external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -137,7 +137,7 @@ def invoke_map_arc(data, _, version, method, num_matches):
         arc = read_arc_schema(version)
         dictionary = pd.read_json(data)
 
-        mapped_data = map_data_dictionary_to_arc(method, dictionary, arc, num_matches)
+        mapped_data = use_map(method, dictionary, arc, num_matches)
         data = mapped_data.to_dict("records")
         for i, row in enumerate(data):
             row["id"] = i
@@ -147,7 +147,14 @@ def invoke_map_arc(data, _, version, method, num_matches):
                 data=data,
                 columns=[
                     {"name": i, "id": i, "editable": i != "status"}
-                    for i in mapped_data.columns
+                    for i in [
+                        "status",
+                        "raw_variable",
+                        "raw_description",
+                        "arc_variable",
+                        "arc_description",
+                        "rank",
+                    ]
                 ],
                 editable=True,
                 style_data={

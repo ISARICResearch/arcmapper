@@ -1,6 +1,7 @@
 # data files, use -f to git-add(1)
 *.csv
 
+.DS_Store
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
