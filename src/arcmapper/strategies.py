@@ -1,13 +1,22 @@
+import ast
+from collections import namedtuple
+
 import pandas as pd
 import numpy as np
+import numpy.typing
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sentence_transformers import SentenceTransformer
+
+SBERT_MODEL = "all-MiniLM-L6-v2"
+
+Response = namedtuple("Response", ["val", "text"])
+Response.__str__ = lambda self: f"{self.val}, {self.text}"
 
 
 def get_match_dataframe_from_similarity_matrix(
     dictionary: pd.DataFrame,
     arc: pd.DataFrame,
-    similarity_matrix: np.array,
+    similarity_matrix: numpy.typing.ArrayLike,
     num_matches: int,
     threshold: float,
 ) -> pd.DataFrame:
@@ -45,8 +54,10 @@ def get_match_dataframe_from_similarity_matrix(
             "status",
             "raw_variable",
             "raw_description",
+            "raw_response",
             "arc_variable",
             "arc_description",
+            "arc_response",
             "rank",
         ],
         data=sum(
@@ -56,12 +67,14 @@ def get_match_dataframe_from_similarity_matrix(
                         "-",
                         dictionary.iloc[i].variable,
                         dictionary.iloc[i].description,
+                        dictionary.iloc[i].responses,
                         arc.iloc[k].variable,
                         arc.iloc[k].description,
+                        arc.iloc[k].responses,
                         j,
                     ]
                     for j, k in enumerate(S[i])
-                    if similarity_matrix[i, S[i, j]] > threshold
+                    if similarity_matrix[i, S[i, j]] > threshold  # type: ignore
                 ]
                 for i in range(len(dictionary))
             ],
@@ -85,39 +98,122 @@ def get_match_dataframe_from_similarity_matrix(
         return match_df
 
 
-def get_categorical_mapping(
-    source: list[str], target: list[str], similarity_matrix: np.array
-) -> dict[str, str]:
+def match_responses(
+    source: list[Response], target: list[Response], sbert_model: str = SBERT_MODEL
+) -> list[tuple[Response, Response]]:
     """Returns mapping of categorical values from source list to target list.
     Finds the closest match in target for each string in the source list. This
     is used to map categorical values from the source dictionary to ARC
 
     Example: in the source data dictionary, there is a `sex` variable which
     takes the values `man` and `woman`. ARC has a `demog_sex` variable which
-    takes the values `male`, `female` and `unknown`. Then this function, given
-    an appropriate similarity matrix between [man, woman] and [male, female]
+    takes the values `male`, `female` and `unknown`. Then this function
+    constructs a similarity matrix between [man, woman] and [male, female]
     would return
 
-    ```json
-    { "man": "male", "woman": "female" }
-    ```
+    .. code::
+
+        [(("2", "man"),("1", "male")), (("1", "woman"), ("2", "female"))]
 
     Parameters
     ----------
     source
-        Source list of strings
+        Source mapping of response description to response, e.g.
+        ``[("male", "1"), ("female": "2")]``
     target
         Target list of strings, usually from the ARC `responses` key
-    similarity_matrix
-        Similarity matrix to use to determine categorical mapping
+        e.g. ``[("men", "2"), ("woman", "1")]``
+    sbert_model
+        SBERT model to use (optional)
 
     Returns
     -------
-    dict[str, str]
-        Dictionary of source string to target string mappings
+    list[tuple[tuple[str, str], tuple[str, str]]]
+        List of pairs of mappings of dictionary to ARC
     """
-    max_idx = np.argmax(similarity_matrix, axis=1)
-    return {source[i]: target[max_idx[i]] for i in range(len(source))}
+    model = SentenceTransformer(sbert_model)
+    source_embeddings = model.encode([i.text for i in source])
+    target_embeddings = model.encode([i.text for i in target])
+    source_map: dict[str, str] = {v: k for k, v in source}
+    target_map: dict[str, str] = {v: k for k, v in target}
+    S = model.similarity(source_embeddings, target_embeddings).numpy()
+    max_idx = np.argmax(S, axis=1)
+    return [
+        (
+            Response(source_map[source[i].text], source[i].text),
+            Response(target_map[target[max_idx[i]].text], target[max_idx[i]].text),
+        )
+        for i in range(len(source))
+    ]
+
+
+def has_valid_response(row) -> bool:
+    return isinstance(row.raw_response, str) and isinstance(row.arc_response, str)
+
+
+def infer_response_mapping(
+    m: pd.DataFrame, sbert_model: str = SBERT_MODEL
+) -> pd.DataFrame:
+    """Infer response mapping from data dicitonary to ARC.
+
+    This is a simplified version of the mapping that takes place in strategies
+    """
+    # data schema for m:
+    #   raw_variable, raw_description, raw_response,
+    #   arc_variable, arc_description, arc_response,
+    out = []
+    sbert_model = SentenceTransformer(sbert_model)
+
+    for row in m.itertuples():
+        if has_valid_response(row):
+            raw_response = (
+                row.raw_response
+                if isinstance(row.raw_response, list)
+                else ast.literal_eval(row.raw_response)
+            )
+            arc_response = (
+                row.arc_response
+                if isinstance(row.arc_response, list)
+                else ast.literal_eval(row.arc_response)
+            )
+            s = list(map(lambda r: Response(*r), raw_response))
+            t = list(map(lambda r: Response(*r), arc_response))
+            out.extend(
+                [
+                    (
+                        row.raw_variable,
+                        row.raw_description,
+                        str(sr),
+                        row.arc_variable,
+                        row.arc_description,
+                        str(tr),
+                    )
+                    for sr, tr in match_responses(s, t)
+                ]
+            )
+        else:
+            out.append(
+                (
+                    row.raw_variable,
+                    row.raw_description,
+                    None,
+                    row.arc_variable,
+                    row.arc_description,
+                    None,
+                )
+            )
+    df = pd.DataFrame(
+        out,
+        columns=[
+            "raw_variable",
+            "raw_description",
+            "raw_response",
+            "arc_variable",
+            "arc_description",
+            "arc_response",
+        ],
+    )
+    return df
 
 
 def tf_idf(
@@ -221,7 +317,7 @@ def sbert(
     )
 
 
-def map(
+def use_map(
     method: str,
     dictionary: pd.DataFrame,
     arc: pd.DataFrame,
