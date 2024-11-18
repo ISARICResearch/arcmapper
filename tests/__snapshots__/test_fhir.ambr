@@ -10,7 +10,15 @@
   age_estimateyears		demog_age		Age/Estimated age	Age This refers to the patient's age.
   age_estimateyearsu	1, Months	demog_age_units	2, Months	Age/Estimated age Unit	Age units This refers to the patient's age at presentation to the health facility.
   age_estimateyearsu	2, Years	demog_age_units	1, Years	Age/Estimated age Unit	Age units This refers to the patient's age at presentation to the health facility.
+  ethnic	1, Arab	demog_race___1	1, Arab	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	2, Black	demog_race___2	1, Black	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	3, East Asian	demog_race___3	1, East Asian	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	4, South Asian	demog_race___4	1, South Asian	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	5, West Asian	demog_race___6	1, West Asian	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	6, Latin American	demog_race___7	1, Latin American	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	7, White	demog_race___8	1, White	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	8, Aboriginal/First Nations	demog_race___9	1, Aboriginal/First Nations/Indigenous	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
+  ethnic	9, Other	demog_race___88	1, Other	Ethnic group (check all that apply)	Race (select all that apply) This refers to a geographic ancestral origin category that is assigned to a population group based mainly on physical characteristics that are thought to be distinct and inherent.
   }}}
-
   '''
 # ---
