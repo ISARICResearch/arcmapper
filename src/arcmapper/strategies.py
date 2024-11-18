@@ -9,6 +9,7 @@ from sentence_transformers import SentenceTransformer
 
 SBERT_MODEL = "all-MiniLM-L6-v2"
 
+NULL_RESPONSES = ["none", "na", "nk", "n/a", "n/k"]
 Response = namedtuple("Response", ["val", "text"])
 Response.__str__ = lambda self: f"{self.val}, {self.text}"
 
@@ -180,19 +181,37 @@ def infer_response_mapping(
             )
             s = list(map(lambda r: Response(*r), raw_response))
             t = list(map(lambda r: Response(*r), arc_response))
-            out.extend(
-                [
-                    (
-                        row.raw_variable,
-                        row.raw_description,
-                        str(sr),
-                        row.arc_variable,
-                        row.arc_description,
-                        str(tr),
-                    )
-                    for sr, tr in match_responses(s, t)
-                ]
-            )
+            if row.arc_type != "multiselect":
+                out.extend(
+                    [
+                        (
+                            row.raw_variable,
+                            row.raw_description,
+                            str(sr),
+                            row.arc_variable,
+                            row.arc_description,
+                            str(tr),
+                        )
+                        for sr, tr in match_responses(s, t)
+                    ]
+                )
+            else:
+                print("multiselect mode::")
+                out.extend(
+                    [
+                        (
+                            row.raw_variable,
+                            row.raw_description,
+                            str(sr),
+                            row.arc_variable + "___" + tr.val,
+                            row.arc_description,
+                            "1, " + str(tr.text),
+                        )
+                        for sr, tr in match_responses(s, t)
+                        if sr.text.lower() not in NULL_RESPONSES
+                    ]
+                )
+                print(out[-3])
         else:
             out.append(
                 (
