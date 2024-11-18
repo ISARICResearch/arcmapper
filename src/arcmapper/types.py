@@ -10,7 +10,7 @@ from typing import NamedTuple, Literal
 # example: gender = [(1, "male"), (2, "female")]
 Responses = list[str] | list[tuple[str | int, str]]
 
-DataType = Literal["categorical", "number", "string", "date"]
+DataType = Literal["enum", "number", "string", "date", "multiselect"]
 
 
 class PossibleMatch(NamedTuple):

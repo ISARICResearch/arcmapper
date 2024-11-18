@@ -58,6 +58,7 @@ def get_match_dataframe_from_similarity_matrix(
             "arc_variable",
             "arc_description",
             "arc_response",
+            "arc_type",
             "rank",
         ],
         data=sum(
@@ -71,6 +72,7 @@ def get_match_dataframe_from_similarity_matrix(
                         arc.iloc[k].variable,
                         arc.iloc[k].description,
                         arc.iloc[k].responses,
+                        arc.iloc[k].type,
                         j,
                     ]
                     for j, k in enumerate(S[i])
