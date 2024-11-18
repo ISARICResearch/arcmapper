@@ -15,12 +15,12 @@ def read_arc_schema(
     arc_version_or_file: str, preset: str | None = None
 ) -> pd.DataFrame:
     types_mapping: dict[str, DataType] = {
-        "radio": "categorical",
+        "radio": "enum",
         "number": "number",
         "text": "string",
         "date_dmy": "date",
-        "checkbox": "categorical",
-        "dropdown": "categorical",
+        "checkbox": "multiselect",
+        "dropdown": "enum",
         "datetime_dmy": "date",
     }
     arc_location = (
