@@ -1,11 +1,14 @@
 """Dash frontend for the arcmapper library"""
 
+import io
+
 import pandas as pd
 import dash
 from dash import dcc, html, ctx, callback, dash_table, Input, Output, State
 import dash_bootstrap_components as dbc
 
 from .components import arc_form, upload_form
+from .fhir import merge, FHIRMapping, FHIR_RESOURCES_ONE_TO_ONE
 from .util import read_upload_data
 from .dictionary import read_data_dictionary
 from .strategies import use_map
@@ -17,6 +20,9 @@ app.title = "ARCMapper"
 PAGE_SIZE = 25
 OK = "✅"
 HIGHLIGHT_COLOR = "bisque"
+
+
+FHIR_MAPPING = FHIRMapping("arc-fhir/ARC_pre_1.0.0_preset_dengue.xlsx")
 
 navbar = dbc.Navbar(
     dbc.Container(
@@ -55,14 +61,38 @@ output_table = dbc.Container(
 
 final_mapping_form = dbc.Container(
     dbc.Row(
-        dbc.Col(
-            [
-                dcc.Download(id="download-mapping"),
-                dbc.Button(
-                    "Download mapping", id="download-btn", style={"marginTop": "1em"}
-                ),
-            ]
-        )
+        [
+            dbc.Col(
+                [
+                    dcc.Download(id="download-intermediate-mapping"),
+                    dbc.Button(
+                        "Load", id="load-intermediate", style={"marginTop": "1em"}
+                    ),
+                    dbc.Button(
+                        "Save",
+                        id="save-intermediate",
+                        style={"marginTop": "1em", "marginLeft": "0.6em"},
+                    ),
+                ]
+            ),
+            dbc.Col(
+                html.Div(
+                    "After finalising the intermediate mapping, "
+                    "download the mapping for FHIRflat conversion →",
+                    style={"marginTop": "0.7em"},
+                )
+            ),
+            dbc.Col(
+                [
+                    dcc.Download(id="download-fhirflat"),
+                    dbc.Button(
+                        "Download FHIRflat mapping",
+                        id="save-fhirflat",
+                        style={"marginTop": "1em"},
+                    ),
+                ]
+            ),
+        ]
     )
 )
 
@@ -118,8 +148,17 @@ def upload_data_dictionary(
     Input("map-btn", "n_clicks"),
     prevent_initial_call=True,
 )
-def set_loading(_):
+def set_loading_map(_):
     return [dbc.Spinner(size="sm"), " Map to ARC"]
+
+
+@callback(
+    Output("save-fhirflat", "children"),
+    Input("save-fhirflat", "n_clicks"),
+    prevent_initial_call=True,
+)
+def set_loading_save_fhirflat(_):
+    return [dbc.Spinner(size="sm"), " Download FHIRflat mapping"]
 
 
 @callback(
@@ -203,16 +242,55 @@ def handle_status(data, active_cell):
 
 
 @callback(
-    Output("download-mapping", "data"),
-    Input("download-btn", "n_clicks"),
+    Output("download-intermediate-mapping", "data"),
+    Input("save-intermediate", "n_clicks"),
     State("mapping", "data"),
     prevent_initial_call=True,
 )
 def handle_download(_, data):
-    if ctx.triggered_id == "download-btn":
+    if ctx.triggered_id == "save-intermediate":
         df = pd.DataFrame(data)
         df = df[df.status == OK].drop(columns=["status", "rank"])
         return dcc.send_data_frame(df.to_csv, "arcmapper-mapping-file.csv", index=False)
+    else:
+        raise dash.exceptions.PreventUpdate
+
+
+@callback(
+    Output("download-fhirflat", "data"),
+    Output("save-fhirflat", "children", allow_duplicate=True),
+    Input("save-fhirflat", "n_clicks"),
+    State("mapping", "data"),
+    prevent_initial_call=True,
+)
+def handle_download_fhir(_, data):
+    if ctx.triggered_id == "save-fhirflat":
+        df = pd.DataFrame(data)
+        df = df[df.status == OK].drop(columns=["status", "rank"])
+        dfs_by_resource = merge(df, FHIR_MAPPING)
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+            non_empty_resources = [
+                res for res in dfs_by_resource if not dfs_by_resource[res].empty
+            ]
+            resource_type = [
+                ("one-to-one" if res in FHIR_RESOURCES_ONE_TO_ONE else "one-to-many")
+                for res in non_empty_resources
+            ]
+            index = pd.DataFrame(
+                {"Resources": non_empty_resources, "Resource Type": resource_type}
+            )
+            index.to_excel(writer, sheet_name="Resources")
+            for resource in dfs_by_resource:
+                if dfs_by_resource[resource].empty:
+                    continue
+                dfs_by_resource[resource].to_excel(
+                    writer, sheet_name=resource, index=False
+                )
+        data = output.getvalue()
+        return dcc.send_bytes(
+            data, "fhirflat-mapping.xlsx"
+        ), "Download FHIRflat mapping"
     else:
         raise dash.exceptions.PreventUpdate
 
