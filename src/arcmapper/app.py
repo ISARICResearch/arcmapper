@@ -54,61 +54,128 @@ navbar = dbc.Navbar(
 
 output_table = dbc.Container(
     html.Div(
-        dbc.Row(id="output"),
+        dbc.Row(
+            dash_table.DataTable(
+                id="mapping",
+                data=[],
+                columns=[
+                    {"name": i, "id": i, "editable": i != "status"}
+                    for i in [
+                        "status",
+                        "raw_variable",
+                        "raw_description",
+                        "raw_response",
+                        "arc_variable",
+                        "arc_description",
+                        "arc_response",
+                        "rank",
+                    ]
+                ],
+                editable=True,
+                style_data={
+                    "whiteSpace": "normal",
+                    "height": "auto",
+                    "fontSize": "90%",
+                },
+                style_table={"overflowX": "auto"},
+                page_size=PAGE_SIZE,
+            ),
+        ),
         style={"padding": "0.5em", "border": "1px solid silver", "borderRadius": "5px"},
     )
 )
 
 final_mapping_form = dbc.Container(
-    dbc.Row(
-        [
-            dbc.Col(
+    [
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        dcc.Download(id="download-intermediate-mapping"),
+                        dbc.Button(
+                            "Save intermediate file",
+                            id="save-intermediate",
+                            style={"marginTop": "1em", "marginLeft": "0.6em"},
+                        ),
+                    ]
+                ),
+                dbc.Col(
+                    dcc.Upload(
+                        id="upload-intermediate-file",
+                        children=html.Div(
+                            "↑ Load intermediate file",
+                            style={
+                                "background": "#316cf4",
+                                "color": "white",
+                                "padding": "0.45em",
+                                "marginTop": "1em",
+                                "marginLeft": "0.55em",
+                                "borderRadius": "6px",
+                                "cursor": "pointer",
+                            },
+                        ),
+                    ),
+                ),
+                dbc.Col(
+                    html.Div(
+                        "After finalising the intermediate mapping, "
+                        "download the mapping for FHIRflat conversion →",
+                        style={"marginTop": "0.7em"},
+                    ),
+                    width=4,
+                ),
+                dbc.Col(
+                    [
+                        dcc.Download(id="download-fhirflat"),
+                        dbc.Button(
+                            "Download FHIRflat mapping",
+                            color="success",
+                            id="save-fhirflat",
+                            style={"marginTop": "1em"},
+                        ),
+                    ]
+                ),
+            ]
+        ),
+        dbc.Row(
+            html.Div(
                 [
-                    dcc.Download(id="download-intermediate-mapping"),
-                    dbc.Button(
-                        "Load", id="load-intermediate", style={"marginTop": "1em"}
+                    dbc.Alert(
+                        "Final mapping file may not be fully correct and should be manually reviewed",
+                        color="info",
                     ),
-                    dbc.Button(
-                        "Save",
-                        id="save-intermediate",
-                        style={"marginTop": "1em", "marginLeft": "0.6em"},
+                    html.Footer(
+                        [
+                            "ARCmapper can be run locally or hosted, source repository: ",
+                            html.A(
+                                "https://github.com/globaldothealth/arcmapper",
+                                href="https://github.com/globaldothealth/arcmapper",
+                            ),
+                        ],
+                        style={"fontSize": "90%", "textAlign": "center"},
                     ),
-                ]
-            ),
-            dbc.Col(
-                html.Div(
-                    "After finalising the intermediate mapping, "
-                    "download the mapping for FHIRflat conversion →",
-                    style={"marginTop": "0.7em"},
-                )
-            ),
-            dbc.Col(
-                [
-                    dcc.Download(id="download-fhirflat"),
-                    dbc.Button(
-                        "Download FHIRflat mapping",
-                        id="save-fhirflat",
-                        style={"marginTop": "1em"},
-                    ),
-                ]
-            ),
-        ]
-    )
+                ],
+                style={
+                    "marginLeft": "0.5em",
+                    "marginBottom": "1em",
+                    "marginTop": "1em",
+                },
+            )
+        ),
+    ]
 )
 
 
 @callback(
     Output("upload-data-dictionary", "data"),
     Output("upload-status", "children"),
-    Input("upload-btn", "n_clicks"),
-    State("upload-input-file", "contents"),
+    Input("upload-input-file", "contents"),
     State("upload-input-file", "filename"),
     State("upload-col-responses", "value"),
     State("upload-col-description", "value"),
     prevent_initial_call=True,
 )
 def upload_data_dictionary(
-    _,
     upload_contents,
     filename,
     col_responses,
@@ -119,7 +186,7 @@ def upload_data_dictionary(
     def err(msg):
         return dbc.Alert(msg, color="danger", style={"marginTop": "1em"})
 
-    if ctx.triggered_id == "upload-btn" and upload_contents is not None:
+    if upload_contents is not None:
         try:
             df = read_upload_data(upload_contents, filename)
             # this is the unprocessed data dictionary, we will now convert
@@ -161,8 +228,21 @@ def set_loading_save_fhirflat(_):
     return [dbc.Spinner(size="sm"), " Download FHIRflat mapping"]
 
 
+def stringify_response_columns(df: pd.DataFrame):
+    "Stringify response columns for output in mapping frame"
+
+    def stringify(x):
+        if isinstance(x, list):
+            return str(x)
+        else:
+            return x
+
+    df["raw_response"] = df["raw_response"].map(stringify)
+    df["arc_response"] = df["arc_response"].map(stringify)
+
+
 @callback(
-    Output("output", "children"),
+    Output("mapping", "data"),
     Output("map-btn", "children", allow_duplicate=True),
     State("upload-data-dictionary", "data"),
     Input("map-btn", "n_clicks"),
@@ -177,40 +257,18 @@ def invoke_map_arc(data, _, version, method, num_matches):
         dictionary = pd.read_json(data)
 
         mapped_data = use_map(method, dictionary, arc, num_matches)
+        stringify_response_columns(mapped_data)
         data = mapped_data.to_dict("records")
         for i, row in enumerate(data):
             row["id"] = i
-        return (
-            dash_table.DataTable(
-                id="mapping",
-                data=data,
-                columns=[
-                    {"name": i, "id": i, "editable": i != "status"}
-                    for i in [
-                        "status",
-                        "raw_variable",
-                        "raw_description",
-                        "arc_variable",
-                        "arc_description",
-                        "rank",
-                    ]
-                ],
-                editable=True,
-                style_data={
-                    "whiteSpace": "normal",
-                    "height": "auto",
-                    "fontSize": "90%",
-                },
-                style_table={"overflowX": "auto"},
-                page_size=PAGE_SIZE,
-            ),
-        ), "Map to ARC"
+        return data, "Map to ARC"
+
     else:
         return html.Span("No data to see here"), "Map to ARC"
 
 
 @callback(
-    Output("mapping", "data"),
+    Output("mapping", "data", allow_duplicate=True),
     Output("mapping", "style_data_conditional"),
     Output("mapping", "active_cell"),
     Input("mapping", "data"),
@@ -242,6 +300,20 @@ def handle_status(data, active_cell):
 
 
 @callback(
+    Output("mapping", "data", allow_duplicate=True),
+    Input("upload-intermediate-file", "contents"),
+    State("upload-intermediate-file", "filename"),
+    prevent_initial_call=True,
+)
+def upload_intermediate_file(contents, filename):
+    print("callback called")
+    df = read_upload_data(contents, filename)
+    assert df is not None
+    df["status"] = OK
+    return df.to_dict("records")
+
+
+@callback(
     Output("download-intermediate-mapping", "data"),
     Input("save-intermediate", "n_clicks"),
     State("mapping", "data"),
@@ -250,7 +322,7 @@ def handle_status(data, active_cell):
 def handle_download(_, data):
     if ctx.triggered_id == "save-intermediate":
         df = pd.DataFrame(data)
-        df = df[df.status == OK].drop(columns=["status", "rank"])
+        df = df[df.status == OK].drop(columns=["status"])
         return dcc.send_data_frame(df.to_csv, "arcmapper-mapping-file.csv", index=False)
     else:
         raise dash.exceptions.PreventUpdate
