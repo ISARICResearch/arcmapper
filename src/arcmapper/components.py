@@ -25,15 +25,6 @@ upload_form = dbc.Container(
                     ]
                 ),
                 dbc.Row(
-                    dbc.Col(
-                        dbc.Switch(
-                            id="upload-is-sample-data",
-                            label="Uploaded file is sample data, not a data dictionary. Data will be sent to server, only use on local deployments",
-                            disabled=True,
-                        )
-                    )
-                ),
-                dbc.Row(
                     [
                         dbc.Label("Responses column", width="auto"),
                         dbc.Col(
@@ -58,19 +49,17 @@ upload_form = dbc.Container(
                             dcc.Upload(
                                 id="upload-input-file",
                                 children=html.Div(
-                                    "Drag and drop or select file",
+                                    "Upload data dictionary",
                                     style={
-                                        "border": "1px dashed silver",
-                                        "padding": "0.3em",
+                                        "background": "#316cf4",
+                                        "color": "white",
+                                        "padding": "0.4em",
+                                        "borderRadius": "5px",
+                                        "cursor": "pointer",
                                     },
                                 ),
                             ),
                             className="me-3",
-                        ),
-                        dbc.Col(
-                            dbc.Button(
-                                "Upload", id="upload-btn", color="primary", n_clicks=0
-                            )
                         ),
                         dcc.Store(id="upload-data-dictionary"),
                     ],
