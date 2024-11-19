@@ -151,7 +151,9 @@ def match_responses(
 
 
 def has_valid_response(row) -> bool:
-    return isinstance(row.raw_response, str) and isinstance(row.arc_response, str)
+    return (
+        isinstance(row.raw_response, str) and isinstance(row.arc_response, str)
+    ) or (isinstance(row.raw_response, list) and isinstance(row.arc_response, list))
 
 
 def infer_response_mapping(
@@ -161,9 +163,14 @@ def infer_response_mapping(
 
     This is a simplified version of the mapping that takes place in strategies
     """
-    # data schema for m:
-    #   raw_variable, raw_description, raw_response,
-    #   arc_variable, arc_description, arc_response,
+    columns = [
+        "raw_variable",
+        "raw_description",
+        "raw_response",
+        "arc_variable",
+        "arc_description",
+        "arc_response",
+    ]
     out = []
     sbert_model = SentenceTransformer(sbert_model)
 
@@ -196,7 +203,6 @@ def infer_response_mapping(
                     ]
                 )
             else:
-                print("multiselect mode::")
                 out.extend(
                     [
                         (
@@ -211,7 +217,6 @@ def infer_response_mapping(
                         if sr.text.lower() not in NULL_RESPONSES
                     ]
                 )
-                print(out[-3])
         else:
             out.append(
                 (
@@ -223,17 +228,7 @@ def infer_response_mapping(
                     None,
                 )
             )
-    df = pd.DataFrame(
-        out,
-        columns=[
-            "raw_variable",
-            "raw_description",
-            "raw_response",
-            "arc_variable",
-            "arc_description",
-            "arc_response",
-        ],
-    )
+    df = pd.DataFrame(out, columns=columns)
     return df
 
 

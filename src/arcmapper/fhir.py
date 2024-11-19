@@ -24,6 +24,8 @@ VALID_FHIR_RESOURCES = [
     "Specimen",
 ]
 
+FHIR_RESOURCES_ONE_TO_ONE = ["Patient", "Encounter"]
+
 
 class FHIRMapping:
     "Loads mapping file from a Excel (XLSX) sheet"
@@ -46,7 +48,6 @@ class FHIRMapping:
 
     def get_resource(self, resource: str) -> pd.DataFrame:
         "Gets resource from FHIR mapping Excel sheet"
-        resource = resource.capitalize()  # capitalize first letter
         if resource not in self.resources:
             raise ValueError(
                 f"Resource '{resource}' not found, valid resources: {self.resources}"

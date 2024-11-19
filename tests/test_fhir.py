@@ -23,7 +23,7 @@ def test_fhir_mapping():
         "Specimen",
     ]
 
-    encounter = m.get_resource("encounter")
+    encounter = m.get_resource("Encounter")
     assert {"arc_variable", "arc_response"} <= set(encounter.columns)
 
 
