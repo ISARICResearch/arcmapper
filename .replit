@@ -1,0 +1,22 @@
+modules = ["python-3.12"]
+run = "uv run arcmapper"
+compile = "uv sync"
+
+[nix]
+channel = "stable-24_05"
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit"]
+
+[deployment]
+run = ["sh", "-c", "uv run arcmapper"]
+deploymentTarget = "cloudrun"
+build = ["sh", "-c", "uv sync"]
+
+[[ports]]
+localPort = 8050
+externalPort = 80
+exposeLocalhost = true
