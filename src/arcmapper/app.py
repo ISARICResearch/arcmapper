@@ -13,6 +13,12 @@ from .util import read_upload_data
 from .dictionary import read_data_dictionary
 from .strategies import use_map
 from .arc import read_arc_schema
+from .labels import (
+    MAP_TO_ARC,
+    DOWNLOAD_FHIRFLAT_MAPPING,
+    SAVE_INTERMEDIATE_FILE,
+    LOAD_INTERMEDIATE_FILE,
+)
 
 app = dash.Dash("arcmapper", external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "ARCMapper"
@@ -20,7 +26,6 @@ app.title = "ARCMapper"
 PAGE_SIZE = 25
 OK = "✅"
 HIGHLIGHT_COLOR = "bisque"
-
 
 FHIR_MAPPING = FHIRMapping("arc-fhir/ARC_pre_1.0.0_preset_dengue.xlsx")
 
@@ -93,7 +98,7 @@ final_mapping_form = dbc.Container(
                     [
                         dcc.Download(id="download-intermediate-mapping"),
                         dbc.Button(
-                            "Save intermediate file",
+                            SAVE_INTERMEDIATE_FILE,
                             id="save-intermediate",
                             style={"marginTop": "1em", "marginLeft": "0.6em"},
                         ),
@@ -103,7 +108,7 @@ final_mapping_form = dbc.Container(
                     dcc.Upload(
                         id="upload-intermediate-file",
                         children=html.Div(
-                            "↑ Load intermediate file",
+                            LOAD_INTERMEDIATE_FILE,
                             style={
                                 "background": "#316cf4",
                                 "color": "white",
@@ -128,7 +133,7 @@ final_mapping_form = dbc.Container(
                     [
                         dcc.Download(id="download-fhirflat"),
                         dbc.Button(
-                            "Download FHIRflat mapping",
+                            DOWNLOAD_FHIRFLAT_MAPPING,
                             color="success",
                             id="save-fhirflat",
                             style={"marginTop": "1em"},
@@ -216,7 +221,7 @@ def upload_data_dictionary(
     prevent_initial_call=True,
 )
 def set_loading_map(_):
-    return [dbc.Spinner(size="sm"), " Map to ARC"]
+    return [dbc.Spinner(size="sm"), MAP_TO_ARC[1:]]
 
 
 @callback(
@@ -225,7 +230,7 @@ def set_loading_map(_):
     prevent_initial_call=True,
 )
 def set_loading_save_fhirflat(_):
-    return [dbc.Spinner(size="sm"), " Download FHIRflat mapping"]
+    return [dbc.Spinner(size="sm"), DOWNLOAD_FHIRFLAT_MAPPING[1:]]
 
 
 def stringify_response_columns(df: pd.DataFrame):
@@ -261,10 +266,10 @@ def invoke_map_arc(data, _, version, method, num_matches):
         data = mapped_data.to_dict("records")
         for i, row in enumerate(data):
             row["id"] = i
-        return data, "Map to ARC"
+        return data, MAP_TO_ARC
 
     else:
-        return html.Span("No data to see here"), "Map to ARC"
+        return html.Span("No data to see here"), "↪ Map to ARC"
 
 
 @callback(
@@ -306,10 +311,8 @@ def handle_status(data, active_cell):
     prevent_initial_call=True,
 )
 def upload_intermediate_file(contents, filename):
-    print("callback called")
     df = read_upload_data(contents, filename)
     assert df is not None
-    df["status"] = OK
     return df.to_dict("records")
 
 
@@ -322,7 +325,6 @@ def upload_intermediate_file(contents, filename):
 def handle_download(_, data):
     if ctx.triggered_id == "save-intermediate":
         df = pd.DataFrame(data)
-        df = df[df.status == OK].drop(columns=["status"])
         return dcc.send_data_frame(df.to_csv, "arcmapper-mapping-file.csv", index=False)
     else:
         raise dash.exceptions.PreventUpdate
@@ -360,9 +362,7 @@ def handle_download_fhir(_, data):
                     writer, sheet_name=resource, index=False
                 )
         data = output.getvalue()
-        return dcc.send_bytes(
-            data, "fhirflat-mapping.xlsx"
-        ), "Download FHIRflat mapping"
+        return dcc.send_bytes(data, "fhirflat-mapping.xlsx"), DOWNLOAD_FHIRFLAT_MAPPING
     else:
         raise dash.exceptions.PreventUpdate
 

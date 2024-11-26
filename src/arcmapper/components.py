@@ -1,6 +1,8 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
+from .labels import UPLOAD_DATA_DICTIONARY, MAP_TO_ARC
+
 
 def select(id: str, values: list[str], default: str | None = None) -> dbc.Select:
     return dbc.Select(
@@ -49,7 +51,7 @@ upload_form = dbc.Container(
                             dcc.Upload(
                                 id="upload-input-file",
                                 children=html.Div(
-                                    "Upload data dictionary",
+                                    UPLOAD_DATA_DICTIONARY,
                                     style={
                                         "background": "#316cf4",
                                         "color": "white",
@@ -133,7 +135,7 @@ arc_form = dbc.Container(
                                 value=0.3,
                             ),
                         ),
-                        dbc.Col(dbc.Button("Map to ARC", id="map-btn"), width="auto"),
+                        dbc.Col(dbc.Button(MAP_TO_ARC, id="map-btn"), width="auto"),
                     ],
                     className="g-2",
                 ),
