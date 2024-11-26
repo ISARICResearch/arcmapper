@@ -61,7 +61,7 @@ def wait_for_server(
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1] in ["--debug", "-d"]:
-        print("Using debug mode...")
+        print("[DEBUG]")
         app.run_server(debug=True)
         return
     if check_port(ARCMAPPER_HOST, ARCMAPPER_PORT):
@@ -77,7 +77,7 @@ def main():
         ARCMAPPER_PORT,
         ARCMAPPER_TIMEOUT,
     )
-    webbrowser.open(f"http://{ARCMAPPER_HOST}:{ARCMAPPER_PORT}")
+    print(f"[PROD] Open browser at http://{ARCMAPPER_HOST}:{ARCMAPPER_PORT}")
     # Join the server thread and wait for it to finish or be closed
     server_thread.join()
 
