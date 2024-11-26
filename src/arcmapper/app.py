@@ -306,6 +306,7 @@ def handle_status(data, active_cell):
 
 @callback(
     Output("mapping", "data", allow_duplicate=True),
+    Output("mapping", "style_data_conditional", allow_duplicate=True),
     Input("upload-intermediate-file", "contents"),
     State("upload-intermediate-file", "filename"),
     prevent_initial_call=True,
@@ -313,7 +314,21 @@ def handle_status(data, active_cell):
 def upload_intermediate_file(contents, filename):
     df = read_upload_data(contents, filename)
     assert df is not None
-    return df.to_dict("records")
+    data = df.to_dict("records")
+    highlighted_rows = [i for i in range(len(data)) if data[i]["status"] == OK]
+    return (
+        data,  # mapping data
+        [
+            {
+                "if": {
+                    "filter_query": " || ".join(
+                        f"{{id}} = {k}" for k in highlighted_rows
+                    )
+                },
+                "backgroundColor": HIGHLIGHT_COLOR,
+            }
+        ],
+    )
 
 
 @callback(
