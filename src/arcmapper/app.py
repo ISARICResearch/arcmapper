@@ -23,7 +23,7 @@ from .labels import (
 app = dash.Dash("arcmapper", external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "ARCMapper"
 
-PAGE_SIZE = 25
+PAGE_SIZE = 20
 OK = "✅"
 HIGHLIGHT_COLOR = "bisque"
 
@@ -186,7 +186,10 @@ def upload_data_dictionary(
     col_responses,
     col_description,
 ):
-    ok = dbc.Alert("Upload successful", color="success", style={"marginTop": "1em"})
+    ok = html.P(
+        f"✓ Upload successful: {filename}",
+        style={"color": "seagreen", "marginTop": "0.5em", "marginBottom": "-0.3em"},
+    )
 
     def err(msg):
         return dbc.Alert(msg, color="danger", style={"marginTop": "1em"})
