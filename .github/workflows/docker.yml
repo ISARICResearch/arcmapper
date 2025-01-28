@@ -30,4 +30,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/ISARICResearch/arcmapper:${{ github.sha }},ghcr.io/ISARICResearch/arcmapper:latest
+          tags: ghcr.io/isaricresearch/arcmapper:${{ github.sha }},ghcr.io/isaricresearch/arcmapper:latest
