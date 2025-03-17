@@ -14,7 +14,7 @@ from .dictionary import read_data_dictionary
 
 __version__ = "0.1.0"
 
-ARCMAPPER_HOST = os.getenv("ARCMAPPER_HOST", "127.0.0.1")
+ARCMAPPER_HOST = os.getenv("ARCMAPPER_HOST", "0.0.0.0")
 ARCMAPPER_PORT = int(os.getenv("ARCMAPPER_PORT", 8050))
 ARCMAPPER_TIMEOUT = 30
 
